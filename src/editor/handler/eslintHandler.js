@@ -44,7 +44,7 @@ const invalidateEslintDelay = (editor, callBack) => {
         var msg = invalidateEslint(editor);
         if (callBack)
             callBack(msg)
-    }, 1)();
+    }, 667)();
 }
 
 /**

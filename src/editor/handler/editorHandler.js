@@ -85,6 +85,8 @@ const options = {
     //glyphMargin:true
 }
 
+var isEditing = false;
+
 /**
  * 新增monaco编辑器
  * @param {编辑器key} editorKey 
@@ -135,7 +137,8 @@ const initEditor = (editorObj, tabData) => {
     if (!editorObj || !editorObj.editor)
         return
 
-    var editor = editorObj.editor;
+    const editor = editorObj.editor
+    const model = editorObj.model
     //template 或者 html编辑器：注册Emmet，vui智能提示相关
     if (tabData.key === devEditorKeys.template || tabData.key === defaultEditorKeys.html) {
         emmetHTML(editor)
@@ -150,8 +153,22 @@ const initEditor = (editorObj, tabData) => {
         }
     });
     editor.onDidChangeCursorPosition(function (e) {
-        updateRowColumn(e.position);
+        //updateRowColumn(e.position);
     });
+
+    model.onDidChangeContent(() => {
+        if (isEditing)
+            return
+
+        debounce(() => {
+            isEditing = true
+            debugger
+            const eslintMsg = eslintHandler.invalidateEslint(editor)
+            const afterMarker = eslintHandler.updateMarkers(editor, eslintMsg)
+            //editorVue.eslintVerifyMessage = eslintMsg
+            isEditing = false
+        }, 667)();
+    })
 }
 
 /**
