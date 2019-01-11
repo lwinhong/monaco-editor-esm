@@ -1,14 +1,20 @@
-import emmet from '../emmet/monaco-emmet'
+import debounce from 'lodash/debounce'
+import eslintHandler from '../handler/eslintHandler'
+import { vuiIntelliSense, vuiHelp, emmetHTML } from './htmlEditor'
 
 const devEditorKeys = { template: 'template', script: 'script', style: 'style', themeLess: 'themeLess', varLess: 'varLess' }
 const defaultEditorKeys = { html: 'html', javascript: 'javascript', css: 'css', moduleCss: 'moduleCss', moduleJavascript: 'moduleJavascript' }
 
 var editorData = {}
-var appEditorVue;
+var parentVue
 
-function Init(editorVue) {
-    appEditorVue = editorVue;
+eslintHandler.init(editorData)
+
+const Init = (editorVue) => {
+    parentVue = editorVue;
 }
+
+/*************** 页签 **************/
 
 /**
  * 添加编辑器页签页
@@ -63,6 +69,7 @@ const addDevTab = (tabs) => {
     addTab(tabs, devEditorKeys.themeLess, "theme.less", "editor_theme", "less")
     addTab(tabs, devEditorKeys.varLess, "var.less", "editor_var", "less")
 }
+/*************** 页签 end **************/
 
 /***************monaco editor **************/
 
@@ -78,6 +85,13 @@ const options = {
     //glyphMargin:true
 }
 
+/**
+ * 新增monaco编辑器
+ * @param {编辑器key} editorKey 
+ * @param {编辑器容器id} containerId 
+ * @param {编辑器语言} language 
+ * @param {值} value 
+ */
 const newMonacoEditor = (editorKey, containerId, language, value) => {
     const container = document.getElementById(containerId)
     if (container) {
@@ -86,48 +100,106 @@ const newMonacoEditor = (editorKey, containerId, language, value) => {
             { model: model },
             options
         ))
-        debugger;
-        editorData = Object.assign(editorData, {
-            editorKey: {
-                editor: editor, model: model,
-            }
-        })
+
+        editorData[editorKey] = {
+            editor: editor, model: model,
+        };
         return { editor, model }
     } else {
         console.log('newMonacoEditor: container is undefined')
     }
-    return null;
+    return null
 }
 
-function addMonacoEditor(tabs) {
-    setTimeout(() => {
+/**
+ * 根据页签集合添加monaco编辑器
+ * @param {页签集合} tabs 
+ */
+const addMonacoEditor = (tabs) => {
+    debounce(() => {
         window.addMonacoEditor(() => {
             $.each(tabs, function (i, d) {
                 let obj = newMonacoEditor(d.key, d.editorContainerId, d.language)
                 initEditor(obj, d)
             })
         })
-    }, 100)
+    }, 100)()
 }
 
-function initEditor(editorObj, tabData) {
-    if (!editorObj)
+/**
+ * 初始化monaco编辑器
+ * @param {编辑器数据} editorObj 
+ * @param {页签数据} tabData 
+ */
+const initEditor = (editorObj, tabData) => {
+    if (!editorObj || !editorObj.editor)
         return
 
-    if (tabData.key === devEditorKeys.template) {
-        emmet(editorObj.editor)
+    var editor = editorObj.editor;
+    //template 或者 html编辑器：注册Emmet，vui智能提示相关
+    if (tabData.key === devEditorKeys.template || tabData.key === defaultEditorKeys.html) {
+        emmetHTML(editor)
+        vuiIntelliSense(editor)
+        vuiHelp(editor)
+    }
+
+    editor.onMouseDown(function (e) {
+        if (parentVue) {
+            //隐藏浮动的错误信息
+            parentVue.$refs.messageFlow.tyrToHide()
+        }
+    });
+    editor.onDidChangeCursorPosition(function (e) {
+        updateRowColumn(e.position);
+    });
+}
+
+/**
+ * 设置编辑器焦点
+ * @param {编辑器} editor 
+ */
+function setMonacoEditorFocus(editorKey) {
+    try {
+        const editor = editorData[editorKey].editor
+        if (editor)
+            editor.focus()
+    } catch (error) {
+        console.error('setMonacoEditorFocus:' + error)
     }
 }
 
-function setMonacoEditorFocus(editor) {
-    if (!editor)
-        editor = editorData[this.editorVue.tabSelectedIndex].editor;
-
-    if (editor)
-        editor.focus();
+const setMonacoEditorFocusDelay = (editorKey) => {
+    debounce(() => setMonacoEditorFocus(editorKey), 100)()
 }
 
+/**
+ * 大小改变重新布局
+ */
+window.onresize = function () {
+    editorLayout()
+}
+
+/**
+ * 编辑器重新布局
+ */
+const editorLayout = () => {
+    for (var prop in editorData) {
+        if (editorData.hasOwnProperty(prop) && editorData[prop].editor) {
+            editorData[prop].editor.layout();
+        }
+    }
+}
+/*************** monaco editor end **************/
 
 export default {
-    Init, addEditorTabPage, addMonacoEditor, devEditorKeys, defaultEditorKeys, editorData, setMonacoEditorFocus
+    Init,
+    addEditorTabPage,
+    addMonacoEditor,
+    devEditorKeys,
+    defaultEditorKeys,
+    editorData,
+    setMonacoEditorFocus,
+    setMonacoEditorFocusDelay,
+    editorLayout,
+    eslintHandler
 }

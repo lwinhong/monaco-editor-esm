@@ -10,7 +10,8 @@
   ],
   "dependencies": {
     "highlight.js": "^9.13.1",
-    "iview": "^3.2.1"
+    "iview": "^3.2.1",
+    "jquery": "^3.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",

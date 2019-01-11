@@ -1,10 +1,10 @@
 <template>
   <div class="app fill">
-    <app-mask :visible="isMaskShow"></app-mask>
+    <app-mask v-if="isMaskShow"></app-mask>
     <layout>
       <layout>
         <i-content>
-          <app-editor></app-editor>
+          <app-editor ref="editor"></app-editor>
         </i-content>
         <sider
           ref="sideRight"
@@ -13,42 +13,46 @@
           :width="294"
           :collapsed-width="44"
           v-model="isCollapsed"
-        >
-          <button @click="collapsedSider">123</button>
-        </sider>
+        ></sider>
       </layout>
       <Footer>
-        <app-footer></app-footer>
+        <app-footer :items="items" @itemClick="footItemClick"></app-footer>
       </Footer>
     </layout>
-    <app-message-flow ref="messageFlow" class="foot-message-flow-show"></app-message-flow>
   </div>
 </template>
 <script>
-
 import AppMask from "./app-mask.vue";
 import AppEditor from "./editor/app-editor.vue";
 import AppFooter from "./foot/app-footer.vue";
-import AppMessageFlow from "./message/app-message-flow.vue";
 
 export default {
   name: "App",
   components: {
     AppMask,
     AppEditor,
-    AppFooter,
-    AppMessageFlow
+    AppFooter
   },
   data() {
     return {
       isCollapsed: true,
-      isMaskShow: true
+      isMaskShow: true,
+      items: [
+        { key: "format", text: "格式化", title: "格式化 shift + alt + F" ,icon:'md-code'},
+        { key: "comment", text: "注释", title: "注释 ctrl + /" },
+        { key: "insertResource", text: "插入资源", title: "插入资源" },
+        { key: "vlanguage", text: "语法", title: "v指令" },
+        { key: "search", text: "搜索", title: "搜索 ctrol + F" },
+        { key: "cmdPanel", text: "命令面板", title: "命令面板 F1" }
+      ]
     };
   },
   methods: {
     collapsedSider() {
-      this.$refs.sideRight.toggleCollapse();
-      this.$refs.messageFlow.toggleShow();
+      //this.$refs.sideRight.toggleCollapse();
+    },
+    footItemClick(item) {
+      alert("点击了：" + item.key + " - " + item.text);
     }
   },
   mounted() {
@@ -59,10 +63,6 @@ export default {
 };
 </script>
 <style scoped>
-.foot-message-flow-show {
-  bottom: 46px !important;
-}
-
 .fillMask {
   height: 100%;
   width: 100%;

@@ -16,7 +16,6 @@
 <script>
 import Message from "../message/message.vue";
 
-var flow = true;
 const flowSrc = "./resource/images/flow.png";
 const fixedSrc = "./resource/images/fixed.png";
 
@@ -25,9 +24,14 @@ export default {
   components: { Message },
   data() {
     return {
-      showMessageFlow: false,
-      flowIconSrc: flowSrc
+      showMessageFlow: true,
+      flow: true
     };
+  },
+  computed: {
+    flowIconSrc() {
+      return this.flow ? flowSrc : fixedSrc;
+    }
   },
   methods: {
     toggleShow() {
@@ -38,8 +42,10 @@ export default {
       this.showMessageFlow = value;
     },
     changeFlow() {
-      flow = !flow;
-      this.flowIconSrc = flow ? flowSrc : fixedSrc;
+      this.flow = !this.flow;
+    },
+    tyrToHide() {
+      if (this.flow && this.showMessageFlow) this.setVisible(false);
     }
   }
 };
@@ -71,7 +77,6 @@ export default {
   right: 6px;
   z-index: 1050;
   position: absolute;
-
 }
 
 #controlboxs img {
@@ -79,6 +84,10 @@ export default {
   vertical-align: middle;
   cursor: pointer;
 }
+/* #controlboxs img:hover {
+  background-color: #e0e4e2;
+  color: #2d8cf0;
+} */
 </style>
 
 

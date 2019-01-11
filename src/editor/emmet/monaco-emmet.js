@@ -189,4 +189,5 @@ const emmetHTML = editor => {
   )
 }
 
-export default emmetHTML
+//export default emmetHTML 
+export { emmetHTML }

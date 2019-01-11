@@ -52,8 +52,11 @@ export default {
 
             const icon = h("Icon", {
               props: {
-                type: "close-circled",
-                color: "red"
+                type:
+                  this.listType == "error"
+                    ? "md-close-circle"
+                    : "md-thumbs-down",
+                color: this.listType == "error" ? "red" : "green"
               }
             });
             var elements = [icon, span];
@@ -108,7 +111,6 @@ export default {
   padding-left: 5px !important;
   padding-right: 5px !important;
 }
-
 </style>
 
 

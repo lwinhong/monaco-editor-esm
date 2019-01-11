@@ -10,3 +10,11 @@ import util from "./util";
     if (tmp) divEditorToken = tmp;
   }
 })()
+
+const executeCmd = (cmd, value) => {
+
+}
+
+export default {
+  executeCmd
+}

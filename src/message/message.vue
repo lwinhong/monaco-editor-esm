@@ -37,7 +37,13 @@ export default {
         "moduleKey": "html"
     }],
       errorCount: 12,
-      suggusetData: [],
+      suggusetData: [{
+        "desc": "desc",
+        "row": 1,
+        "column": 1,
+        "moduleName":"123",
+        "moduleKey": "html"
+    }],
       suggusetCount: 345,
       currentListName: "error"
     };

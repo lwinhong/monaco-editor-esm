@@ -1,10 +1,11 @@
 <template>
   <div id="fillMask" class="fillMask" v-show="visibleTrigger">
-    <img src="./resource/images/waitting.gif">
+    <img :src="waitGif">
     <span>编辑器加载中，请稍后</span>
   </div>
 </template>
 <script>
+const waitGif = "./resource/images/waitting.gif";
 export default {
   name: "AppMask",
   props: {
@@ -16,6 +17,9 @@ export default {
   computed: {
     visibleTrigger() {
       return this.visible;
+    },
+    waitGif() {
+      return waitGif;
     }
   },
   methods: {

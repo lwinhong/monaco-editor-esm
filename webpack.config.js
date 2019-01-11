@@ -20,11 +20,27 @@ module.exports = env => {
             libraryTarget: "var",
             library: "vdk",
         },
+        node: {
+            fs: "empty"
+        },
         module: {
             rules: [
                 {
                     test: /\.vue$/,
-                    use: ["vue-loader"],
+                    use: [
+                        {
+                            loader: 'vue-loader',
+                            options: {
+
+                            }
+                        },
+                        {
+                            loader: 'iview-loader',
+                            options: {
+                                prefix: false
+                            }
+                        }
+                    ],
                 },
                 {
                     test: /\.m?js$/,
@@ -82,7 +98,7 @@ module.exports = env => {
                     ],
                 },
                 {
-                    test: /\.(png|jpg|gif|svg|eot|ijmap|ttf|woff2?)$/,
+                    test: /\.(png|jpg|gif|svg|eot|ijmap|ttf|woff|woff2?)$/,
                     use: [
                         {
                             loader: "url-loader",

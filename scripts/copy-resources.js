@@ -4,7 +4,7 @@ const childProcess = require("child_process")
 const args = process.argv.slice(2)
 const root = "src/resource/"
 const files = [
-    "jquery-3.3.1.js",
+    "jquery-3.3.1.min.js",
 
     "images/icon-enter-dark.png",
     "images/icon-enter-light.png",
