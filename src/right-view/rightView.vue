@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ul @click="value1 =true">
+    <ul @click="$emit('itemClick')">
       <li>
         <a>实体</a>
       </li>
@@ -40,9 +40,10 @@ export default {
 <style scoped>
 ul {
   /*设置导航栏的框框*/
-  width: 100%; /*框框的宽度*/
+  width: 52px; /*框框的宽度*/
   height: 100%; /*框框的长度*/
   padding: 0px; /*将框框的padding设置为零，不然会导致框框里的内容与框边缘有间隔*/
+  right: 0px;
 }
 li {
   list-style-type: none; /* 去掉li前的点 */

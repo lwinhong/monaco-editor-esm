@@ -11,10 +11,10 @@
           collapsible
           hideTrigger
           :width="294"
-          :collapsed-width="44"
+          :collapsed-width="52"
           v-model="isCollapsed"
         >
-          <app-right-view ref="rightView"></app-right-view>
+          <app-right-view ref="rightView" @itemClick="collapsedSider"></app-right-view>
         </sider>
       </layout>
       <Footer>
