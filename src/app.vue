@@ -13,7 +13,9 @@
           :width="294"
           :collapsed-width="44"
           v-model="isCollapsed"
-        ></sider>
+        >
+          <app-right-view ref="rightView"></app-right-view>
+        </sider>
       </layout>
       <Footer>
         <app-footer :items="items" @itemClick="footItemClick"></app-footer>
@@ -25,40 +27,67 @@
 import AppMask from "./app-mask.vue";
 import AppEditor from "./editor/app-editor.vue";
 import AppFooter from "./foot/app-footer.vue";
+import AppRightView from "./right-view/rightView.vue";
 
 export default {
   name: "App",
   components: {
     AppMask,
     AppEditor,
-    AppFooter
+    AppFooter,
+    AppRightView
   },
   data() {
     return {
       isCollapsed: true,
-      isMaskShow: true,
+      isMaskShow: false,
       items: [
-        { key: "format", text: "格式化", title: "格式化 shift + alt + F" ,icon:'md-code'},
-        { key: "comment", text: "注释", title: "注释 ctrl + /" },
-        { key: "insertResource", text: "插入资源", title: "插入资源" },
-        { key: "vlanguage", text: "语法", title: "v指令" },
-        { key: "search", text: "搜索", title: "搜索 ctrol + F" },
-        { key: "cmdPanel", text: "命令面板", title: "命令面板 F1" }
+        {
+          key: "format",
+          text: "格式化",
+          title: "格式化 shift + alt + F",
+          icon: "md-code"
+        },
+        {
+          key: "commentLine",
+          text: "注释",
+          title: "注释 ctrl + /",
+          icon: "ios-list"
+        },
+        {
+          key: "insertResource",
+          text: "插入资源",
+          title: "插入资源",
+          icon: "md-add-circle"
+        },
+        { key: "vlanguage", text: "语法", title: "v指令", icon: "ios-list-box-outline" },
+        {
+          key: "find",
+          text: "搜索",
+          title: "搜索 ctrol + F",
+          icon: "ios-search"
+        },
+        {
+          key: "quickCommand",
+          text: "命令面板",
+          title: "命令面板 F1",
+          icon: "md-list"
+        }
       ]
     };
   },
   methods: {
     collapsedSider() {
-      //this.$refs.sideRight.toggleCollapse();
+      this.$refs.sideRight.toggleCollapse();
     },
     footItemClick(item) {
-      alert("点击了：" + item.key + " - " + item.text);
+      this.$refs.editor.footItemClick(item);
     }
   },
   mounted() {
-    setTimeout(() => {
-      this.isMaskShow = false;
-    }, 500);
+    // setTimeout(() => {
+    //   this.isMaskShow = false;
+    // }, 500);
   }
 };
 </script>

@@ -7,25 +7,88 @@
         :title="item.title"
         @click="$emit('itemClick', item)"
       >
-        <a href="javscript:void(0);"><Icon v-if="item.icon" :type="item.icon" /> {{item.text}}</a>
+        <a href="javscript:void(0);">
+          <Icon v-if="item.icon" :type="item.icon" :size="15"/>
+          {{item.text}}
+        </a>
+      </li>
+      <li class="li-right">
+        <a href="javscript:void(0);">{{rowColMsg}}</a>
+      </li>
+      <li
+        :title="errorMsg"
+        v-show="errorMsgVisible"
+        class="li-right"
+        v-for="msg in messageFlowData"
+        :key="msg.key"
+      >
+        <a
+          href="javscript:void(0);"
+          @click="$emit('itemClick', {key:'showMessageFlow', value:msg.key})"
+        >
+          <Icon :type="msg.icon" :color="msg.color" :size="15"/>
+          {{msg.key==='error'?errorMsgCount:suggestMsgCount}}
+        </a>
       </li>
     </ul>
   </div>
 </template>
 <script>
+import { eventBus } from "../app/event-bus";
+
 export default {
   name: "AppFooter",
+  created() {
+    eventBus.$on("updateCursorPosition", position => {
+      if (position) {
+        this.selectionRow = position.lineNumber;
+        this.selectionCol = position.column;
+      }
+    });
+    eventBus.$on("updateMessageCount", obj => {
+      this.errorMsgCount = obj.errorMsgCount;
+      this.suggestMsgCount = obj.suggestMsgCount;
+    });
+  },
   props: {
     items: {
       type: Array,
       default: []
     }
+  },
+  data() {
+    return {
+      selectionRow: 0,
+      selectionCol: 0,
+      errorMsgCount: 0,
+      suggestMsgCount: 0,
+      messageFlowData: [
+        {
+          key: "suggest",
+          icon: "md-thumbs-down",
+          color: "green"
+        },
+        {
+          key: "error",
+          icon: "md-close-circle",
+          color: "red"
+        }
+      ]
+    };
+  },
+  computed: {
+    rowColMsg() {
+      return `行${this.selectionRow} 列${this.selectionCol}`;
+    },
+    errorMsg() {
+      return `${this.errorMsgCount}个错误,${this.suggestMsgCount}个警告`;
+    },
+    errorMsgVisible() {
+      return this.errorMsgCount + this.suggestMsgCount > 0;
+    }
   }
 };
 </script>
-<!--
-<style scoped lang='less' src='./app-footer.less'></style>
--->
 <style scoped>
 .footer {
   height: 25px;
@@ -43,6 +106,9 @@ li {
   list-style-type: none; /* 去掉li前的点 */
   float: left; /*将li设置成做浮动，变为联动*/
 }
+.li-right {
+  float: right; /*将li设置成做浮动，变为联动*/
+}
 a {
   display: block; /*将a变成块状*/
   font-family: Microsoft Yahei;
@@ -56,6 +122,6 @@ a {
 a:hover {
   background-color: #e0e4e2;
   color: #2d8cf0;
-   cursor: pointer;
+  cursor: pointer;
 }
 </style>

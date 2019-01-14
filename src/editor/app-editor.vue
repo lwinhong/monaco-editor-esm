@@ -33,7 +33,7 @@
           <div class="dropBtn">
             <div class="save-close">
               <Icon type="ios-list-box" class="iconsave" @click="saveAndClose"></Icon>
-              <span>保存并关闭 </span>
+              <span>保存并关闭</span>
             </div>
           </div>
           <dropdown-menu slot="list" placement="bottom">
@@ -47,13 +47,14 @@
         </dropdown>
       </tabs>
     </div>
-    <app-message-flow ref="messageFlow" class="foot-message-flow-show"></app-message-flow>
+    <app-message-flow ref="messageFlow" class="foot-message-flow-show" @localMessage="localMessage"></app-message-flow>
   </div>
 </template>
 <script>
 import AppChartWidget from "../editor/app-chart-widget.vue";
 import editorHandler from "../editor/handler/editorHandler.js";
 import AppMessageFlow from "../message/app-message-flow.vue";
+import eslintHandler from "./handler/eslintHandler";
 
 const tabs = [];
 
@@ -80,7 +81,6 @@ export default {
       tabSelectedIndex: editorHandler.devEditorKeys.template,
       tabs: tabs,
       saveButtonVisible: false,
-      eslintVerifyMessage: [],
       editor: null,
       chartWidgetTop: 24,
       chartWidgetLeft: 24
@@ -99,14 +99,17 @@ export default {
       this.chartWidgetTop = point.y;
       this.chartWidgetLeft = point.x;
       this.appChartWidgetVisible = true;
+    },
+    footItemClick(item) {
+      editorHandler.executeCommand(item.key, item, this);
+    },
+    localMessage(row, index, type) {
+      console.log(row + " " + index + "  " + type);
     }
   },
   watch: {
     tabSelectedIndex(newValue, oldValue) {
-      editorHandler.setMonacoEditorFocusDelay(newValue);
-    },
-    editorWith() {
-      editorHandler.editorLayout();
+      editorHandler.setMonacoEditorFocusDelay(newValue, 100);
     }
   }
 };

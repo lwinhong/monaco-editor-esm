@@ -1,7 +1,7 @@
 <template>
   <i-table
     :columns="msgColumn"
-    :data="dataSourceTrigger"
+    :data="dataSource"
     size="small"
     :height="140"
     @on-row-dblclick="localMessage"
@@ -10,9 +10,6 @@
 <script>
 export default {
   name: "MessageList",
-  model: {
-    event: "local-message"
-  },
   props: {
     dataSource: {
       type: Array,
@@ -20,11 +17,6 @@ export default {
     },
     listType: {
       type: String
-    }
-  },
-  computed: {
-    dataSourceTrigger() {
-      return this.dataSource;
     }
   },
   data() {
@@ -37,7 +29,7 @@ export default {
         },
         {
           title: "说明",
-          key: "desc",
+          key: "message",
           render: (h, params) => {
             const span = h(
               "span",
@@ -82,9 +74,8 @@ export default {
             return h("div", elements);
           }
         },
-        { title: "行", width: 50, key: "row" },
-        { title: "列", width: 50, key: "column" },
-        // { title: "类型", width: 50, key: "severity" },
+        { title: "行", width: 50, key: "startLineNumber" },
+        { title: "列", width: 50, key: "startColumn" },
         { title: "模块", width: 100, key: "moduleName" }
       ]
     };

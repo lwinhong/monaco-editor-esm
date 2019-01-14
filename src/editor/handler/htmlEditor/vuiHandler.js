@@ -1,5 +1,5 @@
 
-const vuiIntelliSense = editor => {
+export const vuiIntelliSense = editor => {
     if (!editor) {
         console.log('vuiIntelliSense: 必须提供 monaco-editor 示例.')
         return;
@@ -39,4 +39,10 @@ const vuiIntelliSense = editor => {
         };
     }
 }
-export { vuiIntelliSense } 
+/*********** vui ******** */
+
+/************************ */
+
+/*********** hover ******** */
+
+/************************ */

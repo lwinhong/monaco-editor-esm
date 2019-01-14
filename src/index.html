@@ -34,7 +34,7 @@
                 callBack(this.monaco);
                 return;
             }
-            require(["vs/editor/editor.main"], function () {
+            require(["vs/editor/editor.main"], () => {
                 this.monaco = monaco;
                 callBack(monaco);
             });

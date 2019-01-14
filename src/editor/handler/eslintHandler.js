@@ -1,9 +1,9 @@
-import eslintState from '../../app-state/eslint-state'
-import { getRuleUrl } from "../../app-state/eslint-state"
-import v3config from "../../app-state/v3-config"
-import debounce from 'lodash/debounce'
+import eslintState from "./eslint/eslint-state"
+import { getRuleUrl } from "./eslint/eslint-state"
+import v3Config from "./eslint/v3-config"
+import debounce from "lodash/debounce"
 
-const suggestRules = v3config.suggest
+const suggestRules = v3Config.suggest
 const playgroundState = new eslintState()
 var editorData = {}
 
@@ -15,23 +15,12 @@ const init = (editorDataMap) => {
  * 更新eslint信息（同步）
  * @param {monaco editor} editor 
  */
-const invalidateEslint = (editor) => {
-    if (editor) {
-        const model = editor.getModel()
-        const value = model.getValue()
-
-        var lintValue = value;
-        if (editorData) {
-            if (editorData[editorKey.script] && editorData[editorKey.script].model == model)
-                lintValue = "<script>\n " + value + "\n </script>"
-            else if (editorData[editorKey.template] && editorData[editorKey.template].model == model)
-                lintValue = "<template>\n " + value + "\n </template>"
-        }
-
+const invalidateEslint = (lintValue) => {
+    if (lintValue) {
         var msg = playgroundState.lint(lintValue)
-        return msg;
+        return msg
     }
-    return null;
+    return null
 }
 
 /**
@@ -44,7 +33,7 @@ const invalidateEslintDelay = (editor, callBack) => {
         var msg = invalidateEslint(editor);
         if (callBack)
             callBack(msg)
-    }, 667)();
+    }, 667)()
 }
 
 /**
@@ -80,8 +69,6 @@ function messageToMarker(message) {
     return {
         severity: severity,
         source: source,
-        //message: `${message.message} (${message.ruleId || "FATAL"})`,
-        //message: `${message.message} (<a :href="${getRuleUrl(m.ruleId)}" target="_blank" v-if="${m.ruleId} != null" rel="noopener">{{ ${m.ruleId} }}</a><span v-else>FATAL</span>)`,
         message: msg,
         ruleId: message.ruleId,
         ruleUrl: getRuleUrl(message.ruleId) + "#readme",
@@ -122,9 +109,22 @@ function buildMarkers(messages) {
     return markers
 }
 
+/**
+ * 修正（格式化）编码
+ * @param {要格式化的编码} lintValue 
+ */
+const lintAndFixed = (lintValue) => {
+    if (lintValue) {
+        var result = playgroundState.lintAndFixed(lintValue)
+        return result
+    }
+    return null
+}
+
 export default {
     init,
     invalidateEslint,
     invalidateEslintDelay,
-    updateMarkers
+    updateMarkers,
+    lintAndFixed
 }

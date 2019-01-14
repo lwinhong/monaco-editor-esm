@@ -10,7 +10,12 @@
         @click="setVisible(false)"
       >
     </div>
-    <message></message>
+    <message
+      ref="messageFlow"
+      :errorData="errorData"
+      :suggestData="suggestData"
+      @localMessage="localMessage"
+    ></message>
   </div>
 </template>
 <script>
@@ -25,7 +30,9 @@ export default {
   data() {
     return {
       showMessageFlow: true,
-      flow: true
+      flow: true,
+      errorData: [],
+      suggestData: []
     };
   },
   computed: {
@@ -34,7 +41,12 @@ export default {
     }
   },
   methods: {
-    toggleShow() {
+    toggleShow(valueObj) {
+      if (valueObj && valueObj.value) {
+        this.$refs.messageFlow.change(valueObj.value);
+      }
+
+      if (this.showMessageFlow) return;
       let value = !this.showMessageFlow;
       this.setVisible(value);
     },
@@ -44,8 +56,11 @@ export default {
     changeFlow() {
       this.flow = !this.flow;
     },
-    tyrToHide() {
+    tryToHide() {
       if (this.flow && this.showMessageFlow) this.setVisible(false);
+    },
+    localMessage(row, index, type) {
+      this.$emit("localMessage", row, index, type);
     }
   }
 };

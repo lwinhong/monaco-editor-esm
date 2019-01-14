@@ -1,6 +1,6 @@
 import debounce from 'lodash/debounce'
 import eslintHandler from '../handler/eslintHandler'
-import { vuiIntelliSense, vuiHelp, emmetHTML } from './htmlEditor'
+import { vuiIntelliSense, vuiHelp, emmetHTML, eventBus } from './htmlEditor'
 
 const devEditorKeys = { template: 'template', script: 'script', style: 'style', themeLess: 'themeLess', varLess: 'varLess' }
 const defaultEditorKeys = { html: 'html', javascript: 'javascript', css: 'css', moduleCss: 'moduleCss', moduleJavascript: 'moduleJavascript' }
@@ -65,16 +65,27 @@ const addDefaultTab = (tabs) => {
 const addDevTab = (tabs) => {
     addTab(tabs, devEditorKeys.template, "template", "editor_template", "html")
     addTab(tabs, devEditorKeys.script, "script", "editor_script", "javascript")
-    addTab(tabs, devEditorKeys.style, "style", "editor_style", "css")
+    // addTab(tabs, devEditorKeys.style, "style", "editor_style", "css")
     addTab(tabs, devEditorKeys.themeLess, "theme.less", "editor_theme", "less")
     addTab(tabs, devEditorKeys.varLess, "var.less", "editor_var", "less")
 }
+
+const getTabText = tabKey => {
+    if (parentVue) {
+        for (var i = 0; i < parentVue.tabs.length; i++) {
+            var tab = parentVue.tabs[i]
+            if (tab.key === tabKey)
+                return tab.text
+        }
+    }
+    return null
+}
+
 /*************** 页签 end **************/
 
 /***************monaco editor **************/
 
 const options = {
-    // model: editorModel,
     // wordWrap: editorWordWrap,
     // minimap: { enabled: editorMinimapEnabled },
     formatOnPaste: true,
@@ -99,13 +110,9 @@ const newMonacoEditor = (editorKey, containerId, language, value) => {
     if (container) {
         const model = monaco.editor.createModel(value, language)
         const editor = monaco.editor.create(container, Object.assign(
-            { model: model },
-            options
+            { model: model }, options
         ))
-
-        editorData[editorKey] = {
-            editor: editor, model: model,
-        };
+        editorData[editorKey] = { editor: editor, model: model };
         return { editor, model }
     } else {
         console.log('newMonacoEditor: container is undefined')
@@ -119,11 +126,12 @@ const newMonacoEditor = (editorKey, containerId, language, value) => {
  */
 const addMonacoEditor = (tabs) => {
     debounce(() => {
-        window.addMonacoEditor(() => {
+        window.addMonacoEditor((monaco) => {
             $.each(tabs, function (i, d) {
                 let obj = newMonacoEditor(d.key, d.editorContainerId, d.language)
                 initEditor(obj, d)
             })
+            setMonacoEditorFocusDelay(devEditorKeys.template, 100)
         })
     }, 100)()
 }
@@ -149,26 +157,53 @@ const initEditor = (editorObj, tabData) => {
     editor.onMouseDown(function (e) {
         if (parentVue) {
             //隐藏浮动的错误信息
-            parentVue.$refs.messageFlow.tyrToHide()
+            parentVue.$refs.messageFlow.tryToHide()
         }
     });
     editor.onDidChangeCursorPosition(function (e) {
-        //updateRowColumn(e.position);
+        eventBus.$emit('updateCursorPosition', e.position)
     });
 
-    model.onDidChangeContent(() => {
-        if (isEditing)
-            return
+    model.onDidChangeContent(function (e) {
+        if (e.changes[0].text === ' ') {
+            debounce(() => {
+                executeCommand('triggerSuggest', editor)
+            }, 200)();
+        }
 
-        debounce(() => {
-            isEditing = true
-            debugger
-            const eslintMsg = eslintHandler.invalidateEslint(editor)
-            const afterMarker = eslintHandler.updateMarkers(editor, eslintMsg)
-            //editorVue.eslintVerifyMessage = eslintMsg
-            isEditing = false
-        }, 667)();
+        if (isEditing &&
+            (tabData.key === devEditorKeys.template || tabData.key === devEditorKeys.script))
+            return
+            
+        didChangedContent(model, editor, tabData)
     })
+}
+
+const didChangedContent = (model, editor, tabData) => {
+    isEditing = true
+    debounce(() => {
+        try {
+            var lintValue = getLintValue(model, tabData.key)
+            const eslintMsg = eslintHandler.invalidateEslint(lintValue)
+            const afterMarker = eslintHandler.updateMarkers(editor, eslintMsg)
+            setMessageFlowData(afterMarker, tabData.key, null, true)
+        } catch (error) {
+            console.error('onDidChangeContent:' + error)
+        } finally {
+            isEditing = false
+        }
+    }, 1000)();
+}
+
+const getLintValue = (model, editorKey) => {
+    var lintValue = model.getValue()
+
+    if (editorKey === devEditorKeys.script)
+        lintValue = "<script>\n " + lintValue + "\n </script>"
+    else if (editorKey === devEditorKeys.template)
+        lintValue = "<template>\n " + lintValue + "\n </template>"
+
+    return lintValue
 }
 
 /**
@@ -185,28 +220,141 @@ function setMonacoEditorFocus(editorKey) {
     }
 }
 
-const setMonacoEditorFocusDelay = (editorKey) => {
-    debounce(() => setMonacoEditorFocus(editorKey), 100)()
-}
-
 /**
- * 大小改变重新布局
+ * 设置编辑器焦点
+ * @param {编辑器key} editorKey 
  */
-window.onresize = function () {
-    editorLayout()
+const setMonacoEditorFocusDelay = (editorKey, timeout) => {
+    debounce(() => setMonacoEditorFocus(editorKey), timeout)()
 }
 
 /**
  * 编辑器重新布局
  */
 const editorLayout = () => {
+    debugger
     for (var prop in editorData) {
         if (editorData.hasOwnProperty(prop) && editorData[prop].editor) {
             editorData[prop].editor.layout();
         }
     }
 }
+
+window.onresize = editorLayout;
+
 /*************** monaco editor end **************/
+
+/*************** 执行命令 **************/
+const monacoEditorCmd = {
+    format: "editor.action.formatDocument",
+    commentLine: "editor.action.commentLine",
+    triggerSuggest: "editor.action.triggerSuggest",
+    find: "actions.find",
+    quickCommand: 'editor.action.quickCommand'
+}
+
+const executeCommand = (cmd, value, editorInstance) => {
+
+    switch (cmd) {
+        case "showMessageFlow"://显示错误列表
+            editorInstance.$refs.messageFlow.toggleShow(value);
+            break;
+        case "format"://格式化
+            triggerMonacoEditor(monacoEditorCmd.format)
+            break;
+        case "commentLine"://格式化
+            triggerMonacoEditor(monacoEditorCmd.commentLine)
+            break;
+        case "triggerSuggest": //打开智能提示面板
+            triggerMonacoEditor(monacoEditorCmd.triggerSuggest)
+            break;
+        case "find":
+            triggerMonacoEditor(monacoEditorCmd.find)
+            break;
+        case "quickCommand":
+            triggerMonacoEditor(monacoEditorCmd.quickCommand)
+            break;
+    }
+}
+
+const triggerMonacoEditor = (actionId) => {
+    const editor = editorData[parentVue.tabSelectedIndex].editor
+    triggerMonacoEditorAction(actionId, editor)
+}
+
+const triggerMonacoEditorAction = (actionId, editor) => {
+    if (editor)
+        editor.trigger('', actionId, {})
+}
+
+/*************** 执行命令 end **************/
+
+/********************** 验证信息 **********************/
+
+const setMessageFlowData = (messages, editorKey, dataType, clearBefore) => {
+    if (parentVue) {
+
+        const flow = parentVue.$refs.messageFlow
+        const errorData = flow.errorData
+        const suggestData = flow.suggestData
+
+        if (clearBefore) {
+            clearMessageFlowData(editorKey, dataType);
+        }
+        if (messages) {
+            const tabName = getTabText(editorKey)
+            for (let index = 0; index < messages.length; index++) {
+                const msg = messages[index]
+                msg.moduleKey = editorKey
+                msg.moduleName = tabName
+                if (monaco.MarkerSeverity.Error === msg.severity) {
+                    errorData.push(msg)
+                } else if (monaco.MarkerSeverity.Hint === msg.severity) {
+                    suggestData.push(msg)
+                }
+            }
+        }
+        updateFootbarMsg()
+    }
+}
+
+const clearMessageFlowData = (editorKey, dataType) => {
+    if (!parentVue)
+        return
+
+    const flow = parentVue.$refs.messageFlow
+    const datas = [flow.errorData, flow.suggestData]
+
+    for (let index = 0; index < datas.length; index++) {
+        const data = datas[index];
+        if (editorKey) {
+            for (var i = data.length - 1; i >= 0; i--) { //校验指定的编辑器之前删除该编辑器之前校验的数据
+                var element = data[i];
+                if (element.moduleKey === editorKey) {
+                    data.splice(i, 1);
+                }
+            }
+        }
+        else {
+            if (!dataType || dataType === 'error')
+                data.splice(0, data.length)
+            if (!dataType || dataType === 'suggest')
+                data.splice(0, data.length)
+        }
+    }
+}
+
+const updateFootbarMsg = () => {
+    var obj = { errorMsgCount: 0, suggestMsgCount: 0 }
+    if (parentVue) {
+        const flow = parentVue.$refs.messageFlow
+
+        obj.errorMsgCount = flow.errorData.length
+        obj.suggestMsgCount = flow.suggestData.length
+    }
+    eventBus.$emit('updateMessageCount', obj)
+}
+/********************** 验证信息 end **********************/
 
 export default {
     Init,
@@ -218,5 +366,7 @@ export default {
     setMonacoEditorFocus,
     setMonacoEditorFocusDelay,
     editorLayout,
-    eslintHandler
+    eslintHandler,
+    getLintValue,
+    executeCommand
 }

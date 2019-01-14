@@ -167,8 +167,10 @@ module.exports = env => {
             },
             extensions: [".mjs", ".js", ".vue", ".json"],
         },
-        plugins: [new VueLoaderPlugin()],
-        // plugins:[new VueLoaderPlugin(), new MonacoWebpackPlugin()],
+        plugins: [
+            new VueLoaderPlugin()
+            //, new MonacoWebpackPlugin()
+        ],
         devServer: {
             contentBase: path.join(__dirname, "dist"),
             compress: true,

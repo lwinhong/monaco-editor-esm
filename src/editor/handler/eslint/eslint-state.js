@@ -2,7 +2,6 @@
 import defaultConfig from "./default-config.js"
 import { linter } from "./eslint.js"
 
-
 /**
  * Get the document URL of a rule.
  * @param {string} ruleId The rule ID to get.
@@ -50,17 +49,13 @@ export default class PlaygroundState {
     }
 
     lint(code) {
-
         const config = this._configToLint
         var msg = null;
 
         try {
-            // Lint
-            //vm.eslintVerifyMessage =
             msg = linter.verify(code, config)
         }
         catch (err) {
-            //vm.eslintVerifyMessage =
             msg = [{
                 fatal: true,
                 severity: 2,
@@ -70,22 +65,29 @@ export default class PlaygroundState {
             }]
         }
         return msg;
+    }
 
+    lintAndFixed(code) {
+
+        const config = this._configToLint
+        var msg;
+        var fixedCode;
         // Fix
-        // try {
-        //     const ret = linter.verifyAndFix(this.code, config)
-        //     this.fixedCode = ret.output
-        //     this.fixedMessages = ret.messages
-        // }
-        // catch (err) {
-        //     this.fixedCode = this.code
-        //     this.fixedMessages = [{
-        //         fatal: true,
-        //         severity: 2,
-        //         message: err.message,
-        //         line: 1,
-        //         column: 0,
-        //     }]
-        // }
+        try {
+            const ret = linter.verifyAndFix(code, config)
+            fixedCode = ret.output
+            msg = ret.messages
+        }
+        catch (err) {
+            fixedCode = code
+            msg = [{
+                fatal: true,
+                severity: 2,
+                message: err.message,
+                line: 1,
+                column: 0,
+            }]
+        }
+        return { msg, fixedCode }
     }
 }
