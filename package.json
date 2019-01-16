@@ -20,7 +20,7 @@
     "@babel/polyfill": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/runtime": "^7.1.2",
-    "@emmetio/expand-abbreviation": "^0.7.1",
+    "@emmetio/expand-abbreviation": "^0.7.3",
     "@mysticatea/eslint-plugin": "^6.0.0",
     "appcache-manifest": "^2.1.0",
     "babel-eslint": "^10.0.1",

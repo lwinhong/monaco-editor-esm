@@ -1,5 +1,5 @@
 <template>
-  <div class="footer">
+  <div class="footer titleBackColor">
     <ul>
       <li
         v-for="item in items"
@@ -7,14 +7,27 @@
         :title="item.title"
         @click="$emit('itemClick', item)"
       >
-        <a href="javscript:void(0);">
-          <Icon v-if="item.icon" :type="item.icon" :size="15"/>
+        <Dropdown v-if="item.items" :transfer="true">
+          <a href="javascript:void(0)">
+            <Icon v-if="item.icon" :type="item.icon" :size="16"/>
+            {{item.text}}
+          </a>
+          <DropdownMenu slot="list">
+            <DropdownItem v-for="i in item.items" :key="i.key" v-show="i.visible">{{i.text}}</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+        <a href="javascript:void(0)" v-else>
+          <Icon v-if="item.icon" :type="item.icon" :size="17"/>
           {{item.text}}
         </a>
       </li>
+
+      <!-- 显示当前选中的行列 -->
       <li class="li-right">
-        <a href="javscript:void(0);">{{rowColMsg}}</a>
+        <a href="javascript:void(0)">{{rowColMsg}}</a>
       </li>
+
+      <!-- 显示错误和建议 -->
       <li
         :title="errorMsg"
         v-show="errorMsgVisible"
@@ -50,12 +63,12 @@ export default {
       this.suggestMsgCount = obj.suggestMsgCount;
     });
   },
-  props: {
-    items: {
-      type: Array,
-      default: []
-    }
-  },
+  // props: {
+  //   items: {
+  //     type: Array,
+  //     default: []
+  //   }
+  // },
   data() {
     return {
       selectionRow: 0,
@@ -72,6 +85,58 @@ export default {
           key: "error",
           icon: "md-close-circle",
           color: "red"
+        }
+      ],
+      items: [
+        {
+          key: "format",
+          text: "格式化",
+          title: "格式化 shift + alt + F",
+          icon: "md-code"
+        },
+        {
+          key: "commentLine",
+          text: "注释",
+          title: "注释 ctrl + /",
+          icon: "ios-list"
+        },
+        {
+          key: "insertResource",
+          text: "插入资源",
+          title: "插入资源",
+          icon: "md-add-circle",
+          items: [
+            {
+              key: "insertV3Resource",
+              text: "插入构件资源",
+              title: "插入构件资源",
+              visible: true
+            },
+            {
+              key: "insertShareResource",
+              text: "插入文件资源",
+              title: "插入文件资源",
+              visible: formType !== "Mobile"
+            }
+          ]
+        },
+        {
+          key: "vlanguage",
+          text: "语法",
+          title: "v指令",
+          icon: "ios-list-box-outline"
+        },
+        {
+          key: "find",
+          text: "搜索",
+          title: "搜索 ctrol + F",
+          icon: "ios-search"
+        },
+        {
+          key: "quickCommand",
+          text: "命令面板",
+          title: "命令面板 F1",
+          icon: "md-list"
         }
       ]
     };
@@ -92,8 +157,8 @@ export default {
 <style scoped>
 .footer {
   height: 25px;
-  background-color: rgb(238, 238, 240);
   bottom: 0px;
+  border-top: rgb(204, 204, 204) 1px solid;
 }
 
 ul {

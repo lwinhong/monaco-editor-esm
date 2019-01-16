@@ -10,15 +10,21 @@
           ref="sideRight"
           collapsible
           hideTrigger
-          :width="294"
-          :collapsed-width="52"
+          :width="354"
+          :collapsed-width="44"
           v-model="isCollapsed"
+          @on-collapse="onSiderCollapse"
         >
-          <app-right-view ref="rightView" @itemClick="collapsedSider"></app-right-view>
+          <app-right-view
+            ref="rightView"
+            @itemClick="isCollapsed=false"
+            :leftContentVisible="!isCollapsed"
+            @rightCloseClick="isCollapsed=!isCollapsed"
+          ></app-right-view>
         </sider>
       </layout>
       <Footer>
-        <app-footer :items="items" @itemClick="footItemClick"></app-footer>
+        <app-footer @itemClick="footItemClick"></app-footer>
       </Footer>
     </layout>
   </div>
@@ -27,7 +33,7 @@
 import AppMask from "./app-mask.vue";
 import AppEditor from "./editor/app-editor.vue";
 import AppFooter from "./foot/app-footer.vue";
-import AppRightView from "./right-view/rightView.vue";
+import AppRightView from "./right-view/app-rightView.vue";
 
 export default {
   name: "App",
@@ -39,49 +45,20 @@ export default {
   },
   data() {
     return {
-      isCollapsed: true,
-      isMaskShow: false,
-      items: [
-        {
-          key: "format",
-          text: "格式化",
-          title: "格式化 shift + alt + F",
-          icon: "md-code"
-        },
-        {
-          key: "commentLine",
-          text: "注释",
-          title: "注释 ctrl + /",
-          icon: "ios-list"
-        },
-        {
-          key: "insertResource",
-          text: "插入资源",
-          title: "插入资源",
-          icon: "md-add-circle"
-        },
-        { key: "vlanguage", text: "语法", title: "v指令", icon: "ios-list-box-outline" },
-        {
-          key: "find",
-          text: "搜索",
-          title: "搜索 ctrol + F",
-          icon: "ios-search"
-        },
-        {
-          key: "quickCommand",
-          text: "命令面板",
-          title: "命令面板 F1",
-          icon: "md-list"
-        }
-      ]
+      isCollapsed: false,
+      isMaskShow: false
     };
   },
   methods: {
     collapsedSider() {
-      this.$refs.sideRight.toggleCollapse();
+      //this.$refs.sideRight.toggleCollapse();
+      //isCollapsed = false;
     },
     footItemClick(item) {
       this.$refs.editor.footItemClick(item);
+    },
+    onSiderCollapse(e) {
+      this.$refs.editor.editorLayout();
     }
   },
   mounted() {
@@ -127,6 +104,9 @@ export default {
 }
 .ivu-layout-sider {
   background-color: rgb(238, 238, 240);
+}
+.titleBackColor {
+  background-color: rgb(238, 238, 240) !important;
 }
 </style>
 

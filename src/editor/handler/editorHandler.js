@@ -1,6 +1,6 @@
 import debounce from 'lodash/debounce'
 import eslintHandler from '../handler/eslintHandler'
-import { vuiIntelliSense, vuiHelp, emmetHTML, eventBus } from './htmlEditor'
+import { vuiIntelliSense, vuiHelp, emmetHTML, eventBus, themeVarHandler } from './htmlEditor'
 
 const devEditorKeys = { template: 'template', script: 'script', style: 'style', themeLess: 'themeLess', varLess: 'varLess' }
 const defaultEditorKeys = { html: 'html', javascript: 'javascript', css: 'css', moduleCss: 'moduleCss', moduleJavascript: 'moduleJavascript' }
@@ -11,7 +11,8 @@ var parentVue
 eslintHandler.init(editorData)
 
 const Init = (editorVue) => {
-    parentVue = editorVue;
+    parentVue = editorVue
+    eventBus.$on('executeCmdFromWinform', executeCommand)
 }
 
 /*************** 页签 **************/
@@ -154,6 +155,10 @@ const initEditor = (editorObj, tabData) => {
         vuiHelp(editor)
     }
 
+    if (tabData.key === defaultEditorKeys.themeLess) {
+        themeVarHandler(editor)
+    }
+
     editor.onMouseDown(function (e) {
         if (parentVue) {
             //隐藏浮动的错误信息
@@ -164,29 +169,28 @@ const initEditor = (editorObj, tabData) => {
         eventBus.$emit('updateCursorPosition', e.position)
     });
 
-    model.onDidChangeContent(function (e) {
+    editor.onDidChangeModelContent(function (e) {
         if (e.changes[0].text === ' ') {
             debounce(() => {
                 executeCommand('triggerSuggest', editor)
             }, 200)();
         }
 
-        if (isEditing &&
-            (tabData.key === devEditorKeys.template || tabData.key === devEditorKeys.script))
-            return
-            
-        didChangedContent(model, editor, tabData)
+        const currentKey = parentVue.tabSelectedIndex
+        if (!isEditing &&
+            (currentKey === devEditorKeys.template || currentKey === devEditorKeys.script))
+            didChangedContent(model, editor, currentKey)
     })
 }
 
-const didChangedContent = (model, editor, tabData) => {
+const didChangedContent = (model, editor, tabKey) => {
     isEditing = true
     debounce(() => {
         try {
-            var lintValue = getLintValue(model, tabData.key)
+            var lintValue = getLintValue(model, tabKey)
             const eslintMsg = eslintHandler.invalidateEslint(lintValue)
             const afterMarker = eslintHandler.updateMarkers(editor, eslintMsg)
-            setMessageFlowData(afterMarker, tabData.key, null, true)
+            setMessageFlowData(afterMarker, tabKey, null, true)
         } catch (error) {
             console.error('onDidChangeContent:' + error)
         } finally {
@@ -232,12 +236,16 @@ const setMonacoEditorFocusDelay = (editorKey, timeout) => {
  * 编辑器重新布局
  */
 const editorLayout = () => {
-    debugger
     for (var prop in editorData) {
         if (editorData.hasOwnProperty(prop) && editorData[prop].editor) {
             editorData[prop].editor.layout();
         }
     }
+}
+const editorLayoutDelay = (timeout) => {
+    if (!timeout || !isNaN(timeout))
+        timeout = 200
+    debounce(editorLayout, timeout)();
 }
 
 window.onresize = editorLayout;
@@ -253,17 +261,17 @@ const monacoEditorCmd = {
     quickCommand: 'editor.action.quickCommand'
 }
 
-const executeCommand = (cmd, value, editorInstance) => {
+const executeCommand = (cmd, value) => {
 
     switch (cmd) {
         case "showMessageFlow"://显示错误列表
-            editorInstance.$refs.messageFlow.toggleShow(value);
+            parentVue.$refs.messageFlow.toggleShow(value);
             break;
         case "format"://格式化
-            triggerMonacoEditor(monacoEditorCmd.format)
+            triggerMonacoEditor(monacoEditorCmd.format, true)
             break;
         case "commentLine"://格式化
-            triggerMonacoEditor(monacoEditorCmd.commentLine)
+            triggerMonacoEditor(monacoEditorCmd.commentLine, true)
             break;
         case "triggerSuggest": //打开智能提示面板
             triggerMonacoEditor(monacoEditorCmd.triggerSuggest)
@@ -277,14 +285,17 @@ const executeCommand = (cmd, value, editorInstance) => {
     }
 }
 
-const triggerMonacoEditor = (actionId) => {
+const triggerMonacoEditor = (actionId, focus) => {
     const editor = editorData[parentVue.tabSelectedIndex].editor
-    triggerMonacoEditorAction(actionId, editor)
+    triggerMonacoEditorAction(actionId, editor, focus)
 }
 
-const triggerMonacoEditorAction = (actionId, editor) => {
-    if (editor)
+const triggerMonacoEditorAction = (actionId, editor, focus) => {
+    if (editor) {
+        if (focus)
+            editor.focus()
         editor.trigger('', actionId, {})
+    }
 }
 
 /*************** 执行命令 end **************/
@@ -366,6 +377,7 @@ export default {
     setMonacoEditorFocus,
     setMonacoEditorFocusDelay,
     editorLayout,
+    editorLayoutDelay,
     eslintHandler,
     getLintValue,
     executeCommand

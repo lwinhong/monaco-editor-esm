@@ -1,4 +1,5 @@
 export * from './helpHandler'
 export * from './vuiHandler'
+export * from './themeVarHandler'
 export * from '../../emmet/monaco-emmet'
 export * from '../../../app/event-bus'

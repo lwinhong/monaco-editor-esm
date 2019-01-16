@@ -105,6 +105,9 @@ export default {
     },
     localMessage(row, index, type) {
       console.log(row + " " + index + "  " + type);
+    },
+    editorLayout() {
+      editorHandler.editorLayoutDelay();
     }
   },
   watch: {

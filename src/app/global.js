@@ -1,6 +1,5 @@
 import util from "./util";
-
-var appVue
+import { eventBus } from "../app/event-bus";
 
 (() => {
   const qs = util.getQueryString();
@@ -10,9 +9,12 @@ var appVue
 
     tmp = qs["token"];
     if (tmp) divEditorToken = tmp;
+    tmp = qs["form"];
+    if (tmp) formType = tmp;
   }
 })()
 
+var appVue
 const init = (vueObj) => appVue = vueObj
 
 /**
@@ -20,15 +22,20 @@ const init = (vueObj) => appVue = vueObj
  * @param {cmd} cmdId 
  * @param {value} value 
  */
-const executeCmdToWinform = (cmdId, value) => {
+function executeCmdToWinform(cmdId, value) {
 
-  const result = Object.assign(value, { FormToken: divEditorToken })
-  const last = JSON.stringify(result); //将JSON对象转化为JSON字符
-
-  if (vmonacoEditor) {
-    const retValue = vmonacoEditor.vhtmlKeysCommand(cmdId, divEditorToken, last);
-    return retValue;
+  var defaultValue = { FormToken: divEditorToken };
+  var resultValue = defaultValue;
+  if (value) {
+    resultValue = Object.assign(value, defaultValue)
   }
+
+  const last = JSON.stringify(resultValue); //将JSON对象转化为JSON字符
+  console.log("2Winform:" + last)
+  // if (vmonacoEditor) {
+  //   const retValue = vmonacoEditor.vhtmlKeysCommand(cmdId, divEditorToken, last);
+  //   return retValue;
+  // }
   return null;
 }
 
@@ -37,9 +44,10 @@ const executeCmdToWinform = (cmdId, value) => {
  * @param {cmd} cmdId 
  * @param {值} value 
  */
-const executeCmdFromWinform = (cmdId, value) => {
-
+function executeCmdFromWinform(cmdId, value) {
+  eventBus.$emit('executeCmdFromWinform', cmdId, value)
 }
+
 export default {
   executeCmdToWinform, executeCmdFromWinform, init, appVue: () => appVue
 }
