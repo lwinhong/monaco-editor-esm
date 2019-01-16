@@ -113,7 +113,7 @@ const newMonacoEditor = (editorKey, containerId, language, value) => {
         const editor = monaco.editor.create(container, Object.assign(
             { model: model }, options
         ))
-        editorData[editorKey] = { editor: editor, model: model };
+        editorData[editorKey] = { editor: editor, model: model, text: getTabText(editorKey) };
         return { editor, model }
     } else {
         console.log('newMonacoEditor: container is undefined')
@@ -262,7 +262,6 @@ const monacoEditorCmd = {
 }
 
 const executeCommand = (cmd, value) => {
-
     switch (cmd) {
         case "showMessageFlow"://显示错误列表
             parentVue.$refs.messageFlow.toggleShow(value);
@@ -313,11 +312,11 @@ const setMessageFlowData = (messages, editorKey, dataType, clearBefore) => {
             clearMessageFlowData(editorKey, dataType);
         }
         if (messages) {
-            const tabName = getTabText(editorKey)
+            const editorName = editorData[editorKey].text
             for (let index = 0; index < messages.length; index++) {
                 const msg = messages[index]
                 msg.moduleKey = editorKey
-                msg.moduleName = tabName
+                msg.moduleName = editorName
                 if (monaco.MarkerSeverity.Error === msg.severity) {
                     errorData.push(msg)
                 } else if (monaco.MarkerSeverity.Hint === msg.severity) {
