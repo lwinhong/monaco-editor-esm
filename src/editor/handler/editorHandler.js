@@ -266,6 +266,9 @@ const executeCommand = (cmd, value) => {
         case "showMessageFlow"://显示错误列表
             parentVue.$refs.messageFlow.toggleShow(value);
             break;
+        case "vlist":
+            parentVue.$refs.messageFlow.toggleShow(cmd);
+            break;
         case "format"://格式化
             triggerMonacoEditor(monacoEditorCmd.format, true)
             break;

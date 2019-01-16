@@ -71,9 +71,15 @@ export default {
     });
   },
   mounted() {
-    editorHandler.Init(this);
+    let me = this;
+    editorHandler.Init(me);
     editorHandler.addEditorTabPage(tabs);
     editorHandler.addMonacoEditor(tabs);
+  },
+  computed: {
+    flowMessageWidthTrigger() {
+      return flowMessageWidth;
+    }
   },
   data() {
     return {
@@ -228,7 +234,7 @@ export default {
 
 <style scoped>
 .foot-message-flow-show {
-  bottom: 46px !important;
+  bottom: 45px !important;
 }
 
 /***************保存关闭按钮*******************/

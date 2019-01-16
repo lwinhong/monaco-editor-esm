@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="titleBar">
+  <div class="fill" id="message">
+    <div class="message-titleBar">
       <span @click="change('error')" title="错误">错误 {{errorCount}}</span>
       <span @click="change('suggest')" title="警告">警告 {{suggusetCount}}</span>
     </div>
@@ -118,12 +118,7 @@ export default {
 };
 </script>
 <style scoped>
-.titleBar {
-  background-color: rgb(238, 238, 240);
-}
-.titleBar span {
-  cursor: pointer;
-}
+
 </style>
 <style>
 .ivu-table-small td {
@@ -137,6 +132,15 @@ export default {
 .ivu-table-cell {
   padding-left: 5px !important;
   padding-right: 5px !important;
+}
+
+.message-titleBar {
+  background-color: rgb(238, 238, 240);
+  height: 18px;
+  padding-left:5px;
+}
+.message-titleBar span {
+  cursor: pointer;
 }
 </style>
 

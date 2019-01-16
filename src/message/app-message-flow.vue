@@ -15,22 +15,27 @@
       :errorData="errorData"
       :suggestData="suggestData"
       @localMessage="localMessage"
+      v-show="messageListVisible"
     ></message>
+    <v-list v-show="vListVisible"></v-list>
   </div>
 </template>
 <script>
 import Message from "../message/message.vue";
+import VList from "./v-list.vue";
 
 const flowSrc = "./resource/images/flow.png";
 const fixedSrc = "./resource/images/fixed.png";
 
 export default {
   name: "AppMessageFlow",
-  components: { Message },
+  components: { Message, VList },
+  props: {},
   data() {
     return {
       showMessageFlow: true,
       flow: true,
+      currentList: "vlist",
       errorData: [],
       suggestData: []
     };
@@ -38,12 +43,22 @@ export default {
   computed: {
     flowIconSrc() {
       return this.flow ? flowSrc : fixedSrc;
+    },
+    messageListVisible() {
+      return this.currentList === "message";
+    },
+    vListVisible() {
+      return this.currentList === "vlist";
     }
   },
   methods: {
     toggleShow(valueObj) {
-      if (valueObj && valueObj.value) {
-        this.$refs.messageFlow.change(valueObj.value);
+      if (valueObj) {
+        if (valueObj === "vlist") this.currentList = valueObj;
+        else {
+          this.currentList = "message";
+          this.$refs.messageFlow.change(valueObj.value);
+        }
       }
 
       if (this.showMessageFlow) return;
@@ -82,9 +97,10 @@ export default {
   height: 140px;
   left: 0;
   position: fixed;
-  width: 100%;
+  width: 100%; 
   z-index: 999;
   vertical-align: middle;
+  background-color: white;
 }
 
 #controlboxs {

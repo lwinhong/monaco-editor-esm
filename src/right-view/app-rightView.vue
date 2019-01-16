@@ -28,7 +28,7 @@
         <event-view ref="eventView" v-show="eventViewVisible"></event-view>
       </div>
     </div>
-      <!-- 右边工具栏 -->
+    <!-- 右边工具栏 -->
     <div class="rightSide leftBorder">
       <Layout>
         <Content class="titleBackColor">
@@ -165,13 +165,13 @@ export default {
       }
     },
     topBarItemClick(item) {
-      alert(123)
       if (item.key === "search") {
         this.searchVisible = !this.searchVisible;
         if (this.searchVisible) {
           //this.$refs.seach.setFocus();
         }
       }
+       else this.$emit("closeClick");
     },
     onSearch(value) {
       if (this.currentView === "entity") this.$refs.entityView.onSearch(value);

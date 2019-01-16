@@ -121,7 +121,7 @@ export default {
           ]
         },
         {
-          key: "vlanguage",
+          key: "vlist",
           text: "语法",
           title: "v指令",
           icon: "ios-list-box-outline"
@@ -156,8 +156,7 @@ export default {
 </script>
 <style scoped>
 .footer {
-  height: 25px;
-  bottom: 0px;
+  height: 100%;
   border-top: rgb(204, 204, 204) 1px solid;
 }
 

@@ -17,6 +17,7 @@
         >
           <app-right-view
             ref="rightView"
+            @closeClick="isCollapsed=true"
             @itemClick="isCollapsed=false"
             :leftContentVisible="!isCollapsed"
             @rightCloseClick="isCollapsed=!isCollapsed"
