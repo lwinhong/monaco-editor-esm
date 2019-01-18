@@ -250,6 +250,10 @@ const editorLayoutDelay = (timeout) => {
 
 window.onresize = editorLayout;
 
+const getSelectedEditorData = () => {
+    return editorData[parentVue.tabSelectedIndex];
+}
+
 /*************** monaco editor end **************/
 
 /*************** 执行命令 **************/
@@ -265,25 +269,28 @@ const executeCommand = (cmd, value) => {
     switch (cmd) {
         case "showMessageFlow"://显示错误列表
             parentVue.$refs.messageFlow.toggleShow(value);
-            break;
+            break
         case "vlist":
             parentVue.$refs.messageFlow.toggleShow(cmd);
-            break;
+            break
         case "format"://格式化
             triggerMonacoEditor(monacoEditorCmd.format, true)
-            break;
+            break
         case "commentLine"://格式化
             triggerMonacoEditor(monacoEditorCmd.commentLine, true)
-            break;
+            break
         case "triggerSuggest": //打开智能提示面板
             triggerMonacoEditor(monacoEditorCmd.triggerSuggest)
-            break;
+            break
         case "find":
             triggerMonacoEditor(monacoEditorCmd.find)
             break;
         case "quickCommand":
             triggerMonacoEditor(monacoEditorCmd.quickCommand)
-            break;
+            break
+        case "setEditorFocus":
+            setMonacoEditorFocus(parentVue.tabSelectedIndex)
+            break
     }
 }
 
@@ -382,5 +389,6 @@ export default {
     editorLayoutDelay,
     eslintHandler,
     getLintValue,
-    executeCommand
+    executeCommand,
+    getSelectedEditorData
 }

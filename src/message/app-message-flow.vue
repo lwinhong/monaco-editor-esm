@@ -52,6 +52,7 @@ export default {
     }
   },
   methods: {
+    //切换（vlist，错误信息【错误和建议】）
     toggleShow(valueObj) {
       if (valueObj) {
         if (valueObj === "vlist") this.currentList = valueObj;
@@ -65,15 +66,19 @@ export default {
       let value = !this.showMessageFlow;
       this.setVisible(value);
     },
+    //设置显示隐藏
     setVisible(value) {
       this.showMessageFlow = value;
     },
+    //切换固定和自动关闭
     changeFlow() {
       this.flow = !this.flow;
     },
+    //参数隐藏当前组件
     tryToHide() {
       if (this.flow && this.showMessageFlow) this.setVisible(false);
     },
+    //定位错误信息【错误和建议】
     localMessage(row, index, type) {
       this.$emit("localMessage", row, index, type);
     }
@@ -97,8 +102,9 @@ export default {
   height: 140px;
   left: 0;
   position: fixed;
-  width: 100%; 
+  /* width: 100%;  */
   z-index: 999;
+  right: 44px;
   vertical-align: middle;
   background-color: white;
 }

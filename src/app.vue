@@ -1,33 +1,39 @@
 <template>
   <div class="app fill">
-    <app-mask v-if="isMaskShow"></app-mask>
-    <layout>
-      <layout>
-        <i-content>
-          <app-editor ref="editor"></app-editor>
-        </i-content>
-        <sider
-          ref="sideRight"
-          collapsible
-          hideTrigger
-          :width="354"
-          :collapsed-width="44"
-          v-model="isCollapsed"
-          @on-collapse="onSiderCollapse"
-        >
-          <app-right-view
-            ref="rightView"
-            @closeClick="isCollapsed=true"
-            @itemClick="isCollapsed=false"
-            :leftContentVisible="!isCollapsed"
-            @rightCloseClick="isCollapsed=!isCollapsed"
-          ></app-right-view>
-        </sider>
-      </layout>
-      <Footer>
-        <app-footer @itemClick="footItemClick"></app-footer>
-      </Footer>
-    </layout>
+    <app-mask v-if="isMaskShow" ref="mask"></app-mask>
+    <Layout>
+      <Content>
+        <Layout>
+          <Content>
+            <Layout>
+              <Content>
+                <app-editor ref="editor"></app-editor>
+              </Content>
+              <Sider
+                collapsible
+                hideTrigger
+                :width="310"
+                :collapsed-width="0"
+                v-model="isCollapsed"
+                @on-collapse="onSiderCollapse"
+              >
+                <app-right-view
+                  ref="rightView"
+                  @closeClick="isCollapsed=true"
+                  @rightCloseClick="isCollapsed=!isCollapsed"
+                ></app-right-view>
+              </Sider>
+            </Layout>
+          </Content>
+          <Footer>
+            <app-footer @itemClick="footItemClick"></app-footer>
+          </Footer>
+        </Layout>
+      </Content>
+      <Sider hide-trigger :width="44" :collapsed-width="44">
+        <app-right-bar ref="rightBar" @itemClick="isCollapsed=false"></app-right-bar>
+      </Sider>
+    </Layout>
   </div>
 </template>
 <script>
@@ -35,6 +41,7 @@ import AppMask from "./app-mask.vue";
 import AppEditor from "./editor/app-editor.vue";
 import AppFooter from "./foot/app-footer.vue";
 import AppRightView from "./right-view/app-rightView.vue";
+import AppRightBar from "./right-view/app-rightBar.vue";
 
 export default {
   name: "App",
@@ -42,12 +49,13 @@ export default {
     AppMask,
     AppEditor,
     AppFooter,
-    AppRightView
+    AppRightView,
+    AppRightBar
   },
   data() {
     return {
       isCollapsed: false,
-      isMaskShow: false
+      isMaskShow: true
     };
   },
   methods: {
@@ -63,9 +71,9 @@ export default {
     }
   },
   mounted() {
-    // setTimeout(() => {
-    //   this.isMaskShow = false;
-    // }, 500);
+    setTimeout(() => {
+      this.isMaskShow = false;
+    }, 500);
   }
 };
 </script>

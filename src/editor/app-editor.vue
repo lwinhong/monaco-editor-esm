@@ -20,7 +20,13 @@
       -->
       <tabs v-model="tabSelectedIndex" animated>
         <tab-pane v-for="tab in tabs" :key="tab.key" :label="tab.text" :name="tab.key">
-          <div :id="tab.editorContainerId" class="editor_container"></div>
+          <div
+            :id="tab.editorContainerId"
+            class="editor_container"
+            @dragover="dragover"
+            @drop="drop"
+            @dragenter="dragenter"
+          ></div>
         </tab-pane>
         <dropdown
           id="ddSaveAndClose"
@@ -57,6 +63,7 @@ import AppMessageFlow from "../message/app-message-flow.vue";
 import eslintHandler from "./handler/eslintHandler";
 
 const tabs = [];
+var currentEditor = null;
 
 export default {
   name: "AppEditor",
@@ -114,11 +121,40 @@ export default {
     },
     editorLayout() {
       editorHandler.editorLayoutDelay();
+    },
+    dragover(ev) {
+      ev.preventDefault();
+
+      const point = currentEditor.getTargetAtClientPoint(
+        ev.clientX,
+        ev.clientY
+      );
+
+      currentEditor.setPosition(point.position);
+    },
+    dragenter(ev) {
+      currentEditor = editorHandler.getSelectedEditorData().editor;
+      editorHandler.setMonacoEditorFocus(this.tabSelectedIndex);
+    },
+    drop(ev) {
+      ev.preventDefault();
+
+      const point = currentEditor.getTargetAtClientPoint(
+        ev.clientX,
+        ev.clientY
+      );
+      currentEditor.executeEdits("", [
+        {
+          range: point.range,
+          text: ev.dataTransfer.getData("Text")
+        }
+      ]);
     }
   },
   watch: {
     tabSelectedIndex(newValue, oldValue) {
       editorHandler.setMonacoEditorFocusDelay(newValue, 100);
+      currentEditor = editorHandler.editorData[newValue].editor;
     }
   }
 };
