@@ -2,13 +2,18 @@
   <div class="fill rightView leftBorder">
     <div class="top titleBackColor">
       <ul class="controlTitleBar">
+        <li>
+          <a href="javascript:void(0)" class="leftFloat">
+            {{topTitle}}
+          </a>
+        </li>
         <li
           v-for="item in topBarItems"
           :key="item.key"
           :title="item.title"
           v-show="(currentView != 'entity' && item.key==='add')? false : true"
         >
-          <a href="javascript:void(0)" :class="item.class">
+          <a href="javascript:void(0)" class="rightFloat">
             {{item.text? item.text:''}}
             <Icon v-if="item.icon" :type="item.icon" @click="topBarItemClick(item)" :size="16"/>
           </a>
@@ -44,6 +49,9 @@ export default {
     },
     eventViewVisible() {
       return this.currentView === "event";
+    },
+    topTitle() {
+      return this.currentView === "entity" ? "数据源" : "事件绑定";
     }
   },
   data() {
@@ -52,34 +60,24 @@ export default {
       searchVisible: false,
       topBarItems: [
         {
-          key: "title",
-          text: this.currentView == "entity" ? "数据源" : "事件绑定",
-          class: "leftFloat"
-        },
-        {
           key: "close",
           title: "关闭",
-          icon: "md-close",
-          class: "rightFloat"
+          icon: "md-close"
         },
         {
           key: "refresh",
           title: "刷新",
-          icon: "md-refresh",
-
-          class: "rightFloat"
+          icon: "md-refresh"
         },
         {
           key: "search",
           title: "搜索",
-          icon: "md-search",
-          class: "rightFloat"
+          icon: "md-search"
         },
         {
           key: "add",
           title: "新增",
-          icon: "md-add",
-          class: "rightFloat"
+          icon: "md-add"
         }
       ]
     };
@@ -96,6 +94,9 @@ export default {
     onSearch(value) {
       if (this.currentView === "entity") this.$refs.entityView.onSearch(value);
       else this.$refs.eventView.onSearch(value);
+    },
+    changeRightView(viewKey) {
+      this.currentView = viewKey;
     }
   }
 };
@@ -103,7 +104,7 @@ export default {
 <style scoped>
 .rightView {
   background-color: white;
-  position:relative;
+  position: relative;
 }
 
 .leftBorder {
@@ -111,12 +112,12 @@ export default {
 }
 
 .content {
-  position:absolute;
-  top:40px;
+  position: absolute;
+  top: 40px;
   width: 100%;
-  left:0;
-  bottom:0;
-  overflow:auto;
+  left: 0;
+  bottom: 0;
+  overflow: auto;
 }
 
 .top {

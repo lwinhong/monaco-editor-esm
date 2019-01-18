@@ -9,7 +9,7 @@ Vue.prototype.global = global
 
 window.global = global
 
-// import test from "./test.vue"
+//import test from "./test.vue"
 
 export const app = new Vue({
     el: "#main",

@@ -1,9 +1,15 @@
 <template>
   <div id="vlist">
-    <div class="message-titleBar">
-      v 指令
-    </div>
-    <i-table stripe :data="listDataSource" size="small" :columns="columns" @on-row-dbclick="rowDbClick" :height="140"></i-table>
+    <div class="message-titleBar">v 指令</div>
+    <i-table
+     
+      border
+      :data="listDataSource"
+      size="small"
+      :columns="columns"
+      @on-row-dbclick="rowDbClick"
+      :height="140"
+    ></i-table>
   </div>
 </template>
 <script>
@@ -12,10 +18,6 @@ export default {
   data() {
     return {
       listDataSource: [
-        { v: "v-text", desc: "文本哦", simple: "<span v-text='实体.字段'/>" },
-        { v: "v-text", desc: "文本哦", simple: "<span v-text='实体.字段'/>" },
-        { v: "v-text", desc: "文本哦", simple: "<span v-text='实体.字段'/>" },
-        { v: "v-text", desc: "文本哦", simple: "<span v-text='实体.字段'/>" },
         { v: "v-text", desc: "文本哦", simple: "<span v-text='实体.字段'/>" },
         { v: "v-text", desc: "文本哦", simple: "<span v-text='实体.字段'/>" }
       ],

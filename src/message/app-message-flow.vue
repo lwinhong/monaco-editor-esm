@@ -82,6 +82,47 @@ export default {
     localMessage(row, index, type) {
       this.$emit("localMessage", row, index, type);
     }
+  },
+  mounted() {
+    $(function() {
+      
+      var srcPosiY = 0,
+        destPosiY = 0,
+        moveY = 0,
+        destHeight = 30;
+
+      //鼠标按下，记录按下位置和bind 移动和鼠标释放时间
+      $("#expander").mousedown(function(e) {
+        srcPosiY = e.pageY;
+        $(document)
+          .bind("mousemove", mouseMove)
+          .bind("mouseup", mouseUp);
+
+        e.preventDefault();
+      });
+
+      //移动事件
+      function mouseMove(e) {
+        var footstatusbar = $("#foot-message-flow");
+        destPosiY = e.pageY;
+        moveY = srcPosiY - destPosiY;
+        srcPosiY = destPosiY;
+        destHeight = footstatusbar.height() + moveY;
+
+        var lastHeight = destHeight > 30 ? destHeight : 30;
+        //debugger;
+        footstatusbar.css("height", lastHeight);
+        $(".ivu-table-wrapper").css("height", lastHeight - 3);
+        $(".ivu-table-body").css("height", lastHeight - 28);
+      }
+      //停止事件
+      function mouseUp() {
+        //卸载事件
+        $(document)
+          .unbind("mousemove", mouseMove)
+          .unbind("mouseup", mouseUp);
+      }
+    });
   }
 };
 </script>
