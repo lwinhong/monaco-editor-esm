@@ -118,7 +118,6 @@ export default {
 };
 </script>
 <style scoped>
-
 </style>
 <style>
 .ivu-table-small td {
@@ -137,7 +136,8 @@ export default {
 .message-titleBar {
   background-color: rgb(238, 238, 240);
   height: 18px;
-  padding-left:5px;
+  padding-left: 5px;
+  border-right: 1px solid #dcdee2;
 }
 .message-titleBar span {
   cursor: pointer;

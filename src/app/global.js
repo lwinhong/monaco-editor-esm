@@ -1,5 +1,5 @@
 import util from "./util";
-import { eventBus } from "../app/event-bus";
+import { eventBus } from "./event-bus";
 
 (() => {
   const qs = util.getQueryString();
@@ -15,7 +15,9 @@ import { eventBus } from "../app/event-bus";
 })()
 
 var appVue
-const init = (vueObj) => appVue = vueObj
+const init = (vueObj) => {
+  appVue = vueObj
+}
 
 /**
  * 执行发到winform的命令

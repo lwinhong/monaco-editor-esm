@@ -112,8 +112,8 @@ export default {
         var lastHeight = destHeight > 30 ? destHeight : 30;
         //debugger;
         footstatusbar.css("height", lastHeight);
-        $(".ivu-table-wrapper").css("height", lastHeight - 3);
-        $(".ivu-table-body").css("height", lastHeight - 28);
+        $(".ivu-table-wrapper").css("height", lastHeight);
+        $(".ivu-table-body").css("height", lastHeight - 25);
       }
       //停止事件
       function mouseUp() {
@@ -128,9 +128,12 @@ export default {
 </script>
 <style scoped>
 #expander {
+  background-color: transparent;
   width: 100%;
   height: 3px;
-  border-bottom: 1px solid #cccccc;
+  border: 1px solid rgb(204, 204, 204);
+  border-top:none;
+  border-left: none;
 }
 
 #expander:hover {
@@ -139,13 +142,13 @@ export default {
 
 #foot-message-flow {
   /* bottom: -100%; */
-  bottom: 0px;
+  /* bottom: 0px; */
   height: 140px;
   left: 0;
   position: fixed;
   /* width: 100%;  */
-  z-index: 999;
-  right: 44px;
+   z-index: 99; 
+  right: 43px;
   vertical-align: middle;
   background-color: white;
 }

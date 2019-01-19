@@ -12,6 +12,10 @@ eslintHandler.init(editorData)
 
 const Init = (editorVue) => {
     parentVue = editorVue
+    // eventBus.$on('executeCmdFromWinform', function (cmd, value) {
+    //     executeCommand(cmd, value)
+    // })
+
     eventBus.$on('executeCmdFromWinform', executeCommand)
 }
 
@@ -251,7 +255,8 @@ const editorLayoutDelay = (timeout) => {
 window.onresize = editorLayout;
 
 const getSelectedEditorData = () => {
-    return editorData[parentVue.tabSelectedIndex];
+    var data = editorData[parentVue.tabSelectedIndex];
+    return data;
 }
 
 /*************** monaco editor end **************/
@@ -266,6 +271,7 @@ const monacoEditorCmd = {
 }
 
 const executeCommand = (cmd, value) => {
+    console.log("cmd: " + cmd + "-> value:" + value)
     switch (cmd) {
         case "showMessageFlow"://显示错误列表
             parentVue.$refs.messageFlow.toggleShow(value);
@@ -291,6 +297,9 @@ const executeCommand = (cmd, value) => {
         case "setEditorFocus":
             setMonacoEditorFocus(parentVue.tabSelectedIndex)
             break
+        case "insertValue":
+            insertValueToEditor(null, value, null)
+            break;
     }
 }
 
@@ -300,10 +309,30 @@ const triggerMonacoEditor = (actionId, focus) => {
 }
 
 const triggerMonacoEditorAction = (actionId, editor, focus) => {
-    if (editor) {
-        if (focus)
-            editor.focus()
-        editor.trigger('', actionId, {})
+    if (!editor)
+        return
+    if (focus)
+        editor.focus()
+    editor.trigger('', actionId, {})
+}
+
+const insertValueToEditor = (editor, value, range) => {
+    try {
+        if (!editor)
+            editor = getSelectedEditorData().editor
+        if (!editor)
+            return
+
+        if (!range) {
+            var p = editor.getPosition()
+            range = new monaco.Range(p.lineNumber, p.column, p.lineNumber, p.column)
+        }
+        editor.executeEdits("", [{
+            range: range,
+            text: value
+        }])
+    } catch (error) {
+        console.error(error)
     }
 }
 
@@ -390,5 +419,6 @@ export default {
     eslintHandler,
     getLintValue,
     executeCommand,
-    getSelectedEditorData
+    getSelectedEditorData,
+    insertValueToEditor
 }

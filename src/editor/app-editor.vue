@@ -37,8 +37,8 @@
           @on-click="closeDropdownButton"
         >
           <div class="dropBtn">
-            <div class="save-close">
-              <Icon type="ios-list-box" class="iconsave" @click="saveAndClose"></Icon>
+            <div class="save-close" @click="saveAndClose">
+              <Icon type="ios-list-box" class="iconsave"></Icon>
               <span>保存并关闭</span>
             </div>
           </div>
@@ -61,6 +61,7 @@ import AppChartWidget from "../editor/app-chart-widget.vue";
 import editorHandler from "../editor/handler/editorHandler.js";
 import AppMessageFlow from "../message/app-message-flow.vue";
 import eslintHandler from "./handler/eslintHandler";
+// import { eventBus } from "../app/event-bus";
 
 const tabs = [];
 var currentEditor = null;
@@ -76,6 +77,10 @@ export default {
       top: 38,
       duration: 1
     });
+
+    // eventBus.$on("executeCmdFromWinform", function(cmd, value) {
+    //   editorHandler.executeCommand(cmd, value);
+    // });
   },
   mounted() {
     let me = this;
@@ -101,7 +106,9 @@ export default {
   },
   methods: {
     save() {},
-    saveAndClose() {},
+    saveAndClose() {
+      alert("saveAndClolse");
+    },
     closeDropdownButton() {
       saveButtonVisible = false;
     },
@@ -114,7 +121,7 @@ export default {
       this.appChartWidgetVisible = true;
     },
     footItemClick(item) {
-      editorHandler.executeCommand(item.key, item, this);
+      editorHandler.executeCommand(item.key, item);
     },
     localMessage(row, index, type) {
       console.log(row + " " + index + "  " + type);
@@ -270,7 +277,8 @@ export default {
 
 <style scoped>
 .foot-message-flow-show {
-  bottom: 45px !important;
+  bottom: 45px;
+  /* z-index: 99; */
 }
 
 /***************保存关闭按钮*******************/

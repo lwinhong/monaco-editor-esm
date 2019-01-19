@@ -115,5 +115,8 @@ export default {
 .titleBackColor {
   background-color: rgb(238, 238, 240) !important;
 }
+.setPointer{
+  cursor: pointer;
+}
 </style>
 

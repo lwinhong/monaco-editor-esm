@@ -7,12 +7,12 @@
         <span class="title-subTitle">({{en.title}})</span>
         <Icon
           type="md-return-left"
-          style="float:right;padding-top:6px;transform:none;"
+          style="float:right;padding-top:6px;transform:none;cursor:pointer;"
           :size="15"
           :title="`插入${en.key}`"
           @click.prevent="insert(en.key)"
         />
-        <ul v-if="en.fields && en.fields.length>0" slot="content">
+        <ul v-if="en.fields && en.fields.length > 0" slot="content">
           <li
             v-for="field in en.fields"
             :key="en.key + field.key"
@@ -20,15 +20,14 @@
             :draggable="true"
             @dragstart="drag($event,field)"
           >
-            <span class="title">{{field.key}}</span>
-            <span class="title-subTitle">({{field.title}})</span>
-            <Icon
-              type="md-return-left"
-              style="float:right;padding-top:7px;"
-              :size="15"
-              :title="`插入${en.key}.current.${field.key}`"
-              @click.stop="insert(field.key)"
-            />
+            <entity-item
+              :code="en.key+field.key"
+              :text="field.key"
+              :sub-text="field.title"
+              :selectedItemKey="currentItemKey"
+              @click="currentItemKey = en.key+field.key"
+              @insert-item="insert"
+            ></entity-item>
           </li>
         </ul>
       </Panel>
@@ -36,8 +35,12 @@
   </div>
 </template>
 <script>
+import EntityItem from "./entityItem.vue";
+import { eventBus } from "../app/event-bus";
+
 export default {
   name: "entityView",
+  components: { EntityItem },
   data() {
     return {
       entityTree: [
@@ -81,7 +84,8 @@ export default {
             { key: "field2", title: "字段2" }
           ]
         }
-      ]
+      ],
+      currentItemKey: ""
     };
   },
   methods: {
@@ -103,9 +107,13 @@ export default {
         }
       }
     },
+    setCurrentItemKey(key) {
+      this.currentItemKey = key;
+    },
     onSearch(value) {},
     insert(value) {
-      this.$emit("insert-value", value);
+      //this.$emit("insert-value", value);
+      eventBus.$emit("executeCmdFromWinform", "insertValue", value);
     },
     drag(ev, item) {
       ev.effectAllowed = "move";
@@ -127,23 +135,14 @@ ul {
 
 li {
   margin: 0;
-  padding-left: 40px;
-  padding-right: 10px;
+  /* padding-left: 40px;
+  padding-right: 10px; */
   line-height: 25px;
   height: 25px;
   color: #666;
 }
-li:hover {
+.itemSelectedStyle {
   background-color: rgb(228, 241, 251);
-  border: 1px rgb(51, 167, 255) solid;
-  box-sizing: border-box;
-}
-.title {
-  color: rgb(68, 68, 68);
-  font-family: "微软雅黑";
-}
-.title-subTitle {
-  color: rgb(128, 128, 128);
 }
 </style>
 <style>

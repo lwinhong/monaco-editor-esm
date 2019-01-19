@@ -1,6 +1,6 @@
 <template>
   <!-- 右边工具栏 -->
-  <div class="rightView rightSide leftBorder">
+  <div class="rightBar leftBorder">
     <Layout>
       <Content class="titleBackColor">
         <ul>
@@ -13,7 +13,7 @@
         <ul>
           <li>
             <!-- placement="left-end" -->
-            <Dropdown :transfer="true">
+            <Dropdown transfer placement="left-end">
               <a href="javascript:void(0)">模板</a>
               <!-- <Icon type="ios-arrow-down"></Icon> -->
               <DropdownMenu slot="list">
@@ -23,12 +23,12 @@
             </Dropdown>
           </li>
           <li>
-            <Dropdown :transfer="true">
+            <Dropdown transfer placement="left-end">
               <a href="javascript:void(0)">设置</a>
               <DropdownMenu slot="list">
                 <DropdownItem>自动换行</DropdownItem>
                 <DropdownItem>mini地图</DropdownItem>
-                <Dropdown :transfer="false">
+                <Dropdown transfer>
                   <DropdownItem>主题
                     <Icon type="ios-arrow-forward"></Icon>
                   </DropdownItem>
@@ -41,8 +41,8 @@
               </DropdownMenu>
             </Dropdown>
           </li>
-          <li>
-            <Dropdown :transfer="true">
+          <li style="border:none;">
+            <Dropdown transfer placement="left-end">
               <a href="javascript:void(0)">帮助</a>
               <DropdownMenu slot="list">
                 <DropdownItem>使用手册</DropdownItem>
@@ -82,25 +82,27 @@ export default {
 };
 </script>
 <style scoped>
-.rightView {
+.rightBar {
   overflow: hidden;
   height: 100%;
   background-color: white;
+  z-index:99999999;
 }
-.rightSide ul {
+.rightBar ul {
   /*设置导航栏的框框*/
   width: 44px; /*框框的宽度*/
   height: 100%; /*框框的长度*/
   padding: 0px; /*将框框的padding设置为零，不然会导致框框里的内容与框边缘有间隔*/
   right: 0px;
 }
-.rightSide li {
+.rightBar li {
   list-style-type: none; /* 去掉li前的点 */
   height: 50px;
   margin: 1px 0px;
+   border-bottom: rgb(204, 204, 204) 1px solid; 
 }
 
-.rightSide a {
+.rightBar a {
   display: block; /*将a变成块状*/
   font-family: Microsoft Yahei;
   line-height: 40px; /*设置字体在块中的高度*/
@@ -109,10 +111,15 @@ export default {
   text-align: center; /*字体居中*/
   text-decoration: none; /*去掉下划线*/
   font-size: 12px;
-  border-bottom: rgb(204, 204, 204) 1px solid;
+  /* border-bottom: rgb(204, 204, 204) 1px solid; */
 }
 .leftBorder {
   border-left: rgb(204, 204, 204) 1px solid;
+}
+</style>
+<style>
+.rightBar .ivu-dropdown {
+    width: 100%;
 }
 </style>
 

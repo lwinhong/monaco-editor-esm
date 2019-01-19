@@ -3,10 +3,9 @@ import iView from 'iview'
 import 'iview/dist/styles/iview.css'
 Vue.use(iView)
 import App from "./app.vue"
-
 import global from './app/global'
-Vue.prototype.global = global
 
+Vue.prototype.global = global
 window.global = global
 
 //import test from "./test.vue"

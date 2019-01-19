@@ -24,7 +24,10 @@
 
       <!-- 显示当前选中的行列 -->
       <li class="li-right">
-        <a href="javascript:void(0)">{{rowColMsg}}</a>
+        <a
+          href="javascript:void(0)"
+          @click="$emit('itemClick', {key:'setEditorFocus', value:'focus'})"
+        >{{rowColMsg}}</a>
       </li>
 
       <!-- 显示错误和建议 -->
@@ -63,12 +66,6 @@ export default {
       this.suggestMsgCount = obj.suggestMsgCount;
     });
   },
-  // props: {
-  //   items: {
-  //     type: Array,
-  //     default: []
-  //   }
-  // },
   data() {
     return {
       selectionRow: 0,
