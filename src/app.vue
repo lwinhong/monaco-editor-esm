@@ -1,6 +1,7 @@
 <template>
   <div class="app fill">
-    <app-mask v-if="isMaskShow" ref="mask"></app-mask>
+    <!-- <app-mask v-if="isMaskShow" ref="mask"></app-mask> -->
+    <Spin size="large" fix v-if="isMaskShow"></Spin>
     <Layout>
       <Layout>
         <Content>
@@ -71,7 +72,7 @@ export default {
   mounted() {
     setTimeout(() => {
       this.isMaskShow = false;
-    }, 500);
+    }, 2000);
   }
 };
 </script>

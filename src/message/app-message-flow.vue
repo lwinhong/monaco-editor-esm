@@ -33,7 +33,7 @@ export default {
   props: {},
   data() {
     return {
-      showMessageFlow: true,
+      showMessageFlow: false,
       flow: true,
       currentList: "vlist",
       errorData: [],
@@ -147,7 +147,7 @@ export default {
   left: 0;
   position: fixed;
   /* width: 100%;  */
-   z-index: 99; 
+   z-index: 5; 
   right: 43px;
   vertical-align: middle;
   background-color: white;
