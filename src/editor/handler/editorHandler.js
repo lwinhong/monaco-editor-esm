@@ -136,7 +136,7 @@ const addMonacoEditor = (tabs) => {
                 let obj = newMonacoEditor(d.key, d.editorContainerId, d.language)
                 initEditor(obj, d)
             })
-            setMonacoEditorFocusDelay(devEditorKeys.template, 100)
+            setMonacoEditorFocusDelay(tabs[0].key, 100)
         })
     }, 100)()
 }

@@ -4,6 +4,7 @@ const path = require("path")
 const postcssPresetEnv = require("postcss-preset-env")
 const VueLoaderPlugin = require("vue-loader/lib/plugin")
 //const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = env => {
     const prod = Boolean(env && env.production)
@@ -168,8 +169,15 @@ module.exports = env => {
             extensions: [".mjs", ".js", ".vue", ".json"],
         },
         plugins: [
-            new VueLoaderPlugin()
+            new VueLoaderPlugin(),
             //, new MonacoWebpackPlugin()
+            new CopyWebpackPlugin([{
+                from: './src/monaco-editor/vs',
+                to: 'monaco-editor/vs',
+            }, {
+                from: './src/resource',
+                to: 'resource',
+            }])
         ],
         devServer: {
             contentBase: path.join(__dirname, "dist"),

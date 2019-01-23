@@ -25,6 +25,7 @@
     "appcache-manifest": "^2.1.0",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.4",
+    "copy-webpack-plugin": "^4.6.0",
     "cpx": "^1.5.0",
     "cross-env": "^5.1.1",
     "css-loader": "^1.0.0",
@@ -57,8 +58,7 @@
     "build": "run-s -s clean build:*",
     "build:html": "appcache-manifest-fixer src/index.html -o dist/index.html",
     "build:js": "webpack --env.production --progress",
-    "build:monaco": "node scripts/copy-monaco",
-    "build:resource": "node scripts/copy-resources",
+    
     "build:manifest": "appcache-manifest \"dist/**/*.{css,html,js,svg,eot,ttf,woff,woff2}\" --prefix /vue-eslint-demo --network-star -o dist/index.appcache",
     "clean": "rimraf dist",
     "deploy": "node scripts/deploy",

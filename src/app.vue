@@ -49,7 +49,7 @@ export default {
   },
   data() {
     return {
-      isCollapsed: true,
+      isCollapsed: false,
       isMaskShow: true
     };
   },
