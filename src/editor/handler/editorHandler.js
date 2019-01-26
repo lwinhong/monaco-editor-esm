@@ -1,6 +1,7 @@
 import debounce from 'lodash/debounce'
 import eslintHandler from '../handler/eslintHandler'
 import { vuiIntelliSense, vuiHelp, emmetHTML, eventBus, themeVarHandler } from './htmlEditor'
+import monacoLoader from "../../monaco-editor/monaco-loader";
 
 const devEditorKeys = { template: 'template', script: 'script', style: 'style', themeLess: 'themeLess', varLess: 'varLess' }
 const defaultEditorKeys = { html: 'html', javascript: 'javascript', css: 'css', moduleCss: 'moduleCss', moduleJavascript: 'moduleJavascript' }
@@ -131,7 +132,14 @@ const newMonacoEditor = (editorKey, containerId, language, value) => {
  */
 const addMonacoEditor = (tabs) => {
     debounce(() => {
-        window.addMonacoEditor((monaco) => {
+        // window.addMonacoEditor((monaco) => {
+        //     $.each(tabs, function (i, d) {
+        //         let obj = newMonacoEditor(d.key, d.editorContainerId, d.language)
+        //         initEditor(obj, d)
+        //     })
+        //     setMonacoEditorFocusDelay(tabs[0].key, 100)
+        // })
+        monacoLoader.load("resource/monaco-editor", () => {
             $.each(tabs, function (i, d) {
                 let obj = newMonacoEditor(d.key, d.editorContainerId, d.language)
                 initEditor(obj, d)
@@ -158,21 +166,22 @@ const initEditor = (editorObj, tabData) => {
         vuiIntelliSense(editor)
         vuiHelp(editor)
     }
-
+    //注册theme页签相关
     if (tabData.key === defaultEditorKeys.themeLess) {
         themeVarHandler(editor)
     }
-
+    //鼠标按下
     editor.onMouseDown(function (e) {
         if (parentVue) {
             //隐藏浮动的错误信息
             parentVue.$refs.messageFlow.tryToHide()
         }
-    });
+    })
+    //光标位置
     editor.onDidChangeCursorPosition(function (e) {
         eventBus.$emit('updateCursorPosition', e.position)
-    });
-
+    })
+    //内容改变
     editor.onDidChangeModelContent(function (e) {
         if (e.changes[0].text === ' ') {
             debounce(() => {
@@ -185,7 +194,26 @@ const initEditor = (editorObj, tabData) => {
             (currentKey === devEditorKeys.template || currentKey === devEditorKeys.script))
             didChangedContent(model, editor, currentKey)
     })
+
+    addMenuAction(editor, tabData)
 }
+
+const addMenuAction = (editor, tabData) => {
+    //添加右键菜单（在资源管理器中打开）
+    editor.addAction({
+        id: 'openWidthExplorer-' + tabData.key,
+        label: '在资源管理器中打开',
+        precondition: null,
+        keybindingContext: null,
+        contextMenuGroupId: 'navigation',
+        contextMenuOrder: 0,
+        run: function (ed) {
+            //executeCmd(cmdData.openWidthExplorer);
+            return null;
+        }
+    })
+}
+
 
 const didChangedContent = (model, editor, tabKey) => {
     isEditing = true
@@ -200,7 +228,7 @@ const didChangedContent = (model, editor, tabKey) => {
         } finally {
             isEditing = false
         }
-    }, 1000)();
+    }, 1000)()
 }
 
 const getLintValue = (model, editorKey) => {
@@ -233,7 +261,7 @@ function setMonacoEditorFocus(editorKey) {
  * @param {编辑器key} editorKey 
  */
 const setMonacoEditorFocusDelay = (editorKey, timeout) => {
-    debounce(() => setMonacoEditorFocus(editorKey), timeout)()
+    debounce(() => setMonacoEditorFocus(editorKey), timeout)();
 }
 
 /**

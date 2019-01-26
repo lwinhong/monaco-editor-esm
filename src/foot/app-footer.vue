@@ -75,13 +75,13 @@ export default {
       messageFlowData: [
         {
           key: "suggest",
-          icon: "md-thumbs-down",
-          color: "green"
+          icon: "md-alert",
+          color: "#ff9900"
         },
         {
           key: "error",
           icon: "md-close-circle",
-          color: "red"
+          color: "#ed4014"
         }
       ],
       items: [

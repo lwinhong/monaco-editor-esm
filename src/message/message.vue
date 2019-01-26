@@ -1,15 +1,21 @@
 <template>
   <div class="fill" id="message">
     <div class="message-titleBar">
-      <span @click="change('error')" title="错误">错误 {{errorCount}}</span>
-      <span @click="change('suggest')" title="警告">警告 {{suggusetCount}}</span>
+      <span @click="change(errorFlag)" title="错误" :class="isError?'span-selected':''">
+        <Icon type="md-close-circle" color="#ed4014"></Icon>
+        错误 {{errorCount}}
+      </span>
+      <span @click="change(suggestFlag)" title="警告" :class="isSuggest?'span-selected':''">
+        <Icon type="md-alert" color="#ff9900"></Icon>
+        警告 {{suggusetCount}}
+      </span>
     </div>
     <div>
       <i-table
         :columns="msgColumn"
         :data="errorData"
         @on-row-dblclick="localMessage"
-        v-show="currentListName ==='error'"
+        v-show="isError"
         size="small"
         :height="140"
       ></i-table>
@@ -17,7 +23,7 @@
         :columns="msgColumn"
         :data="suggestData"
         @on-row-dblclick="localMessage"
-        v-show="currentListName ==='suggest'"
+        v-show="isSuggest"
         size="small"
         :height="140"
       ></i-table>
@@ -40,6 +46,8 @@ export default {
   data() {
     return {
       currentListName: "error",
+      errorFlag: "error",
+      suggestFlag: "suggest",
       msgColumn: [
         {
           type: "index",
@@ -63,11 +71,8 @@ export default {
 
             const icon = h("Icon", {
               props: {
-                type:
-                  this.currentListName == "error"
-                    ? "md-close-circle"
-                    : "md-thumbs-down",
-                color: this.currentListName == "error" ? "red" : "green"
+                type: this.isError ? "md-close-circle" : "md-alert",
+                color: this.isError ? "#ed4014" : "#ff9900"
               }
             });
             var elements = [icon, span];
@@ -105,6 +110,12 @@ export default {
     },
     suggusetCount() {
       return this.suggestData.length;
+    },
+    isError() {
+      return this.currentListName === this.errorFlag;
+    },
+    isSuggest() {
+      return this.currentListName === this.suggestFlag;
     }
   },
   methods: {
@@ -118,6 +129,10 @@ export default {
 };
 </script>
 <style scoped>
+.message-titleBar .span-selected {
+  background-color: white;
+  border: 1px solid gray;
+}
 </style>
 <style>
 .ivu-table-small td {

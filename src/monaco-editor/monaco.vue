@@ -3,7 +3,8 @@
 </template>
 <script>
 var debounce = require("lodash.debounce");
-var monacoLoader = require("./index");
+var monacoLoader = require("./monaco-loader");
+
 export default {
   props: {
     width: { type: [String, Number], default: "100%" },
@@ -32,11 +33,11 @@ export default {
   },
   computed: {
     style() {
-      const { width, height } = this;
-      const fixedWidth =
-        width.toString().indexOf("%") !== -1 ? width : `${width}px`;
-      const fixedHeight =
-        height.toString().indexOf("%") !== -1 ? height : `${height}px`;
+      //const { width, height } = this;
+      const fixedWidth = "100%";
+      //width.toString().indexOf("%") !== -1 ? width : `${width}px`;
+      const fixedHeight = "100%";
+      //height.toString().indexOf("%") !== -1 ? height : `${height}px`;
       return {
         width: fixedWidth,
         height: fixedHeight
@@ -58,7 +59,13 @@ export default {
         readOnly: false,
         cursorStyle: "line",
         automaticLayout: false,
-        glyphMargin: true
+        
+        glyphMargin: true,
+        formatOnPaste: true,
+        mouseWheelZoom: true,
+        renderLineHighlight: "none",
+        showFoldingControls: "mouseover",
+        folding: true
       }
     };
   },

@@ -49,7 +49,7 @@ export default {
   },
   data() {
     return {
-      isCollapsed: false,
+      isCollapsed: true,
       isMaskShow: true
     };
   },
@@ -72,7 +72,7 @@ export default {
   mounted() {
     setTimeout(() => {
       this.isMaskShow = false;
-    }, 2000);
+    }, 1000);
   }
 };
 </script>
@@ -116,7 +116,7 @@ export default {
 .titleBackColor {
   background-color: rgb(238, 238, 240) !important;
 }
-.setPointer{
+.setPointer {
   cursor: pointer;
 }
 </style>
