@@ -108,7 +108,7 @@ export default {
 }
 
 .leftBorder {
-  border-left: rgb(204, 204, 204) 1px solid;
+  border-left: rgb(204, 204, 204) solid 1px;
 }
 
 .content {

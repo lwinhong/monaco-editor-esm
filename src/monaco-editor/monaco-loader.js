@@ -1,20 +1,16 @@
 module.exports = {
     load(srcPath, callBack) {
-
         const bak = callBack;
-
         if (window.monaco) {
             if (bak)
-            bak()
+                bak()
             return
         }
 
         const config = {
             paths: { vs: srcPath + '/vs' },
             'vs/nls': {
-                availableLanguages: {
-                    '*': "zh-cn"
-                }
+                availableLanguages: { '*': "zh-cn" }
             }
         }
 

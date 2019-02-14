@@ -1,10 +1,11 @@
 <template>
-  <div style="padding:8px 10px">
+  <div class="search">
     <i-input
       ref="input"
       class="titleBackColor"
       :placeholder="placeholder"
       search
+      size="small"
       @on-search="search"
     >earch</i-input>
   </div>
@@ -28,10 +29,14 @@ export default {
   }
 };
 </script>
-<style>
-.ivu-input {
-  background-color: rgb(238, 238, 240) !important;
-  height: 30px;
+<style scoped>
+.search {
+  padding: 8px 10px;
+  
+  border-bottom:  rgb(204, 204, 204) solid 1px;
+}
+
+.search .ivu-input{
+   background-color: rgb(238, 238, 240); 
 }
 </style>
-

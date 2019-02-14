@@ -75,13 +75,13 @@ export default {
       messageFlowData: [
         {
           key: "suggest",
-          icon: "md-thumbs-down",
-          color: "green"
+          icon: "md-alert",
+          color: "#ff9900"
         },
         {
           key: "error",
           icon: "md-close-circle",
-          color: "red"
+          color: "#ed4014"
         }
       ],
       items: [
@@ -140,7 +140,7 @@ export default {
   },
   computed: {
     rowColMsg() {
-      return `行${this.selectionRow} 列${this.selectionCol}`;
+      return `行 ${this.selectionRow} 列 ${this.selectionCol}`;
     },
     errorMsg() {
       return `${this.errorMsgCount}个错误,${this.suggestMsgCount}个警告`;

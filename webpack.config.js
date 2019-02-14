@@ -21,9 +21,9 @@ module.exports = env => {
             libraryTarget: "var",
             library: "vdk",
         },
-        node: {
-            fs: "empty"
-        },
+        // node: {
+        //     fs: "empty"
+        // },
         module: {
             rules: [
                 {
@@ -159,7 +159,7 @@ module.exports = env => {
                             },
                         },
                     ],
-                },
+                }
             ],
         },
         resolve: {
@@ -172,11 +172,11 @@ module.exports = env => {
             new VueLoaderPlugin(),
             //, new MonacoWebpackPlugin()
             new CopyWebpackPlugin([{
-                from: './src/monaco-editor/vs',
-                to: 'monaco-editor/vs',
-            }, {
                 from: './src/resource',
                 to: 'resource',
+            }, {
+                from: './src/monaco-editor/vs',
+                to: 'resource/monaco-editor/vs',
             }])
         ],
         devServer: {

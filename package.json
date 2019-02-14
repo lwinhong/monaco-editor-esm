@@ -58,7 +58,6 @@
     "build": "run-s -s clean build:*",
     "build:html": "appcache-manifest-fixer src/index.html -o dist/index.html",
     "build:js": "webpack --env.production --progress",
-    
     "build:manifest": "appcache-manifest \"dist/**/*.{css,html,js,svg,eot,ttf,woff,woff2}\" --prefix /vue-eslint-demo --network-star -o dist/index.appcache",
     "clean": "rimraf dist",
     "deploy": "node scripts/deploy",
