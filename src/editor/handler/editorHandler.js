@@ -1,7 +1,8 @@
 import debounce from 'lodash/debounce'
 import eslintHandler from '../handler/eslintHandler'
-import { vuiIntelliSense, vuiHelp, emmetHTML, eventBus, themeVarHandler } from './htmlEditor'
-import monacoLoader from "../../monaco-editor/monaco-loader";
+import { vuiIntelliSense, vuiHelp, emmetHTML, eventBus, themeVarHandler, scriptHandler, cssHandler } from './htmlEditor'
+import vuiHandler from './htmlEditor/vuiHandler'
+import monacoLoader from "../../monaco-editor/monaco-loader"
 
 const devEditorKeys = { template: 'template', script: 'script', style: 'style', themeLess: 'themeLess', varLess: 'varLess' }
 const defaultEditorKeys = { html: 'html', javascript: 'javascript', css: 'css', moduleCss: 'moduleCss', moduleJavascript: 'moduleJavascript' }
@@ -71,7 +72,7 @@ const addDefaultTab = (tabs) => {
 const addDevTab = (tabs) => {
     addTab(tabs, devEditorKeys.template, "template", "editor_template", "html")
     addTab(tabs, devEditorKeys.script, "script", "editor_script", "javascript")
-    // addTab(tabs, devEditorKeys.style, "style", "editor_style", "css")
+    addTab(tabs, devEditorKeys.style, "style", "editor_style", "css")
     addTab(tabs, devEditorKeys.themeLess, "theme.less", "editor_theme", "less")
     addTab(tabs, devEditorKeys.varLess, "var.less", "editor_var", "less")
 }
@@ -132,13 +133,6 @@ const newMonacoEditor = (editorKey, containerId, language, value) => {
  */
 const addMonacoEditor = (tabs) => {
     debounce(() => {
-        // window.addMonacoEditor((monaco) => {
-        //     $.each(tabs, function (i, d) {
-        //         let obj = newMonacoEditor(d.key, d.editorContainerId, d.language)
-        //         initEditor(obj, d)
-        //     })
-        //     setMonacoEditorFocusDelay(tabs[0].key, 100)
-        // })
         monacoLoader.load("resource/monaco-editor", () => {
             $.each(tabs, function (i, d) {
                 let obj = newMonacoEditor(d.key, d.editorContainerId, d.language)
@@ -163,12 +157,20 @@ const initEditor = (editorObj, tabData) => {
     //template 或者 html编辑器：注册Emmet，vui智能提示相关
     if (tabData.key === devEditorKeys.template || tabData.key === defaultEditorKeys.html) {
         emmetHTML(editor)
-        vuiIntelliSense(editor)
+        vuiIntelliSense(editor, { editorData, devEditorKeys, defaultEditorKeys })
         vuiHelp(editor)
     }
     //注册theme页签相关
-    if (tabData.key === defaultEditorKeys.themeLess) {
-        themeVarHandler(editor)
+    if (tabData.key === devEditorKeys.themeLess) {
+        themeVarHandler(editor, editorData, devEditorKeys)
+    }
+    //注册script页签提示
+    if (tabData.key === devEditorKeys.script) {
+        scriptHandler(editor)
+    }
+    //注册css提示
+    if (tabData.key === defaultEditorKeys.css || tabData.key === defaultEditorKeys.moduleCss || tabData.key === devEditorKeys.style) {
+        cssHandler()
     }
     //鼠标按下
     editor.onMouseDown(function (e) {
@@ -214,21 +216,30 @@ const addMenuAction = (editor, tabData) => {
     })
 }
 
-
+var inputTimeoutTimer; //计时器
 const didChangedContent = (model, editor, tabKey) => {
     isEditing = true
-    debounce(() => {
-        try {
-            var lintValue = getLintValue(model, tabKey)
-            const eslintMsg = eslintHandler.invalidateEslint(lintValue)
-            const afterMarker = eslintHandler.updateMarkers(editor, eslintMsg)
-            setMessageFlowData(afterMarker, tabKey, null, true)
-        } catch (error) {
-            console.error('onDidChangeContent:' + error)
-        } finally {
-            isEditing = false
-        }
-    }, 1000)()
+    //触发值改变之前，清除重置之前的计时器
+    if (inputTimeoutTimer)
+        window.clearInterval(inputTimeoutTimer);
+
+    inputTimeoutTimer = window.setTimeout(function () {
+        debounce(() => {
+            try {
+                var lintValue = getLintValue(model, tabKey)
+                const eslintMsg = eslintHandler.invalidateEslint(lintValue)
+                const afterMarker = eslintHandler.updateMarkers(editor, eslintMsg)
+                setMessageFlowData(afterMarker, tabKey, null, true)
+            } catch (error) {
+                console.error('onDidChangeContent:' + error)
+            } finally {
+                isEditing = false
+            }
+        }, 1)()
+        vuiHandler.afterValidationAll(IsDevEditorMode()
+            ? editorData[devEditorKeys.template].model
+            : editorData[defaultEditorKeys.html].model)
+    }, 999)
 }
 
 const getLintValue = (model, editorKey) => {
@@ -344,7 +355,7 @@ const triggerMonacoEditorAction = (actionId, editor, focus) => {
     editor.trigger('', actionId, {})
 }
 
-const insertValueToEditor = (editor, value, range) => {
+const insertValueToEditor = (editor, value, range, setFocus) => {
     try {
         if (!editor)
             editor = getSelectedEditorData().editor
@@ -359,6 +370,8 @@ const insertValueToEditor = (editor, value, range) => {
             range: range,
             text: value
         }])
+        if (setFocus)
+            setMonacoEditorFocus(parentVue.tabSelectedIndex)
     } catch (error) {
         console.error(error)
     }

@@ -17,10 +17,15 @@
             @dragenter="dragenter"
           ></div>
         </tab-pane>
-        <save-button  slot="extra"  :visible="saveButtonVisible"></save-button>
+        <save-button slot="extra" v-if="saveButtonVisible"></save-button>
       </tabs>
     </div>
-    <app-message-flow ref="messageFlow" class="foot-message-flow-show" @localMessage="localMessage"></app-message-flow>
+    <app-message-flow
+      ref="messageFlow"
+      class="foot-message-flow-show"
+      @localMessage="localMessage"
+      @insertVlanguage="insertVlanguage"
+    ></app-message-flow>
   </div>
 </template>
 <script>
@@ -62,7 +67,7 @@ export default {
       appChartWidgetVisible: false,
       tabSelectedIndex: editorHandler.devEditorKeys.template,
       tabs: tabs,
-      saveButtonVisible: false,
+      saveButtonVisible: true,
       editor: null,
       chartWidgetTop: 24,
       chartWidgetLeft: 24
@@ -85,19 +90,32 @@ export default {
       editorHandler.executeCommand(item.key, item);
     },
     localMessage(row, index, type) {
-      console.log(row + " " + index + "  " + type);
+      if (row) {
+        var editorData = editorHandler.editorData[row.moduleKey];
+        var editor = editorData.editor;
+        if (editor) {
+          editor.revealPositionInCenter({
+            lineNumber: row.endLineNumber,
+            column: row.endColumn
+          });
+          editor.setSelection(row.position);
+        }
+        this.tabSelectedIndex = row.moduleKey;
+        editorHandler.setMonacoEditorFocus(row.moduleKey);
+      }
+    },
+    insertVlanguage(vlang) {
+      editorHandler.insertValueToEditor(null, vlang, null, true);
     },
     editorLayout() {
       editorHandler.editorLayoutDelay();
     },
     dragover(ev) {
       ev.preventDefault();
-
       const point = currentEditor.getTargetAtClientPoint(
         ev.clientX,
         ev.clientY
       );
-
       currentEditor.setPosition(point.position);
     },
     dragenter(ev) {
@@ -111,12 +129,12 @@ export default {
         ev.clientX,
         ev.clientY
       );
-      currentEditor.executeEdits("", [
-        {
-          range: point.range,
-          text: ev.dataTransfer.getData("Text")
-        }
-      ]);
+
+      editorHandler.insertValueToEditor(
+        currentEditor,
+        ev.dataTransfer.getData("Text"),
+        point.range
+      );
     }
   },
   watch: {

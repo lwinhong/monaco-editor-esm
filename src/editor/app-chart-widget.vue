@@ -1,6 +1,6 @@
 <template>
   <div
-    :style="{top:top + 'px', left:left+'px'}"
+    :style="{top:top+'px', left:left+'px'}"
     class="chartSetting"
     id="openChartSettings"
     v-show="visible"
@@ -17,7 +17,7 @@ export default {
       type: Boolean,
       default: false
     },
-    top:  {
+    top: {
       type: Number,
       default: 24
     },

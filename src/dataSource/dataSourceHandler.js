@@ -1,4 +1,21 @@
-﻿import dsPath from './dataSourcePath'
+﻿/************************************** 数据文件路径定义 ************************************/
+const dsDir = './resource/datasource'
+const global = `${dsDir}/global`
+const local = `${dsDir}/local/${divFlag}`
+
+/******* 项目级别的数据 *******/
+const themeVarJsonPath = `${global}/ThemeVar.json`
+const vlanguageJsonPath = `${global}/VLanguage.json`
+const vuiTagJsonPath = `${global}/VuiTag.json`
+const scriptResourcePath = `${global}/ScriptResources.json`
+
+/******* 构件和窗体的数据 *******/
+const entitiesJsonPath = `${local}/Entities.json`
+const resourceJsonPath = `${local}/Resource.json`
+const viewStatePath = `${local}/ViewState.json`
+const existWindowControlCodePath = `${local}/ExistWindowControlCode.json`
+const vuiPropValueOptionsJsonPath = `${local}/VuiPropValueOptions.json`
+/*************************************** 数据文件路径定义 END ***********************************/
 
 var themeVarData
 var vlanguageData
@@ -8,7 +25,7 @@ var scriptResourceData
 
 var entitiesData
 var resourceData
-var viewStateData
+//var viewStateData
 var existWindowControlCodeData
 
 /**
@@ -27,21 +44,21 @@ const loadJsonData = (path, callback) => {
  * 初始化全局数据（）
  */
 const initGlobalDs = () => {
-    loadJsonData(dsPath.themeVarJsonPath, data => themeVarData = data)
-    loadJsonData(dsPath.vlanguageJsonPath, data => vlanguageData = data)
-    loadJsonData(dsPath.vuiPropOptionJsonPath, data => vuiPropOptionData = data)
-    loadJsonData(dsPath.vuiTagJsonPath, data => vuiTagData = data)
-    loadJsonData(dsPath.scriptResourcePath, data => scriptResourceData = data)
+    loadJsonData(themeVarJsonPath, data => themeVarData = data)
+    loadJsonData(vlanguageJsonPath, data => vlanguageData = data)
+    loadJsonData(vuiPropValueOptionsJsonPath, data => vuiPropOptionData = data)
+    loadJsonData(vuiTagJsonPath, data => vuiTagData = data)
+    loadJsonData(scriptResourcePath, data => scriptResourceData = data)
 }
 
 /**
  * 初始化局部数据(实体，资源)
  */
 const initlocalDs = () => {
-    loadJsonData(dsPath.entitiesJsonPath, data => entitiesData = data)
-    loadJsonData(dsPath.resourceJsonPath, data => resourceData = data)
-    loadJsonData(dsPath.viewStatePath, data => viewStateData = data)
-    loadJsonData(dsPath.existWindowControlCodePath, data => existWindowControlCodeData = data)
+    loadJsonData(entitiesJsonPath, data => entitiesData = data)
+    loadJsonData(resourceJsonPath, data => resourceData = data)
+    //loadJsonData(viewStatePath, data => viewStateData = data)
+    loadJsonData(existWindowControlCodePath, data => existWindowControlCodeData = data)
 }
 
 /**
@@ -52,10 +69,56 @@ const initDs = () => {
     initlocalDs();
 }
 
+/************************************ 数据源获取 *************************************/
+const getEntities = callback => {
+    getDataSourceCommon(entitiesData, entitiesJsonPath, callback)
+}
+
+const getVlanguage = callback => {
+    getDataSourceCommon(vlanguageData, vlanguageJsonPath, callback)
+    return vlanguageData
+}
+
+const getViewState = callback => {
+    getDataSourceCommon(null, viewStatePath, callback)
+}
+
+const getVuiTag = callback => {
+    getDataSourceCommon(vuiTagData, vuiTagJsonPath, callback)
+    return vuiTagData
+}
+
+const getVuiPropValueOptions = callback => {
+    getDataSourceCommon(vuiPropOptionData, vuiPropValueOptionsJsonPath, callback)
+    return vuiPropOptionData
+}
+
+const getThemeVars = callback => {
+    getDataSourceCommon(themeVarData, themeVarJsonPath, callback)
+}
+
+const getResources = callback => {
+    getDataSourceCommon(resourceData, resourceJsonPath, callback)
+}
+
+const getExistWindowControlCodes = callback => {
+    getDataSourceCommon(existWindowControlCodeData, existWindowControlCodePath, callback)
+    return existWindowControlCodeData
+}
+
+const getDataSourceCommon = (data, path, callback) => {
+    if (!data)
+        loadJsonData(path, callback)
+    else
+        if (callback)
+            callback(data)
+}
+
+///////////////////////////////////////
+
 const getDataSource = () => {
     return {
-        themeVarData, vlanguageData, vuiPropOptionData, vuiTagData, scriptResourceData,
-        entitiesData, resourceData, viewStateData, existWindowControlCodeData
+        getVlanguage, getEntities, getViewState, getVuiTag, getVuiPropValueOptions, getThemeVars, getResources, getExistWindowControlCodes
     }
 }
 

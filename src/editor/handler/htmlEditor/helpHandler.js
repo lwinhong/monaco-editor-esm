@@ -1,5 +1,6 @@
 
-const vuiHelp = editor => {
+
+
+export const vuiHelp = editor => {
 
 }
-export { vuiHelp }

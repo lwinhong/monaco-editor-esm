@@ -1,1 +1,62 @@
-﻿{"a":123}
+﻿{
+  "sss_2": {
+    "name": "sss",
+    "columns": {
+      "PID": "父记录字段",
+      "OrderNo": "排序字段",
+      "InnerCode": "层级码字段",
+      "IsLeaf": "叶子节点字段"
+    }
+  },
+  "sss_4": {
+    "name": "sss",
+    "columns": {
+      "PID": "父记录字段",
+      "OrderNo": "排序字段",
+      "InnerCode": "层级码字段",
+      "IsLeaf": "叶子节点字段"
+    }
+  },
+  "sss_5": {
+    "name": "sss",
+    "columns": {
+      "PID": "父记录字段",
+      "OrderNo": "排序字段",
+      "InnerCode": "层级码字段",
+      "IsLeaf": "叶子节点字段"
+    }
+  },
+  "sss_3": {
+    "name": "sss",
+    "columns": {
+      "PID": "父记录字段",
+      "OrderNo": "排序字段",
+      "InnerCode": "层级码字段",
+      "a": "叶子节点字段",
+      "v": "",
+      "c": "",
+      "d": "",
+      "e": "",
+      "eeee": "",
+      "qqq": ""
+    }
+  },
+  "sss": {
+    "name": "sss实体吧sss实体吧sss实体吧sss实体吧sss实体吧sss实体吧sss实体吧",
+    "columns": {
+      "PID": "父记录字段",
+      "OrderNo": "排序字段",
+      "InnerCode": "层级码字段",
+      "IsLeaf": "叶子节点字段"
+    }
+  },
+  "sss_1": {
+    "name": "sssssssssssssssssssssssssss",
+    "columns": {
+      "PID": "父记录字段",
+      "OrderNo": "排序字段",
+      "InnerCode": "层级码字段",
+      "IsLeaf": "叶子节点字段"
+    }
+  }
+}

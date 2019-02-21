@@ -9,9 +9,11 @@
     "dist"
   ],
   "dependencies": {
+    "fs": "0.0.1-security",
     "highlight.js": "^9.13.1",
     "iview": "^3.2.1",
-    "jquery": "^3.3.1"
+    "jquery": "^3.3.1",
+    "vue-smooth-dnd": "^0.2.8"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
@@ -68,7 +70,6 @@
     "watch": "run-p -s watch:*",
     "watch:html": "cpx src/index.html dist --watch",
     "watch:js": "webpack-dev-server --open --hot",
-    "watch:monaco": "node scripts/copy-monaco --watch",
     "watch:resource": "node scripts/copy-resources --watch"
   },
   "repository": {

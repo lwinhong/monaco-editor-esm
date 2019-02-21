@@ -3,9 +3,7 @@
     <div class="top titleBackColor">
       <ul class="controlTitleBar">
         <li>
-          <a href="javascript:void(0)" class="leftFloat">
-            {{topTitle}}
-          </a>
+          <a href="javascript:void(0)" class="leftFloat">{{topTitle}}</a>
         </li>
         <li
           v-for="item in topBarItems"
@@ -89,10 +87,15 @@ export default {
         if (this.searchVisible) {
           //this.$refs.seach.setFocus();
         }
+      } else if (item.key === "refresh") {
+        if (this.entityViewVisible) {
+          this.$refs.entityView.buildTree();
+        }
       } else this.$emit("closeClick");
     },
     onSearch(value) {
-      if (this.currentView === "entity") this.$refs.entityView.onSearch(value);
+      if (this.entityViewVisible)
+        this.$refs.entityView.onSearch(value);
       else this.$refs.eventView.onSearch(value);
     },
     changeRightView(viewKey) {

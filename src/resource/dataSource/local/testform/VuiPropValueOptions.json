@@ -1,0 +1,315 @@
+﻿{
+  "entityfieldmode": [
+    "sss_2.current.PID",
+    "sss_2.current.OrderNo",
+    "sss_2.current.InnerCode",
+    "sss_2.current.IsLeaf",
+    "sss_4.current.PID",
+    "sss_4.current.OrderNo",
+    "sss_4.current.InnerCode",
+    "sss_4.current.IsLeaf",
+    "sss_5.current.PID",
+    "sss_5.current.OrderNo",
+    "sss_5.current.InnerCode",
+    "sss_5.current.IsLeaf",
+    "sss_3.current.PID",
+    "sss_3.current.OrderNo",
+    "sss_3.current.InnerCode",
+    "sss_3.current.a",
+    "sss_3.current.v",
+    "sss_3.current.c",
+    "sss_3.current.d",
+    "sss_3.current.e",
+    "sss_3.current.eeee",
+    "sss_3.current.qqq",
+    "sss.current.PID",
+    "sss.current.OrderNo",
+    "sss.current.InnerCode",
+    "sss.current.IsLeaf",
+    "sss_1.current.PID",
+    "sss_1.current.OrderNo",
+    "sss_1.current.InnerCode",
+    "sss_1.current.IsLeaf"
+  ],
+  "entitymode": [
+    "sss_2.current",
+    "sss_4.current",
+    "sss_5.current",
+    "sss_3.current",
+    "sss.current",
+    "sss_1.current"
+  ],
+  "datasourcemode": [
+    "sss_2",
+    "sss_4",
+    "sss_5",
+    "sss_3",
+    "sss",
+    "sss_1"
+  ],
+  "resources": [
+    "'Fileno_18.jpg'",
+    "'Fileno_19.jpg'",
+    "'Fileno_20.png'",
+    "'Fileno_21.png'",
+    "'Fileno_22.jpg'",
+    "'Fileno_1.png'",
+    "'Fileno_1_1.jpg'",
+    "'Fileno_2.png'",
+    "'DefaultActivity_StartActivityTemplate.png'",
+    "'DefaultActivityState_StartActivityTemplate_Cancel.gif'",
+    "'DefaultActivityState_StartActivityTemplate_Complete.gif'",
+    "'DefaultActivityState_StartActivityTemplate_NotStart.gif'",
+    "'DefaultActivityState_StartActivityTemplate_Pause.gif'",
+    "'DefaultActivityState_StartActivityTemplate_Running.gif'",
+    "'DefaultActivityState_StartActivityTemplate_Start.gif'",
+    "'DefaultActivity_EndActivityTemplate.png'",
+    "'DefaultActivityState_EndActivityTemplate_Cancel.gif'",
+    "'DefaultActivityState_EndActivityTemplate_Complete.gif'",
+    "'DefaultActivityState_EndActivityTemplate_NotStart.gif'",
+    "'DefaultActivityState_EndActivityTemplate_Pause.gif'",
+    "'DefaultActivityState_EndActivityTemplate_Running.gif'",
+    "'DefaultActivityState_EndActivityTemplate_Start.gif'",
+    "'DefaultActivity_HumanActivityTemplate.png'",
+    "'DefaultActivityState_HumanActivityTemplate_Cancel.gif'",
+    "'DefaultActivityState_HumanActivityTemplate_Complete.gif'",
+    "'DefaultActivityState_HumanActivityTemplate_NotStart.gif'",
+    "'DefaultActivityState_HumanActivityTemplate_Pause.gif'",
+    "'DefaultActivityState_HumanActivityTemplate_Running.gif'",
+    "'DefaultActivityState_HumanActivityTemplate_Start.gif'",
+    "'DefaultActivity_ForkActivityTemplate.png'",
+    "'DefaultActivityState_ForkActivityTemplate_Cancel.gif'",
+    "'DefaultActivityState_ForkActivityTemplate_Complete.gif'",
+    "'DefaultActivityState_ForkActivityTemplate_NotStart.gif'",
+    "'DefaultActivityState_ForkActivityTemplate_Pause.gif'",
+    "'DefaultActivityState_ForkActivityTemplate_Running.gif'",
+    "'DefaultActivityState_ForkActivityTemplate_Start.gif'",
+    "'DefaultActivity_JoinActivityTemplate.png'",
+    "'DefaultActivityState_JoinActivityTemplate_Cancel.gif'",
+    "'DefaultActivityState_JoinActivityTemplate_Complete.gif'",
+    "'DefaultActivityState_JoinActivityTemplate_NotStart.gif'",
+    "'DefaultActivityState_JoinActivityTemplate_Pause.gif'",
+    "'DefaultActivityState_JoinActivityTemplate_Running.gif'",
+    "'DefaultActivityState_JoinActivityTemplate_Start.gif'"
+  ],
+  "devResources": [
+    "@share/95 - 副本.jpg",
+    "@share/95.jpg",
+    "@share/EasyTween.js",
+    "@share/login-handler-mask.png",
+    "@share/Login_bg.jpg",
+    "@share/Login_logo.jpg",
+    "@share/qrcode.png"
+  ],
+  "scriptResource": ["123","456"],
+  "shapemode": [
+    "circle"
+  ],
+  "avatarshapemode": [
+    "circle",
+    "square"
+  ],
+  "slotmode": [
+    "content",
+    "prepend",
+    "append",
+    "open",
+    "close",
+    "label",
+    "extra",
+    "title",
+    "background",
+    "list"
+  ],
+  "rowtypemode": [
+    "flex"
+  ],
+  "pageplacementmode": [
+    "top",
+    "bottom"
+  ],
+  "rowalignmode": [
+    "top",
+    "middle",
+    "bottom"
+  ],
+  "rowjustifymode": [
+    "start",
+    "end",
+    "center",
+    "space-around",
+    "space-between"
+  ],
+  "colspanmode": [
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "20",
+    "21",
+    "22",
+    "23",
+    "24"
+  ],
+  "boolmode": [
+    "true",
+    "false"
+  ],
+  "inputmode": [
+    "text",
+    "password",
+    "textarea"
+  ],
+  "textshowmode": [
+    "editable",
+    "readonly",
+    "disable",
+    "viewonly"
+  ],
+  "gridcolumnalign": [
+    "left",
+    "center",
+    "right"
+  ],
+  "gridshowmode": [
+    "editable",
+    "readonly"
+  ],
+  "buttontype": [
+    "primary",
+    "ghost",
+    "dashed",
+    "text",
+    "info",
+    "success",
+    "warning",
+    "error"
+  ],
+  "sizemode": [
+    "large",
+    "small",
+    "default"
+  ],
+  "buttonhtmltype": [
+    "button",
+    "submit",
+    "reset"
+  ],
+  "datetypemode": [
+    "date",
+    "daterange",
+    "datetime",
+    "datetimerange",
+    "year",
+    "month"
+  ],
+  "datetimetypemode": [
+    "time",
+    "timerange"
+  ],
+  "dateformatmode": [
+    "yyy-MM-dd",
+    "yyyy-MM-dd HH:mm:ss",
+    "yyyy",
+    "yyyy-MM"
+  ],
+  "datetimeformatmode": [
+    "HH:mm:ss"
+  ],
+  "eventmode": [
+    "handleEvent('%1$0')",
+    "handleEvent('%1$0',{'key':'value'})",
+    "call('$0')"
+  ],
+  "showtypemode": [
+    "button"
+  ],
+  "labelpositionmode": [
+    "left",
+    "right",
+    "top"
+  ],
+  "siderplacemode": [
+    "left",
+    "right"
+  ],
+  "inputformatmode": [
+    "n2",
+    "c2",
+    "p1",
+    "ap1"
+  ],
+  "inputautosizemode": [
+    "{minRows:${1:2},maxRows:${2:6}}"
+  ],
+  "recordnavigatormode": [
+    "index",
+    "custom",
+    "field"
+  ],
+  "dropdowntriggermode": [
+    "hover",
+    "click",
+    "custom"
+  ],
+  "dropdownplacementmode": [
+    "top",
+    "top-start",
+    "top-end",
+    "bottom",
+    "bottom-start",
+    "bottom-end",
+    "left",
+    "left-start",
+    "left-end",
+    "right",
+    "right-start",
+    "right-end"
+  ],
+  "datenavigatormode": [
+    "year",
+    "month",
+    "date"
+  ],
+  "calendardisplaytypemode": [
+    "center",
+    "inline",
+    "bubble",
+    "top",
+    "bottom",
+    "hide"
+  ],
+  "calendarlayoutmode": [
+    "liquid",
+    "fixed"
+  ],
+  "calendarscrolltmode": [
+    "horizontal",
+    "vertical"
+  ],
+  "gridselectionMode": [
+    "Single",
+    "Multi"
+  ],
+  "treegridselectionMode": [
+    "Single",
+    "Multi",
+    "Cascade"
+  ]
+}

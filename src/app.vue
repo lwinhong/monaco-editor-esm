@@ -29,6 +29,11 @@
         <app-footer @itemClick="footItemClick"></app-footer>
       </Footer>
     </Layout>
+    <!-- <Container>
+      <Draggable v-for="i in items" :key="i.key">
+        <div style="height:100px;margin:10px;background-color:red">sss-> {{i.text}}</div>
+      </Draggable>
+    </Container> -->
   </div>
 </template>
 <script>
@@ -37,6 +42,7 @@ import AppEditor from "./editor/app-editor.vue";
 import AppFooter from "./foot/app-footer.vue";
 import AppRightView from "./right-view/app-rightView.vue";
 import AppRightBar from "./right-view/app-rightBar.vue";
+// import { Container, Draggable } from "vue-smooth-dnd";
 
 export default {
   name: "App",
@@ -45,12 +51,20 @@ export default {
     AppEditor,
     AppFooter,
     AppRightView,
-    AppRightBar
+    AppRightBar,
+    // Container,
+    // Draggable
   },
   data() {
     return {
       isCollapsed: true,
-      isMaskShow: true
+      isMaskShow: true,
+      items: [
+        { key: 1, text: "1111" },
+        { key: 2, text: "2222" },
+        { key: 3, text: "3333" },
+        { key: 4, text: "4444" }
+      ]
     };
   },
   methods: {

@@ -41,50 +41,14 @@ import { eventBus } from "../app/event-bus";
 export default {
   name: "entityView",
   components: { EntityItem },
+  created() {
+    eventBus.$on("executeCmdFromWinform", (cmdId, value) => {
+      if ("updateDataSource" === cmdId) this.buildTree();
+    });
+  },
   data() {
     return {
-      entityTree: [
-        {
-          key: "en1",
-          title: "实体123",
-          fields: [
-            { key: "field1", title: "字段1" },
-            { key: "field2", title: "字段2" }
-          ]
-        },
-        {
-          key: "en11111",
-          title: "实体123",
-          fields: [
-            { key: "field1", title: "字段1" },
-            { key: "field2", title: "字段2" }
-          ]
-        },
-        {
-          key: "en1111",
-          title: "实体123",
-          fields: [
-            { key: "field1", title: "字段1" },
-            { key: "field2", title: "字段2" }
-          ]
-        },
-        {
-          key: "en111",
-          title: "实体123",
-          fields: [
-            { key: "field1", title: "字段1" },
-            { key: "field2", title: "字段2" }
-          ]
-        },
-        {
-          key: "en11",
-          title: "实体123",
-          fields: [
-            { key: "field1", title: "字段1" },
-            { key: "field2", title: "字段2" }
-          ]
-        }
-      ],
+      entityTree: [],
       currentItemKey: ""
     };
   },
@@ -112,14 +76,35 @@ export default {
     },
     onSearch(value) {},
     insert(value) {
-      //this.$emit("insert-value", value);
       eventBus.$emit("executeCmdFromWinform", "insertValue", value);
     },
     drag(ev, item) {
       ev.effectAllowed = "move";
       ev.dataTransfer.setData("Text", item.key);
       ev.dataTransfer.setDragImage(ev.target, 0, 0);
+    },
+    buildTree() {
+      const tree = this.entityTree;
+      tree.splice(0, tree.length);
+      try {
+        const ds = window.global.dataSourceHandler.getDataSource();
+        ds.getEntities(data => {
+          if (!data) return;
+          $.each(data, function(i, data) {
+            var cols = new Array();
+            $.each(data.columns, function(j, colData) {
+              cols.push({ key: j, name: colData });
+            });
+            tree.push({ key: i, title: data.name, fields: cols });
+          });
+        });
+      } catch (error) {
+        console.error(error);
+      }
     }
+  },
+  mounted() {
+    this.buildTree();
   }
 };
 </script>

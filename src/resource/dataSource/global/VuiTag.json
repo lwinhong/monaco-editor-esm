@@ -1,1 +1,4201 @@
-﻿{}
+﻿{
+  "vui-avatar": {
+    "label": "头像",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_avatar1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_avatar1\"",
+        "triggerSuggest": null
+      },
+      "shape": {
+        "insertText": "shape=\"$1\"$0",
+        "defaultValue": "circle",
+        "desc": "指定头像的形状，可选值为 circle、square",
+        "valueOptions": "avatarshapemode",
+        "valueType": "String",
+        "name": "形状",
+        "example": "shape=\"circle\"",
+        "triggerSuggest": "true"
+      },
+      "size": {
+        "insertText": "size=\"$1\"$0",
+        "defaultValue": "default",
+        "desc": "设置头像的大小，可选值为 large、small、default",
+        "valueOptions": "sizemode",
+        "valueType": "String",
+        "name": "大小",
+        "example": "size=\"default\"",
+        "triggerSuggest": "true"
+      },
+      "src": {
+        "insertText": "v-bind:src=\"$1\"$0",
+        "defaultValue": "",
+        "desc": "图片类头像的资源地址",
+        "valueOptions": "entityfieldmode",
+        "valueType": "String",
+        "name": "资源地址",
+        "example": "v-bind:src=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "comp-src": {
+        "insertText": ":comp-src=\"$1\"$0",
+        "defaultValue": "",
+        "desc": "构件资源名称,资源名称必须用单引号括起来",
+        "valueOptions": "resources",
+        "valueType": "String",
+        "name": "构件资源",
+        "example": ":comp-src=\"'构件资源名称'\"",
+        "triggerSuggest": "true"
+      },
+      "amid-src": {
+        "insertText": ":amid-src=\"'${1:资源id}'\"$0",
+        "defaultValue": "",
+        "desc": "附件id资源",
+        "valueOptions": "",
+        "valueType": "String",
+        "name": "附件id资源",
+        "example": ":amid-src=\"'资源id'\"",
+        "triggerSuggest": null
+      },
+      "icon": {
+        "insertText": "icon=\"${1:ionic}\"$0",
+        "defaultValue": "",
+        "desc": "设置头像的图标类型，参考vui-icon标签",
+        "valueOptions": "",
+        "valueType": "String",
+        "name": "图标",
+        "example": "icon=\"ionic\"",
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-avatar widget-code=\"%1\" widget-name=\"%1\" v-bind:src=\"$1\"$0></vui-avatar>",
+    "example": "<vui-avatar v-bind:src=\"实体.current.字段\"></vui-avatar>",
+    "desc": "用来代表用户或事物，支持图片、图标或字符展示",
+    "triggerSuggest": "true"
+  },
+  "vui-button": {
+    "label": "按钮",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_button1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_button1\"",
+        "triggerSuggest": null
+      },
+      "type": {
+        "insertText": "type=\"$1\"$0",
+        "defaultValue": null,
+        "desc": "按钮类型，可选值为primary、ghost、dashed、text、info、success、warning、error或者不设置",
+        "valueOptions": "buttontype",
+        "valueType": "String",
+        "name": "按钮样式类型",
+        "example": "type=\"primary\"",
+        "triggerSuggest": "true"
+      },
+      "size": {
+        "insertText": "size=\"$1\"$0",
+        "defaultValue": "",
+        "desc": "按钮大小，可选值为large、small、default或者不设置",
+        "valueOptions": "sizemode",
+        "valueType": "String",
+        "name": "按钮大小",
+        "example": "size=\"small\"",
+        "triggerSuggest": "true"
+      },
+      "shape": {
+        "insertText": "shape=\"$1\"$0",
+        "defaultValue": "",
+        "desc": "按钮形状，可选值为circle或者不设置",
+        "valueOptions": "shapemode",
+        "valueType": "String",
+        "name": "显示模式",
+        "example": "shape=\"circle\"",
+        "triggerSuggest": "true"
+      },
+      "long": {
+        "insertText": ":long=\"${1:true}\"$0",
+        "defaultValue": "false",
+        "desc": "开启后，按钮的长度为 100%",
+        "valueOptions": "boolmode",
+        "valueType": "Boolean",
+        "name": "长按钮",
+        "example": ":long=\"false\"",
+        "triggerSuggest": null
+      },
+      "html-type": {
+        "insertText": "html-type=\"$1\"$0",
+        "defaultValue": "button",
+        "desc": "设置button原生的type，可选值为button、submit、reset",
+        "valueOptions": "buttonhtmltype",
+        "valueType": "String",
+        "name": "按钮类型",
+        "example": "html-type=\"button\"",
+        "triggerSuggest": "true"
+      },
+      "disabled": {
+        "insertText": "v-bind:disabled=\"$1\"$0",
+        "defaultValue": "false",
+        "desc": "设置按钮为禁用状态",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "禁用",
+        "example": ":disabled=\"false\" 或者 v-bind:disabled=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "loading": {
+        "insertText": "v-bind:loading=\"$1\"$0",
+        "defaultValue": "false",
+        "desc": "设置按钮为加载中状态",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "加载",
+        "example": ":loading=\"false\" 或者 v-bind:loading=\"字体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "icon": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "设置按钮的图标类型",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "图标",
+        "example": "icon=\"star\"",
+        "triggerSuggest": null
+      },
+      "v-show": {
+        "insertText": "v-show=\"$1\"$0",
+        "defaultValue": "true",
+        "desc": "是否显示",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示",
+        "example": "v-show=\"true\" 或者 v-show=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "click": {
+        "insertText": "click=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "点击事件，使用v-on:click进行绑定",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "点击事件",
+        "example": null,
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-button widget-code=\"%1\" widget-name=\"%1\" $0>按钮</vui-button>",
+    "example": "<vui-button>按钮</vui-button>",
+    "desc": "基础组件，触发业务逻辑时使用",
+    "triggerSuggest": "true"
+  },
+  "vui-button-group": {
+    "label": "按钮组",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_button_group1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_button_group1\"",
+        "triggerSuggest": null
+      },
+      "size": {
+        "insertText": "size=\"$1\" $0",
+        "defaultValue": "default",
+        "desc": "按钮大小，可选值为large、small、default或者不设置",
+        "valueOptions": "buttonsize",
+        "valueType": "String",
+        "name": "按钮大小",
+        "example": "size=\"small\"",
+        "triggerSuggest": "true"
+      },
+      "shape": {
+        "insertText": "shape=\"circle\" $0",
+        "defaultValue": null,
+        "desc": "按钮形状，可选值为circle或者不设置",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "显示模式",
+        "example": "shape=\"circle\"",
+        "triggerSuggest": null
+      },
+      "vertical": {
+        "insertText": ":vertical=\"${1:true}\" $0",
+        "defaultValue": "false",
+        "desc": "是否纵向排列按钮组",
+        "valueOptions": "boolmode",
+        "valueType": "Boolean",
+        "name": "纵向排列",
+        "example": ":vertical=\"false\"",
+        "triggerSuggest": null
+      },
+      "v-show": {
+        "insertText": "v-show=\"$1\" $0",
+        "defaultValue": "true",
+        "desc": "是否显示",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示",
+        "example": "v-show=\"true\" 或者 v-show=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      }
+    },
+    "autoCompleteSource": "<vui-button-group widget-code=\"%1\" widget-name=\"%1\">\n    ${1:vui-button}$0\n</vui-button-group>",
+    "example": "<vui-button-group>\n    <vui-button>昨天</vui-button>\n    <vui-button>今天</vui-button>\n    <vui-button disabled>明天</vui-button>\n</vui-button-group>",
+    "desc": "按钮组，包装一组按钮",
+    "triggerSuggest": "true"
+  },
+  "vui-calendar": {
+    "label": "日历",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_calendar1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_calendar1\"",
+        "triggerSuggest": null
+      },
+      "value": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "绑定数据，可使用 v-model 双向绑定",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "绑定数据",
+        "example": "value=\"01-26\"",
+        "triggerSuggest": "true"
+      },
+      ":value": {
+        "insertText": "v-model=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "绑定数据，可使用 v-model 双向绑定",
+        "valueOptions": "entityfieldmode",
+        "valueType": "String",
+        "name": "绑定数据",
+        "example": "value=\"01-26\"",
+        "triggerSuggest": "true"
+      },
+      "display": {
+        "insertText": "display=\"$1\" $0",
+        "defaultValue": "center",
+        "desc": "显示模式： center 居中显示、 inline 行内显示 、bubble 冒泡显示 、top 显示在最顶端、 bottom 显示在最底端、hide 隐藏，不显示",
+        "valueOptions": "calendardisplaytypemode",
+        "valueType": "String",
+        "name": "显示模式",
+        "example": "display=\"center\"",
+        "triggerSuggest": "true"
+      },
+      "layout": {
+        "insertText": "layout=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "显示布局：liquid  流式布局显示,fixed  fixed布局显示",
+        "valueOptions": "calendarlayoutmode",
+        "valueType": "String",
+        "name": "显示布局",
+        "example": "layout=\"liquid\"",
+        "triggerSuggest": "true"
+      },
+      "weeks": {
+        "insertText": ":weeks=\"${1:1}\" $0",
+        "defaultValue": "6",
+        "desc": "显示几周",
+        "valueOptions": "",
+        "valueType": "Number",
+        "name": "显示几周",
+        "example": ":weeks=\"1\"",
+        "triggerSuggest": null
+      },
+      "placeholder": {
+        "insertText": "placeholder=\"${1:请选择}\" $0",
+        "defaultValue": null,
+        "desc": "占位文本",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "占位文本",
+        "example": "placeholder=\"请选择\"",
+        "triggerSuggest": null
+      },
+      "calendar-scroll": {
+        "insertText": "calendar-scroll=\"$1\" $0",
+        "defaultValue": "horizontal",
+        "desc": "日历滚动方向： horizontal  水平方向 、vertical   垂直方向",
+        "valueOptions": "calendarscrolltmode",
+        "valueType": "String",
+        "name": "滚动方向",
+        "example": "calendar-scroll=\"horizontal\"",
+        "triggerSuggest": "true"
+      },
+      "disabled": {
+        "insertText": "v-bind:disabled=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "设置是否禁用",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "禁用",
+        "example": ":disabled=\"false\" 或者 v-bind:disabled=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "viewonly": {
+        "insertText": "v-bind:viewonly=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "设置显示模式",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示模式",
+        "example": ":viewonly=\"false\" 或者 v-bind:viewonly=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "min": {
+        "insertText": "min=\"2018-12-31\"",
+        "defaultValue": null,
+        "desc": "设置最小日期",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "最小日期",
+        "example": "min=\"2018-12-31\"",
+        "triggerSuggest": null
+      },
+      "max": {
+        "insertText": "max=\"2019-12-31\"",
+        "defaultValue": null,
+        "desc": "设置最大日期",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "最大日期",
+        "example": "max=\"2019-12-31\"",
+        "triggerSuggest": null
+      },
+      "on-change": {
+        "insertText": "on-change=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "值改变时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "值改变事件",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-ok": {
+        "insertText": "on-ok=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "点击确定时触发 ",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "点击确定",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-cancel": {
+        "insertText": "on-cancel=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "点击取消时触发 ",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "清空日期",
+        "example": null,
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-calendar widget-code=\"%1\" widget-name=\"%1\" $0></vui-calendar>",
+    "example": "<vui-calendar v-model=\"实体.current.字段\" display=\"bottom\" :weeks=\"1\" max=\"2018-02-01\" placeholder=\"请选择\"></vui-calendar>",
+    "desc": "选择年、月、日期",
+    "triggerSuggest": "true"
+  },
+  "vui-card": {
+    "label": "卡片",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_card1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_card1\"",
+        "triggerSuggest": null
+      },
+      "bordered": {
+        "insertText": ":bordered=\"$1\" $0",
+        "defaultValue": "true",
+        "desc": "是否显示边框，建议在灰色背景下使用",
+        "valueOptions": "boolmode",
+        "valueType": "Boolean",
+        "name": "边框",
+        "example": ":bordered=\"true\"",
+        "triggerSuggest": "true"
+      },
+      "dis-hover": {
+        "insertText": ":dis-hover=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "禁用鼠标悬停显示阴影",
+        "valueOptions": "boolmode",
+        "valueType": "Boolean",
+        "name": "禁用鼠标悬停显示阴影",
+        "example": ":dis-hover=\"false\"",
+        "triggerSuggest": "true"
+      },
+      "shadow": {
+        "insertText": ":shadow=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "卡片阴影，建议在灰色背景下使用",
+        "valueOptions": "boolmode",
+        "valueType": "Boolean",
+        "name": "卡片阴影",
+        "example": ":shadow=\"false\"",
+        "triggerSuggest": "true"
+      },
+      "padding": {
+        "insertText": ":padding=\"${1:26}\" $0",
+        "defaultValue": "0",
+        "desc": "卡片内部间距，单位 px",
+        "valueOptions": null,
+        "valueType": "Number",
+        "name": "内间距",
+        "example": ":padding=\"16\"",
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-card widget-code=\"%1\" widget-name=\"%1\" $0></vui-card>",
+    "example": "<vui-card>\n    <p slot=\"title\">The standard card</p>\n    <p>Content of card</p>\n</vui-card>",
+    "desc": "基础容器，用来显示文字、列表、图文等内容，也可以配合其它组件一起使用",
+    "triggerSuggest": "true"
+  },
+  "vui-center": {
+    "label": "居中布局",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_center1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_center1\"",
+        "triggerSuggest": null
+      },
+      "width": {
+        "insertText": ":width=\"${1:100%}\"",
+        "defaultValue": "100%",
+        "desc": "宽度，单位px",
+        "valueOptions": null,
+        "valueType": "Number|String",
+        "name": "宽度",
+        "example": ":width=\"900\"",
+        "triggerSuggest": null
+      },
+      "height": {
+        "insertText": ":height=\"${1:100%}\"",
+        "defaultValue": "100%",
+        "desc": "高度，单位px",
+        "valueOptions": null,
+        "valueType": "Number|String",
+        "name": "高度",
+        "example": ":height=\"500\"",
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-center widget-code=\"%1\" widget-name=\"%1\">$0</vui-center>",
+    "example": "<vui-center>\n    <span>我是居中显示</span>\n    <div class=\"bg\" slot=\"background\"></div>\n</vui-center>",
+    "desc": "居中显示子元素",
+    "triggerSuggest": "true"
+  },
+  "vui-checkbox": {
+    "label": "复选框",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_checkbox1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_checkbox1\"",
+        "triggerSuggest": null
+      },
+      "value": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "绑定数据，可使用 v-model 双向绑定",
+        "valueOptions": null,
+        "valueType": "Number|String",
+        "name": "标识值",
+        "example": ":value=\"true\"",
+        "triggerSuggest": null
+      },
+      ":value": {
+        "insertText": "v-model=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "绑定数据，可使用 v-model 双向绑定",
+        "valueOptions": "entityfieldmode",
+        "valueType": "Number|String",
+        "name": "标识值",
+        "example": ":value=\"true\"",
+        "triggerSuggest": null
+      },
+      "disabled": {
+        "insertText": "v-bind:disabled=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "是否禁用当前项",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "禁用",
+        "example": ":disabled=\"false\" 或者 v-bind:disabled=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "on-change": {
+        "insertText": "on-change=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "在选项状态发生改变时触发，返回已选中的数组。通过修改外部的数据改变时不会触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "数据改变",
+        "example": null,
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-checkbox widget-code=\"%1\" widget-name=\"%1\" v-model=\"$1\">\n    <vui-checkbox-item value=\"值$0\" text=\"显示文本\"></vui-checkbox-item>\n</vui-checkbox>",
+    "example": "<vui-checkbox :value=\"true\" v-bind:disabled=\"false\" ></vui-checkbox>",
+    "desc": "复选框,该控件只在列表中使用，如需单独使用，请使用开关控件",
+    "triggerSuggest": "true"
+  },
+  "vui-checkbox-item": {
+    "label": "多选组-项",
+    "attributes": {
+      "value": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "多选组标识值",
+        "valueOptions": null,
+        "valueType": "Number|String",
+        "name": "标识值",
+        "example": "value=\"标识值\"",
+        "triggerSuggest": null
+      },
+      "text": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "多选组显示值，如果未设置，则使用标识值",
+        "valueOptions": null,
+        "valueType": "Number|String",
+        "name": "显示值",
+        "example": "text=\"显示值\"",
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-checkbox-item value=\"${1:值}\" text=\"${2:显示文本}\"></vui-checkbox-item>",
+    "example": "1.<vui-checkbox-list :data-source=\"绑定实体.current\" value-field=\"标识字段\" text-field=\"显示字段\" :item-source=\"候选项实体\" item-value=\"候选项标识字段\" item-text=\"候选项显示字段\" :disabled=\"实体.current.字段\" :viewonly=\"实体.current.字段\" v-show=\"实体.current.字段\">\n</vui-checkbox-list>\n2.当候选项来源不是数据源，为固定数据项时，可以使用该标签：\n<vui-checkbox-list :data-source=\"绑定实体.current\" value-field=\"标识字段\" text-field=\"显示字段\" :disabled=\"实体.current.字段\" :viewonly=\"实体.current.字段\" v-show=\"实体.current.字段\">\n <vui-checkbox-item value=\"bj\" text=\"北京\"></vui-checkbox-item>\n <vui-checkbox-item value=\"sh\" text=\"上海\"></vui-checkbox-item>\n <vui-checkbox-item value=\"sz\" text=\"深圳\"></vui-checkbox-item>\n</vui-checkbox-list>",
+    "desc": "多选组,自定义项",
+    "triggerSuggest": null
+  },
+  "vui-checkbox-list": {
+    "label": "多选组",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_checkbox_list1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_checkbox_list1\"",
+        "triggerSuggest": null
+      },
+      "data-source": {
+        "insertText": ":data-source=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "绑定数据",
+        "valueOptions": "entitymode",
+        "valueType": "String",
+        "name": "绑定数据",
+        "example": ":data-source=\"实体.current\"",
+        "triggerSuggest": "true"
+      },
+      "value-field": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "设置标识字段",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "标识字段",
+        "example": "value-field=\"标识字段\"",
+        "triggerSuggest": null
+      },
+      "text-field": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "设置显示字段",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "显示字段",
+        "example": "text-field=\"显示字段\"",
+        "triggerSuggest": null
+      },
+      "item-source": {
+        "insertText": ":item-source=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "候选项绑定数据",
+        "valueOptions": "datasourcemode",
+        "valueType": "String",
+        "name": "候选项绑定数据",
+        "example": ":item-source=\"实体\"",
+        "triggerSuggest": "true"
+      },
+      "item-value": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "设置候选项标识字段",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "候选项标识字段",
+        "example": "item-value=\"候选项标识字段\"",
+        "triggerSuggest": null
+      },
+      "item-text": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "设置候选项显示字段",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "候选项显示字段",
+        "example": "item-text=\"候选项显示字段\"",
+        "triggerSuggest": null
+      },
+      "disabled": {
+        "insertText": "v-bind:disabled=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "设置禁用状态",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "禁用",
+        "example": ":disabled=\"false\" 或者 v-bind:disabled=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "viewonly": {
+        "insertText": "v-bind:viewonly=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "设置显示模式",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示模式",
+        "example": ":viewonly=\"false\" 或者 v-bind:viewonly=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "v-show": {
+        "insertText": "v-show=\"$1\" $0",
+        "defaultValue": "true",
+        "desc": "是否显示",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示",
+        "example": "v-show=\"true\" 或者 v-show=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "on-change": {
+        "insertText": "on-change=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "在选项状态发生改变时触发，返回当前选中的项。通过修改外部的数据改变时不会触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "数据改变",
+        "example": null,
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-checkbox-list widget-code=\"%1\" widget-name=\"%1\" :data-source=\"$1\" value-field=\"${2:标识字段}\" text-field=\"${3:显示字段}\" :item-source=\"${4:候选项实体}\" item-value=\"${5:候选项标识字段}\" item-text=\"${6:候选项显示字段}\">\n</vui-checkbox-list>",
+    "example": "<vui-checkbox-list :data-source=\"绑定实体.current\" value-field=\"标识字段\" text-field=\"显示字段\" :item-source=\"候选项实体\" item-value=\"候选项标识字段\" item-text=\"候选项显示字段\" v-bind:disabled=\"实体.current.字段\" v-bind:viewonly=\"实体.current.字段\" v-show=\"实体.current.字段\">\n</vui-checkbox-list>",
+    "desc": "主要用于一组可选项多项选择",
+    "triggerSuggest": "true"
+  },
+  "vui-col": {
+    "label": "栅格布局列",
+    "attributes": {
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_col1\"",
+        "triggerSuggest": null
+      },
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_col1\"",
+        "triggerSuggest": null
+      },
+      "span": {
+        "insertText": ":span=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "栅格的占位格数，可选值为0~24的整数，为 0 时，相当于display:none",
+        "valueOptions": "colspanmode",
+        "valueType": "Number|String",
+        "name": "占位格数",
+        "example": ":span=\"10\"",
+        "triggerSuggest": "true"
+      },
+      "order": {
+        "insertText": ":order=\"${1:1}\"",
+        "defaultValue": null,
+        "desc": "栅格的顺序，在flex布局模式下有效",
+        "valueOptions": null,
+        "valueType": "Number|String",
+        "name": "栅格顺序",
+        "example": ":order=\"1\"",
+        "triggerSuggest": null
+      },
+      "offset": {
+        "insertText": ":offset=\"${1:2}\"",
+        "defaultValue": null,
+        "desc": "栅格左侧的间隔格数，间隔内不可以有栅格",
+        "valueOptions": null,
+        "valueType": "Number|String",
+        "name": "间隔格数",
+        "example": ":offset=\"2\"",
+        "triggerSuggest": null
+      },
+      "push": {
+        "insertText": ":push=\"${1:1}\"",
+        "defaultValue": null,
+        "desc": "栅格向右移动格数",
+        "valueOptions": null,
+        "valueType": "Number|String",
+        "name": "向右移动格数",
+        "example": ":push=\"1\"",
+        "triggerSuggest": null
+      },
+      "pull": {
+        "insertText": ":pull=\"${1:1}\"",
+        "defaultValue": null,
+        "desc": "栅格向左移动格数",
+        "valueOptions": null,
+        "valueType": "Number|String",
+        "name": "向左移动格数",
+        "example": ":pull=\"1\"",
+        "triggerSuggest": null
+      },
+      "class-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "自定义的class名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "类名",
+        "example": "class-name=\"\"",
+        "triggerSuggest": null
+      },
+      "xs": {
+        "insertText": ":xs=\"${1:2}\"",
+        "defaultValue": null,
+        "desc": "大于768px 响应式栅格，可为栅格数或一个包含其他属性的对象",
+        "valueOptions": null,
+        "valueType": "Number|String",
+        "name": "xs",
+        "example": ":xs=\"2\"",
+        "triggerSuggest": null
+      },
+      "sm": {
+        "insertText": ":sm=\"${1:3}\"",
+        "defaultValue": null,
+        "desc": "大于等于768px 响应式栅格，可为栅格数或一个包含其他属性的对象",
+        "valueOptions": null,
+        "valueType": "Number|String",
+        "name": "sm",
+        "example": ":sm=\"3\"",
+        "triggerSuggest": null
+      },
+      "md": {
+        "insertText": ":md=\"${1:23}\"",
+        "defaultValue": null,
+        "desc": "大于等于992px 响应式栅格，可为栅格数或一个包含其他属性的对象",
+        "valueOptions": null,
+        "valueType": "Number|String",
+        "name": "md",
+        "example": ":md=\"23\"",
+        "triggerSuggest": null
+      },
+      "lg": {
+        "insertText": ":lg=\"${1:8}\"",
+        "defaultValue": null,
+        "desc": "大于等于1200px响应式栅格，可为栅格数或一个包含其他属性的对象",
+        "valueOptions": null,
+        "valueType": "Number|String",
+        "name": "lg",
+        "example": ":lg=\"8\"",
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-col widget-code=\"%1\" widget-name=\"%1\" span=\"$1\"$0></vui-col>",
+    "example": "<vui-row justify=\"end\" class=\"code-row-bg\">\n    <vui-col :xs=\"2\" :sm=\"4\" :md=\"6\" :lg=\"8\">Col</vui-col>\n    <vui-col :xs=\"20\" :sm=\"16\" :md=\"12\" :lg=\"8\">Col</vui-col>\n    <vui-col :xs=\"2\" :sm=\"4\" :md=\"6\" :lg=\"8\">Col</vui-col>\n</vui-row>",
+    "desc": "栅格布局列，分为24等分",
+    "triggerSuggest": "true"
+  },
+  "vui-collapse": {
+    "label": "折叠面板",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_collapse1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_avatar1\"",
+        "triggerSuggest": null
+      },
+      "value": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "当前激活的面板的 name，可以使用 v-model 双向绑定;手动写['面板name1','面板name2']",
+        "valueOptions": null,
+        "valueType": "Array|String",
+        "name": "绑定数据",
+        "example": ":value=\"['面板name1','面板name2']\" 或者 v-model=\"实体.字段\"",
+        "triggerSuggest": "true"
+      },
+      ":value": {
+        "insertText": "v-model=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "当前激活的面板的 name，可以使用 v-model 双向绑定;手动写['面板name1','面板name2']",
+        "valueOptions": "entityfieldmode",
+        "valueType": "Array|String",
+        "name": "绑定数据",
+        "example": ":value=\"['面板name1','面板name2']\" 或者 v-model=\"实体.字段\"",
+        "triggerSuggest": "true"
+      },
+      "accordion": {
+        "insertText": "v-bind:accordion=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "是否开启手风琴模式，开启后每次至多展开一个面板",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "风琴模式",
+        "example": "v-bind:accordion=\"false\" 或者 v-bind:accordion=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "v-show": {
+        "insertText": "v-show=\"$1\" $0",
+        "defaultValue": "true",
+        "desc": "是否显示",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示",
+        "example": "v-show=\"true\" 或者 v-show=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "on-change": {
+        "insertText": "on-change=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "切换面板时触发，返回当前已展开的面板的 key，格式为数组",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "面板切换事件",
+        "example": null,
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-collapse widget-code=\"%1\" widget-name=\"%1\">\n    ${1:vui-panel}$0\n</vui-collapse>",
+    "example": "<vui-collapse v-bind:value=\"[1,2]\" widget-code=\"vuiCollapse1\" v-show=\"true\">\n    <vui-panel name=\"1\">面板1\n        <p slot=\"content\">1111111</p>\n    </vui-panel>\n    <vui-panel name=\"2\">面板2\n        <p slot=\"content\">2222222</p>\n    </vui-panel>\n</vui-collapse>",
+    "desc": "将内容区域折叠/展开",
+    "triggerSuggest": "true"
+  },
+  "vui-combo-box": {
+    "label": "下拉选择",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_combo_box1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_combo_box1\"",
+        "triggerSuggest": null
+      },
+      "data-source": {
+        "insertText": ":data-source=\"$1}\" $0",
+        "defaultValue": null,
+        "desc": "绑定数据",
+        "valueOptions": "entitymode",
+        "valueType": "String",
+        "name": "绑定数据",
+        "example": ":data-source=\"实体.current\"",
+        "triggerSuggest": "true"
+      },
+      "value-field": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "设置标识字段",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "标识字段",
+        "example": "value-field=\"标识字段\"",
+        "triggerSuggest": null
+      },
+      "text-field": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "设置显示字段",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "显示字段",
+        "example": "text-field=\"显示字段\"",
+        "triggerSuggest": null
+      },
+      "item-source": {
+        "insertText": ":item-source=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "候选项绑定数据",
+        "valueOptions": "datasourcemode",
+        "valueType": "String",
+        "name": "候选项绑定数据",
+        "example": ":item-source=\"实体\"",
+        "triggerSuggest": "true"
+      },
+      "item-value": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "设置候选项标识字段",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "候选项标识字段",
+        "example": "item-value=\"候选项标识字段\"",
+        "triggerSuggest": null
+      },
+      "item-text": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "设置候选项显示字段",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "候选项显示字段",
+        "example": "item-text=\"候选项显示字段\"",
+        "triggerSuggest": null
+      },
+      "disabled": {
+        "insertText": "v-bind:disabled=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "设置输入框为禁用状态",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "禁用",
+        "example": ":disabled=\"false\" 或者 v-bind:disabled=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "viewonly": {
+        "insertText": "v-bind:viewonly=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "设置输入框为显示模式",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示模式",
+        "example": ":viewonly=\"false\" 或者 v-bind:viewonly=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "clearable": {
+        "insertText": ":clearable=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "是否显示清除按钮",
+        "valueOptions": "boolmode",
+        "valueType": "Boolean",
+        "name": "显示清除按钮",
+        "example": ":clearable=\"true\"",
+        "triggerSuggest": "true"
+      },
+      "empty-msg": {
+        "insertText": "empty-msg=\"${1:无候选项}\"",
+        "defaultValue": null,
+        "desc": "空时显示的内容",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "空时显示内容",
+        "example": "empty-msg=\"无候选项\"",
+        "triggerSuggest": null
+      },
+      "v-show": {
+        "insertText": "v-show=\"$1\" $0",
+        "defaultValue": "true",
+        "desc": "是否显示",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示",
+        "example": "v-show=\"false\" 或者 v-show=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "on-change": {
+        "insertText": "on-change=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "选中的候选项变化时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "数据改变",
+        "example": null,
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-combo-box widget-code=\"%1\" widget-name=\"%1\" :data-source=\"$1\" value-field=\"${2:标识字段}\" text-field=\"${3:显示字段}\" :item-source=\"${4:候选项实体}\" item-value=\"${5:候选项标识字段}\" item-text=\"${6:候选项显示字段}\">\n</vui-combo-box>$0",
+    "example": "1.<vui-combo-box :data-source=\"绑定实体.current\" value-field=\"标识字段\" text-field=\"显示字段\" :item-source=\"候选项实体\" item-value=\"候选项标识字段\" item-text=\"候选项显示字段\" v-bind:disabled=\"实体.current.字段\" v-bind:viewonly=\"实体.current.字段\" v-show=\"实体.current.字段\">\n</vui-combo-box>\n2.当候选项来源不是数据源，为固定数据项时，可以使用该标签：\n<vui-combo-box :data-source=\"绑定实体.current\" value-field=\"标识字段\" text-field=\"显示字段\" :disabled=\"实体.current.字段\" :viewonly=\"实体.current.字段\" v-show=\"实体.current.字段\">\n <vui-combo-item value=\"bj\" text=\"北京\"></vui-combo-item>\n <vui-combo-item value=\"sh\" text=\"上海\"></vui-combo-item>\n <vui-combo-item value=\"sz\" text=\"深圳\"></vui-combo-item>\n</vui-combo-box>",
+    "desc": "下拉选择",
+    "triggerSuggest": "true"
+  },
+  "vui-combo-item": {
+    "label": "下拉选择-项",
+    "attributes": {
+      "value": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "标识值",
+        "valueOptions": null,
+        "valueType": "Number|String",
+        "name": "标识值",
+        "example": "value=\"标识值\"",
+        "triggerSuggest": null
+      },
+      "text": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "显示值，如果未设置，则使用标识值",
+        "valueOptions": null,
+        "valueType": "Number|String",
+        "name": "显示值",
+        "example": "text=\"显示文本\"",
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-combo-item value=\"${1:值}\" text=\"${2:显示文本}\"></vui-combo-item>",
+    "example": "<vui-combo-box :data-source=\"绑定实体.current\" value-field=\"标识字段\" text-field=\"显示字段\" :disabled=\"实体.current.字段\" :viewonly=\"实体.current.字段\" v-show=\"实体.current.字段\">\n <vui-combo-item value=\"bj\" text=\"北京\"></vui-combo-item>\n <vui-combo-item value=\"sh\" text=\"上海\"></vui-combo-item>\n <vui-combo-item value=\"sz\" text=\"深圳\"></vui-combo-item>\n</vui-combo-box>",
+    "desc": "下拉选择,自定义项",
+    "triggerSuggest": null
+  },
+  "vui-container": {
+    "label": "组件容器",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_container1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_container1\"",
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-container widget-code=\"%1\" widget-name=\"%1\"></vui-container>",
+    "example": "",
+    "desc": "用于打开指定的窗体",
+    "triggerSuggest": null
+  },
+  "vui-content": {
+    "label": "内容栏",
+    "attributes": {},
+    "autoCompleteSource": "<vui-content>内容栏$0</vui-content>",
+    "example": "<vui-layout style=\"border:1px solid #e5e5e5;height:350px;\">\n  <vui-header style=\"background-color:#dcecd0;\">顶部栏</vui-header>\n  <vui-layout>\n   <vui-sider place=\"right\" style=\"background-color:#f5e6d4;\">右侧栏</vui-sider>\n   <vui-content style=\"background-color:#cbe3f1;\">内容栏</vui-content>\n  </vui-layout>\n  <vui-footer style=\"background-color:#efdbf9;\">底部栏</vui-footer>\n </vui-layout>",
+    "desc": "内容部分，自带默认样式，其下可嵌套任何元素，只能放在 Layout 中",
+    "triggerSuggest": null
+  },
+  "vui-date-navigator": {
+    "label": "日期导航",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_date_navigator1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_date_navigator1\"",
+        "triggerSuggest": null
+      },
+      "default-value": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "默认值，不设置默认为当前日期",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "默认值",
+        "example": "default-value=\"2018-02-13\"",
+        "triggerSuggest": null
+      },
+      "step": {
+        "insertText": ":step=\"${1:1}\" $0",
+        "defaultValue": "1",
+        "desc": "步进值",
+        "valueOptions": null,
+        "valueType": "Number",
+        "name": "步进值",
+        "example": ":step=\"5\"",
+        "triggerSuggest": null
+      },
+      "mode": {
+        "insertText": "mode=\"$1\" $0",
+        "defaultValue": "date",
+        "desc": "显示模式: year 显示年份, month 显示月份, date 显示日期",
+        "valueOptions": "datenavigatormode",
+        "valueType": "String",
+        "name": "显示模式",
+        "example": "mode=\"date\"",
+        "triggerSuggest": "true"
+      },
+      "value": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "绑定数据，可使用 v-model 双向绑定",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "绑定数据",
+        "example": "value=\"2018-01-20\" 或者 v-model=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      ":value": {
+        "insertText": "v-model=\"$1\"",
+        "defaultValue": null,
+        "desc": "绑定数据，可使用 v-model 双向绑定",
+        "valueOptions": "entityfieldmode",
+        "valueType": "String",
+        "name": "绑定数据",
+        "example": "value=\"2018-01-20\" 或者 v-model=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "min": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "设置最小日期值",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "最小值",
+        "example": "min=\"2017-01-12\"",
+        "triggerSuggest": null
+      },
+      "max": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "设置最大日期值",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "最大值",
+        "example": "max=\"2022-01-12\"",
+        "triggerSuggest": null
+      },
+      "format": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "设置显示格式",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "显示格式",
+        "example": "format=\"mm-dd\"",
+        "triggerSuggest": null
+      },
+      "on-change": {
+        "insertText": "on-change=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "值改变事件",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "值改变事件",
+        "example": null,
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-date-navigator widget-code=\"%1\" widget-name=\"%1\" v-model=\"$1\"$0></vui-date-navigator>",
+    "example": "<vui-date-navigator v-model=\"实体.current.字段\" mode=\"date\"></vui-date-navigator>",
+    "desc": "日期导航",
+    "triggerSuggest": "true"
+  },
+  "vui-date-picker": {
+    "label": "日期",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_date_picker1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_date_picker1\"",
+        "triggerSuggest": null
+      },
+      "value": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "绑定数据，可使用 v-model 双向绑定",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "绑定数据",
+        "example": "value=\"01-26\" 或者 v-model=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      ":value": {
+        "insertText": "v-model=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "绑定数据，可使用 v-model 双向绑定",
+        "valueOptions": "entityfieldmode",
+        "valueType": "String",
+        "name": "绑定数据",
+        "example": "value=\"01-26\" 或者 v-model=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "type": {
+        "insertText": "type=\"$1\" $0",
+        "defaultValue": "date",
+        "desc": "显示类型，可选值为 date,daterange,datetime,datetimerange,year,month",
+        "valueOptions": "datetypemode",
+        "valueType": "String",
+        "name": "类型",
+        "example": "type=\"date\"",
+        "triggerSuggest": "true"
+      },
+      "format": {
+        "insertText": "format=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "展示的日期格式",
+        "valueOptions": "dateformatmode",
+        "valueType": "String",
+        "name": "格式",
+        "example": "format=\"yyyy-MM-dd\"",
+        "triggerSuggest": "true"
+      },
+      "size": {
+        "insertText": "size=\"$1\" $0",
+        "defaultValue": "default",
+        "desc": "输入框尺寸，可选值为large、small、default或者不设置",
+        "valueOptions": "sizemode",
+        "valueType": "String",
+        "name": "输入框尺寸",
+        "example": "size=\"default\"",
+        "triggerSuggest": "true"
+      },
+      "disabled": {
+        "insertText": "v-bind:disabled=\"1\" $0",
+        "defaultValue": "false",
+        "desc": "设置输入框为禁用状态",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "禁用",
+        "example": ":disabled=\"false\" 或者 v-bind:disabled=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "readonly": {
+        "insertText": "v-bind:readonly=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "设置输入框为只读",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "只读",
+        "example": ":readonly=\"false\" 或者 v-bind:readonly=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "viewonly": {
+        "insertText": "v-bind:viewonly=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "设置输入框为显示模式",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示模式",
+        "example": ":viewonly=\"false\" 或者 v-bind:viewonly=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "editable": {
+        "insertText": ":editable=\"$1\" $0",
+        "defaultValue": "true",
+        "desc": "文本框是否可以输入，只在没有使用 slot 时有效",
+        "valueOptions": "boolmode",
+        "valueType": "Boolean",
+        "name": "可编辑",
+        "example": ":editable=\"true\"",
+        "triggerSuggest": "true"
+      },
+      "transfer": {
+        "insertText": ":transfer=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "是否将弹层放置于body内，在Tabs带有fixed的Table列内使用时，建议添加此属性，它将不受父级样式影响，从而达到更好的效果",
+        "valueOptions": "boolmode",
+        "valueType": "Boolean",
+        "name": "弹层放置",
+        "example": ":transfer=\"false\"",
+        "triggerSuggest": "true"
+      },
+      "v-show": {
+        "insertText": "v-show=\"$1\" $0",
+        "defaultValue": "true",
+        "desc": "是否显示",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示",
+        "example": "v-show=\"true\" 或者 v-show=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "clearable": {
+        "insertText": ":clearable=\"$1\" $0",
+        "defaultValue": "true",
+        "desc": "是否显示清除按钮",
+        "valueOptions": "boolmode",
+        "valueType": "Boolean",
+        "name": "显示清除按钮",
+        "example": ":clearable=\"true\"",
+        "triggerSuggest": "true"
+      },
+      "on-change": {
+        "insertText": "on-change=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "日期发生变化时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "数据改变",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-open-change": {
+        "insertText": "on-open-change=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "弹出日历和关闭日历时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "弹出改变",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-ok": {
+        "insertText": "on-ok=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "在 confirm 模式下有效，点击确定按钮时触发 ",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "点击确定",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-clear": {
+        "insertText": "on-clear=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "在 confirm 模式或 clearable = true 时有效，在清空日期时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "清空日期",
+        "example": null,
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-date-picker widget-code=\"%1\" widget-name=\"%1\" type=\"$1\"$0></vui-date-picker>",
+    "example": "<vui-date-picker widget-code=\"vuiDatePicker1\" type=\"date\" v-model=\"实体.current.字段\" placeholder=\"选择日期\" style=\"width: 200px\" v-show=\"false\"></vui-date-picker>",
+    "desc": "选择或输入日期，支持年、月、日期等类型，支持选择范围",
+    "triggerSuggest": "true"
+  },
+  "vui-dict-box": {
+    "label": "弹出选择",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_dict_box1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_avatar1\"",
+        "triggerSuggest": null
+      },
+      "data-source": {
+        "insertText": ":data-source=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "绑定数据",
+        "valueOptions": "entitymode",
+        "valueType": "String",
+        "name": "绑定数据",
+        "example": ":data-source=\"实体.current\"",
+        "triggerSuggest": "true"
+      },
+      "value-field": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "设置标识字段",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "标识字段",
+        "example": "value-field=\"字段名\"",
+        "triggerSuggest": null
+      },
+      "text-field": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "设置显示字段",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "显示字段",
+        "example": "text-field=\"字段名\"",
+        "triggerSuggest": null
+      },
+      "size": {
+        "insertText": "size=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "输入框尺寸，可选值为large、small、default或者不设置",
+        "valueOptions": "sizemode",
+        "valueType": "String",
+        "name": "尺寸",
+        "example": "size=\"default\"",
+        "triggerSuggest": "true"
+      },
+      "placeholder": {
+        "insertText": null,
+        "defaultValue": "请选择",
+        "desc": "占位文本",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "占位文本",
+        "example": "placeholder=\"请选择\"",
+        "triggerSuggest": null
+      },
+      "disabled": {
+        "insertText": "v-bind:disabled=\"$1\"",
+        "defaultValue": "false",
+        "desc": "设置输入框为禁用状态",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "禁用",
+        "example": ":disabled=\"false\" 或者 v-bind:disabled=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "viewonly": {
+        "insertText": "v-bind:viewonly=\"$1\"",
+        "defaultValue": "false",
+        "desc": "设置输入框为显示模式",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示模式",
+        "example": ":viewonly=\"false\"或者 v-bind:viewonly=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "v-show": {
+        "insertText": "v-show=\"$1\" $0",
+        "defaultValue": "true",
+        "desc": "是否显示",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示",
+        "example": "v-show=\"true\" 或者 v-show=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "on-change": {
+        "insertText": "on-change=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "数据改变时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "数据改变",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-focus": {
+        "insertText": "on-focus=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "输入框聚焦时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "获得焦点",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-blur": {
+        "insertText": "on-blur=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "输入框失去焦点时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "失去焦点",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-click": {
+        "insertText": "on-click=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "点击时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "点击图标",
+        "example": null,
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-dict-box widget-code=\"%1\" widget-name=\"%1\" :data-source=\"$1\" value-field=\"${2:标识字段}\" text-field=\"${3:显示字段}\">$0</vui-dict-box>",
+    "example": "<vui-dict-box :data-source=\"实体.current\" value-field=\"标识字段\" text-field=\"显示字段\" v-bind:disabled=\"实体.current.字段\" v-bind:viewonly=\"实体.current.字段\" v-show=\"false\">\n</vui-dict-box>",
+    "desc": "弹出选择组件并返回数据",
+    "triggerSuggest": "true"
+  },
+  "vui-dropdown": {
+    "label": "下拉菜单",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_dropdown1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_dropdown1\"",
+        "triggerSuggest": null
+      },
+      "trigger": {
+        "insertText": "trigger=\"$1\" $0",
+        "defaultValue": "hover",
+        "desc": "触发方式，可选值为 hover（悬停）click（点击）custom（自定义），使用 custom 时，需配合 visible 一起使用",
+        "valueOptions": "dropdowntriggermode",
+        "valueType": "String",
+        "name": "触发方式",
+        "example": "trigger=\"hover\"",
+        "triggerSuggest": "true"
+      },
+      "visible": {
+        "insertText": "v-bind:visible=\"$1\"",
+        "defaultValue": "false",
+        "desc": "手动控制下拉框的显示，在 trigger = 'custom' 时使用",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示",
+        "example": ":visible=\"false\" 或者 v-bind:visible=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "placement": {
+        "insertText": "placement=\"$1\" $0",
+        "defaultValue": "bottom",
+        "desc": "下拉菜单出现的位置，可选值为:top,top-start,top-end,bottom,bottom-start,bottom-end,left,left-start,left-end,right,right-start,right-end",
+        "valueOptions": "dropdownplacementmode",
+        "valueType": "String",
+        "name": "展开位置",
+        "example": "placement=\"bottom\"",
+        "triggerSuggest": "true"
+      },
+      "on-click": {
+        "insertText": "on-click=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "点击菜单项时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "点击事件",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-visible-change": {
+        "insertText": "on-visible-change=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "菜单显示状态改变时调用",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "菜单显示状态改变",
+        "example": null,
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-dropdown widget-code=\"%1\" widget-name=\"%1\" placement=\"bottom-start\">\n    <a href=\"javascript:void(0)\">\n        菜单\n        <vui-icon type=\"arrow-down-b\"></vui-icon>\n    </a>\n    <vui-dropdown-menu slot=\"list\">\n        <vui-dropdown-item>菜单1</vui-dropdown-item>\n        $0\n    </vui-dropdown-menu>\n</vui-dropdown>",
+    "example": "<vui-dropdown placement=\"bottom-start\">\n  <a href=\"javascript:void(0)\">\n      菜单(左)<vui-icon type=\"arrow-down-b\"></vui-icon>\n  </a>\n  <vui-dropdown-menu slot=\"list\">\n      <vui-dropdown-item>驴打滚</vui-dropdown-item>\n      <vui-dropdown-item>炸酱面</vui-dropdown-item>\n  </vui-dropdown-menu>\n</vui-dropdown>",
+    "desc": "静态下拉菜单,手动配置菜单项，展示一组折叠的下拉菜单",
+    "triggerSuggest": null
+  },
+  "vui-dropdown-item": {
+    "label": "下拉菜单项",
+    "attributes": {
+      "name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "用来标识这一项",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "名称",
+        "example": "name=\"myname\"",
+        "triggerSuggest": null
+      },
+      "disabled": {
+        "insertText": "v-bind:disabled=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "设置按钮为禁用状态",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "禁用",
+        "example": ":disabled=\"false\" 或者 v-bind:disabled=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "divided": {
+        "insertText": "v-bind:divided=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "设置是否显示分割线",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示分割线",
+        "example": ":divided=\"false\" 或者 v-bind:divided=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "selected": {
+        "insertText": "v-bind:selected=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "标记该项为选中状态",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "选中状态",
+        "example": ":selected=\"false\" 或者 v-bind:selected=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      }
+    },
+    "autoCompleteSource": "<vui-dropdown-item>${1:菜单项}</vui-dropdown-item>$0",
+    "example": "<vui-dropdown placement=\"bottom-start\">\n  <a href=\"javascript:void(0)\">\n      菜单(左)<vui-icon type=\"arrow-down-b\"></vui-icon>\n  </a>\n  <vui-dropdown-menu slot=\"list\">\n      <vui-dropdown-item>驴打滚</vui-dropdown-item>\n      <vui-dropdown-item>炸酱面</vui-dropdown-item>\n  </vui-dropdown-menu>\n</vui-dropdown>",
+    "desc": "下拉菜单项",
+    "triggerSuggest": null
+  },
+  "vui-dropdown-list": {
+    "label": "下拉菜单（动态）",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_dropdown_list1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_dropdown_list1\"",
+        "triggerSuggest": null
+      },
+      "data-source": {
+        "insertText": ":data-source=\"$1\" $0",
+        "defaultValue": "null",
+        "desc": "绑定的数据源",
+        "valueOptions": "datasourcemode",
+        "valueType": "String",
+        "name": "绑定数据",
+        "example": ":data-source=\"实体.current\"",
+        "triggerSuggest": "true"
+      },
+      "parent-field": {
+        "insertText": "parent-field=\"${1:父节点字段名}\" $0",
+        "defaultValue": "PID",
+        "desc": "父节点字段，与data-source属性搭配使用",
+        "valueOptions": "",
+        "valueType": "String",
+        "name": "父节点字段",
+        "example": "parent-field=\"PID\"",
+        "triggerSuggest": null
+      },
+      "title-field": {
+        "insertText": "title-field=\"${1:显示字段}\" $0",
+        "defaultValue": null,
+        "desc": "绑定显示字段名",
+        "valueOptions": "",
+        "valueType": "String",
+        "name": "显示字段",
+        "example": "title-field=\"显示字段\"",
+        "triggerSuggest": null
+      },
+      "trigger": {
+        "insertText": "trigger=\"$1\" $0",
+        "defaultValue": "hover",
+        "desc": "触发方式，可选值为 hover（悬停）click（点击）custom（自定义），使用 custom 时，需配合 visible 一起使用",
+        "valueOptions": "dropdowntriggermode",
+        "valueType": "String",
+        "name": "触发方式",
+        "example": "trigger=\"hover\"",
+        "triggerSuggest": "true"
+      },
+      "visible": {
+        "insertText": "v-bind:visible=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "手动控制下拉框的显示，在 trigger = 'custom' 时使用",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示",
+        "example": ":visible=\"false\" 或者 v-bind:visible=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "placement": {
+        "insertText": "placement=\"$1\" $0",
+        "defaultValue": "bottom",
+        "desc": "下拉菜单出现的位置，可选值为:top,top-start,top-end,bottom,bottom-start,bottom-end,left,left-start,left-end,right,right-start,right-end",
+        "valueOptions": "dropdownplacementmode",
+        "valueType": "String",
+        "name": "展开位置",
+        "example": "placement=\"bottom\"",
+        "triggerSuggest": "true"
+      },
+      "on-click": {
+        "insertText": "on-click=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "点击菜单项时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "点击事件",
+        "example": null,
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-dropdown-list widget-code=\"%1\" widget-name=\"%1\" :data-source=\"$1\" parent-field=\"${2:父节点字段名称}\" title-field=\"${3:显示字段名}\"$0></vui-dropdown-list>",
+    "example": "<vui-dropdown-list placement=\"bottom-start\" :data-source=\"实体.current\" parent-field=\"父节点字段名称\" title-field=\"显示字段名\">\n</vui-dropdown-list>",
+    "desc": "动态下拉菜单,绑定实体，配置好父字段和显示字段即可",
+    "triggerSuggest": "true"
+  },
+  "vui-dropdown-menu": {
+    "label": "下拉菜单",
+    "attributes": {
+      "slot": {
+        "insertText": "slot=\"list\" $0",
+        "defaultValue": null,
+        "desc": "列表内容，一般由 vui-dropdown-menu 承担",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "slot",
+        "example": "slot=\"list\"",
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-dropdown-menu slot=\"list\">\n      $0\n</vui-dropdown-menu>",
+    "example": "<vui-dropdown placement=\"bottom-start\">\n  <a href=\"javascript:void(0)\">\n      菜单(左)<vui-icon type=\"arrow-down-b\"></vui-icon>\n  </a>\n  <vui-dropdown-menu slot=\"list\">\n      <vui-dropdown-item>驴打滚</vui-dropdown-item>\n      <vui-dropdown-item>炸酱面</vui-dropdown-item>\n  </vui-dropdown-menu>\n</vui-dropdown>",
+    "desc": "下拉菜单",
+    "triggerSuggest": null
+  },
+  "vui-footer": {
+    "label": "底部布局",
+    "attributes": {},
+    "autoCompleteSource": "<vui-footer>底部布局$0</vui-footer>",
+    "example": "<vui-layout style=\"border:1px solid #e5e5e5;height:350px;\">\n  <vui-sider style=\"background-color:#f5e6d4;\">左侧栏</vui-sider>\n  <vui-layout>\n   <vui-header style=\"background-color:#dcecd0;\">顶部栏</vui-header>\n   <vui-content style=\"background-color:#cbe3f1;\">内容栏</vui-content>\n   <vui-footer style=\"background-color:#efdbf9;\">底部栏</vui-footer>\n  </vui-layout>\n </vui-layout>",
+    "desc": "底部布局，自带默认样式，其下可嵌套任何元素，只能放在 Layout 中",
+    "triggerSuggest": null
+  },
+  "vui-form": {
+    "label": "表单",
+    "attributes": {
+      "inline": {
+        "insertText": ":inline=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "是否开启行内表单模式",
+        "valueOptions": "boolmode",
+        "valueType": "Boolean",
+        "name": "行内表单模式",
+        "example": ":inline=\"false\"",
+        "triggerSuggest": "true"
+      },
+      "label-position": {
+        "insertText": "label-position=\"$1\" $0",
+        "defaultValue": "right",
+        "desc": "表单域标签的位置，可选值为 left、right、top",
+        "valueOptions": "labelpositionmode",
+        "valueType": "String",
+        "name": "表单域标签的位置",
+        "example": "label-position=\"right\"",
+        "triggerSuggest": "true"
+      },
+      "label-width": {
+        "insertText": ":label-width=\"${1:75}\" $0",
+        "defaultValue": null,
+        "desc": "表单域标签的宽度，所有的 vuiFormItem 都会继承 vuiForm 组件的 label-width 的值",
+        "valueOptions": null,
+        "valueType": "Number",
+        "name": "表单域标签的宽度",
+        "example": ":label-width=\"75\"",
+        "triggerSuggest": null
+      },
+      "v-show": {
+        "insertText": "v-show=\"$1\" $0",
+        "defaultValue": "true",
+        "desc": "是否显示",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示",
+        "example": "v-show=\"false\" 或者 v-show=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      }
+    },
+    "autoCompleteSource": "<vui-form>\n    $0\n</vui-form>",
+    "example": "<vui-form label-position=\"left\" :label-width=\"110\" inline=\"true\"></vui-form>",
+    "desc": "具有数据收集、校验和提交功能的表单，包含复选框、单选框、输入框、下拉选择框等元素",
+    "triggerSuggest": null
+  },
+  "vui-form-item": {
+    "label": "表单域",
+    "attributes": {
+      "label": {
+        "insertText": "label=\"${1:标签文本}\"$0",
+        "defaultValue": null,
+        "desc": "标签文本,用于显示的文本",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "标签文本",
+        "example": "label=\"标签文本\"",
+        "triggerSuggest": null
+      },
+      "label-width": {
+        "insertText": ":label-width=\"${1:75}\"$0",
+        "defaultValue": null,
+        "desc": "表单域标签的宽度",
+        "valueOptions": null,
+        "valueType": "Number",
+        "name": "表单域标签的宽度",
+        "example": ":label-width=\"75\"",
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-form-item :label-width=\"90\">\n        $0\n</vui-form-item>",
+    "example": "<vui-form-item label=\"标签文本\" v-bind:label-width=\"90\"></vui-form-item>",
+    "desc": "表单域",
+    "triggerSuggest": null
+  },
+  "vui-gallery-item": {
+    "label": "画廊布局项",
+    "attributes": {
+      "on-click": {
+        "insertText": "on-click=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "画廊布局项点击事件",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "点击事件",
+        "example": null,
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-gallery-item>$0</vui-gallery-item>",
+    "example": "<vui-gallery-item v-for=\"row in datasource\" @on-click=\"handle\">\n    <span v-text=\"row.name\"></span>\n  </vui-gallery-item>",
+    "desc": "画廊布局项",
+    "triggerSuggest": null
+  },
+  "vui-gallery-layout": {
+    "label": "画廊布局",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_gallerylayout1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_gallerylayout1\"",
+        "triggerSuggest": null
+      },
+      "xs-cols": {
+        "insertText": ":xs-cols=\"${1:6}\"",
+        "defaultValue": null,
+        "desc": "小于768px,一行显示个数",
+        "valueOptions": null,
+        "valueType": "Number",
+        "name": "xs-cols",
+        "example": ":xs-cols=\"6\"",
+        "triggerSuggest": null
+      },
+      "sm-cols": {
+        "insertText": ":sm-cols=\"${1:3}\"",
+        "defaultValue": null,
+        "desc": "大于等于768px 响应式栅格，可为栅格数或一个包含其他属性的对象",
+        "valueOptions": null,
+        "valueType": "Number",
+        "name": "sm-cols",
+        "example": ":sm-cols=\"3\"",
+        "triggerSuggest": null
+      },
+      "md-cols": {
+        "insertText": ":md-cols=\"${1:23}\"",
+        "defaultValue": null,
+        "desc": "大于等于992px 响应式栅格，可为栅格数或一个包含其他属性的对象",
+        "valueOptions": null,
+        "valueType": "Number",
+        "name": "md-cols",
+        "example": ":md-cols=\"23\"",
+        "triggerSuggest": null
+      },
+      "lg-cols": {
+        "insertText": ":lg-cols=\"${1:8}\"",
+        "defaultValue": null,
+        "desc": "大于等于1200px响应式栅格，可为栅格数或一个包含其他属性的对象",
+        "valueOptions": null,
+        "valueType": "Number",
+        "name": "lg-cols",
+        "example": ":lg-cols=\"8\"",
+        "triggerSuggest": null
+      },
+      "gutter": {
+        "insertText": ":gutter=\"${1:0}\"",
+        "defaultValue": "0",
+        "desc": "间距，单位 px，左右平分",
+        "valueOptions": null,
+        "valueType": "Number",
+        "name": "间距",
+        "example": ":gutter=\"18\"",
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-gallery-layout widget-code=\"%1\" widget-name=\"%1\">\n    <vui-gallery-item>$0</vui-gallery-item>\n</vui-gallery-layout>",
+    "example": "<vui-gallery-layout :gutter=\"18\" :lg-cols=\"16\" :md-cols=\"12\" :sm-cols=\"8\" :xs-cols=\"6\">\n  <vui-gallery-item v-for=\"row in datasource\" @on-click=\"handle\">\n    <span v-text=\"row.name\"></span>\n  </vui-gallery-item> \n</vui-gallery-layout>",
+    "desc": "画廊布局",
+    "triggerSuggest": null
+  },
+  "vui-grid": {
+    "label": "可编辑列表",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_grid1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_grid1\"",
+        "triggerSuggest": null
+      },
+      "data-source": {
+        "insertText": ":data-source=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "列表绑定的数据源",
+        "valueOptions": "datasourcemode",
+        "valueType": "String",
+        "name": "数据源",
+        "example": ":data-source=\"实体\"",
+        "triggerSuggest": "true"
+      },
+      "allow-resize": {
+        "insertText": ":allow-resize=\"$1\" $0",
+        "defaultValue": "true",
+        "desc": "是否允许拖动列表列改变宽度",
+        "valueOptions": null,
+        "valueType": "Boolean",
+        "name": "允许改变列宽",
+        "example": ":allow-resize=\"true\"",
+        "triggerSuggest": "true"
+      },
+      "stripe": {
+        "insertText": ":stripe=\"$1\" $0",
+        "defaultValue": "true",
+        "desc": "是否显示斑马线",
+        "valueOptions": null,
+        "valueType": "Boolean",
+        "name": "显示斑马线",
+        "example": ":stripe=\"true\"",
+        "triggerSuggest": "true"
+      },
+      "show-header": {
+        "insertText": ":show-header=\"$1\" $0",
+        "defaultValue": "true",
+        "desc": "是否显示列头",
+        "valueOptions": null,
+        "valueType": "Boolean",
+        "name": "显示列头",
+        "example": ":show-header=\"true\"",
+        "triggerSuggest": "true"
+      },
+      "auto-height": {
+        "insertText": ":auto-height=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "是否自动行高度",
+        "valueOptions": "boolmode",
+        "valueType": "Boolean",
+        "name": "自动高度",
+        "example": ":auto-height=\"false\"",
+        "triggerSuggest": "true"
+      },
+      "height": {
+        "insertText": ":height=\"${1:500}\"",
+        "defaultValue": "1",
+        "desc": "列表高度",
+        "valueOptions": null,
+        "valueType": "Number|String",
+        "name": "高度",
+        "example": ":height=\"500\" 或者 height=\"100%\"",
+        "triggerSuggest": null
+      },
+      "width": {
+        "insertText": ":width=\"${1:500}\"",
+        "defaultValue": "1",
+        "desc": "列表宽度",
+        "valueOptions": null,
+        "valueType": "Number|String",
+        "name": "宽度",
+        "example": ":width=\"500\" 或者 width=\"100%\"",
+        "triggerSuggest": null
+      },
+      "frozen-columns": {
+        "insertText": ":frozen-columns=\"${1:0}\"",
+        "defaultValue": null,
+        "desc": "冻结列数，从左开始",
+        "valueOptions": null,
+        "valueType": "Number",
+        "name": "冻结列数",
+        "example": ":frozen-columns=\"0\"",
+        "triggerSuggest": null
+      },
+      "readonly": {
+        "insertText": "v-bind:readonly=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "设置是否只读",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "只读",
+        "example": ":readonly=\"false\" 或者 v-bind:readonly=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "v-show": {
+        "insertText": "v-show=\"$1\" $0",
+        "defaultValue": "true",
+        "desc": "是否显示",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示",
+        "example": "v-show=\"true\" 或者 v-show=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "selectionMode": {
+        "insertText": "selectionMode=\"$1\" $0",
+        "defaultValue": "Single",
+        "desc": "选择模式:'Single'：单选，'Multi'：多选",
+        "valueOptions": "gridselectionMode",
+        "valueType": "String",
+        "name": "选择模式",
+        "example": "selectionMode=\"Single\"",
+        "triggerSuggest": "true"
+      },
+      "on-row-click": {
+        "insertText": "on-row-click=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "单击某一行时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "单击行",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-row-dblclick": {
+        "insertText": "on-row-dblclick=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "双击某一行时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "双击行",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-current-change": {
+        "insertText": "on-current-change=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "当表格的当前行发生变化的时候会触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "当前行改变",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-selection-change": {
+        "insertText": "on-selection-change=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "在多选模式下有效，只要选中项发生变化时就会触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "选中项改变",
+        "example": null,
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-grid widget-code=\"%1\" widget-name=\"%1\" :data-source=\"$1\">\n    <vui-grid-column field=\"$0\" title=\"列名\"></vui-grid-column>\n</vui-grid>",
+    "example": "<vui-grid widget-code=\"grid1\" :data-source=\"实体\">\n  <vui-grid-column field=\"field1\" title=\"列名\"}\"></vui-grid-column>\n</vui-grid>",
+    "desc": "主要用于展示大量结构化数据",
+    "triggerSuggest": "true"
+  },
+  "vui-grid-column": {
+    "label": "可编辑列表列",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_gridcolumn1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_gridcolumn1\"",
+        "triggerSuggest": null
+      },
+      "field": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "绑定字段",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "绑定字段",
+        "example": "field=\"绑定字段\"",
+        "triggerSuggest": null
+      },
+      "title": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "标题名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "标题名称",
+        "example": "title=\"标题名称\"",
+        "triggerSuggest": null
+      },
+      "width": {
+        "insertText": ":width=\"${1:500}\"",
+        "defaultValue": "*",
+        "desc": "宽度",
+        "valueOptions": null,
+        "valueType": "Number|String",
+        "name": "宽度",
+        "example": ":width=\"500\" 或者 width=\"100%\"",
+        "triggerSuggest": null
+      },
+      "min-width": {
+        "insertText": ":min-width=\"${1:0}\"",
+        "defaultValue": "0",
+        "desc": "最小宽度",
+        "valueOptions": null,
+        "valueType": "Number|String",
+        "name": "最小宽度",
+        "example": ":min-width=\"0\" 或者 min-width=\"10%\"",
+        "triggerSuggest": null
+      },
+      "align": {
+        "insertText": "align=\"$1\" $0",
+        "defaultValue": "left",
+        "desc": "对齐方式：left、center、right",
+        "valueOptions": "gridcolumnalign",
+        "valueType": "String",
+        "name": "对齐方式",
+        "example": "align=\"left\"",
+        "triggerSuggest": "true"
+      },
+      "readonly": {
+        "insertText": "v-bind:readonly=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "设置是否只读",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "只读",
+        "example": ":readonly=\"false\" 或者 v-bind:readonly=\"实体.字段\"",
+        "triggerSuggest": "true"
+      },
+      "format": {
+        "insertText": "format=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "格式化输出",
+        "valueOptions": "inputformatmode",
+        "valueType": "String",
+        "name": "格式化",
+        "example": "format=\"n2\"",
+        "triggerSuggest": "true"
+      },
+      "show-tips": {
+        "insertText": ":show-tips=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "是否显示浮动提示",
+        "valueOptions": "boolmode",
+        "valueType": "Boolean",
+        "name": "显示浮动提示",
+        "example": ":show-tips=\"false\"",
+        "triggerSuggest": "true"
+      },
+      "auto-height": {
+        "insertText": ":auto-height=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "是否自动行高度",
+        "valueOptions": "boolmode",
+        "valueType": "Boolean",
+        "name": "自动高度",
+        "example": ":auto-height=\"false\"",
+        "triggerSuggest": "true"
+      },
+      "required": {
+        "insertText": ":required=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "是否在表头添加一个红色*",
+        "valueOptions": "boolmode",
+        "valueType": "Boolean",
+        "name": "必填",
+        "example": ":required=\"false\"",
+        "triggerSuggest": "true"
+      },
+      "on-link": {
+        "insertText": "on-link=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "链接事件",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "链接",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-change": {
+        "insertText": "on-change=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "值变化事件",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "值改变",
+        "example": null,
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-grid-column widget-code=\"%1\" widget-name=\"%1\" field=\"$0\" title=\"列名$1\"></vui-grid-column>",
+    "example": "<vui-grid-column field=\"listName\" title=\"清单名称\" :width=\"300\"></vui-grid-column>",
+    "desc": "可编辑列表列",
+    "triggerSuggest": null
+  },
+  "vui-header": {
+    "label": "顶部布局",
+    "attributes": {},
+    "autoCompleteSource": "<vui-header>顶部栏$0</vui-header>",
+    "example": "<vui-layout style=\"border:1px solid #e5e5e5;height:350px;\">\n  <vui-header style=\"background-color:#dcecd0;\">顶部栏</vui-header>\n  <vui-layout>\n   <vui-sider style=\"background-color:#f5e6d4;\">左侧栏</vui-sider>\n   <vui-content style=\"background-color:#cbe3f1;\">内容栏</vui-content>\n  </vui-layout>\n  <vui-footer style=\"background-color:#efdbf9;\">底部栏</vui-footer>\n </vui-layout>",
+    "desc": "顶部布局，自带默认样式，其下可嵌套任何元素，只能放在 Layout 中",
+    "triggerSuggest": null
+  },
+  "vui-icon": {
+    "label": "图标",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_icon1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_icon1\"",
+        "triggerSuggest": null
+      },
+      "type": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "图标的名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "图标名称",
+        "example": "type=\"ionic\"",
+        "triggerSuggest": null
+      },
+      "size": {
+        "insertText": ":size=\"$0\"",
+        "defaultValue": null,
+        "desc": "图标的大小，单位是 px",
+        "valueOptions": null,
+        "valueType": "Number|String",
+        "name": "图标大小",
+        "example": ":size=\"20\"",
+        "triggerSuggest": null
+      },
+      "color": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "图标的颜色",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "图标颜色",
+        "example": "color=\"#fff\"",
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-icon widget-code=\"%1\" widget-name=\"%1\" type=\"$1\"$0></vui-icon>",
+    "example": "如：ion-ionic，平台默认会加上前缀ion-，所以样例代码为：<vui-icon type=\"ionic\"></vui-icon>",
+    "desc": "iView 的图标使用开源项目 ionicons",
+    "triggerSuggest": null
+  },
+  "vui-input": {
+    "label": "文本框",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_input1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_input1\"",
+        "triggerSuggest": null
+      },
+      "type": {
+        "insertText": "type=\"$1\" $0",
+        "defaultValue": "text",
+        "desc": "输入框类型，可选值为text，password，textarea",
+        "valueOptions": "inputmode",
+        "valueType": "String",
+        "name": "类型",
+        "example": "type=\"text\"",
+        "triggerSuggest": "true"
+      },
+      "value": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "绑定数据，可使用 v-model 双向绑定",
+        "valueOptions": "",
+        "valueType": "String",
+        "name": "绑定数据",
+        "example": "value=\"文本\" 或者 v-model=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      ":value": {
+        "insertText": "v-model=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "绑定数据，可使用 v-model 双向绑定",
+        "valueOptions": "entityfieldmode",
+        "valueType": "String",
+        "name": "绑定数据",
+        "example": "value=\"文本\" 或者 v-model=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "size": {
+        "insertText": "size=\"$1\" $0",
+        "defaultValue": "default",
+        "desc": "输入框尺寸，可选值为large、small、default或者不设置",
+        "valueOptions": "sizemode",
+        "valueType": "String",
+        "name": "输入框尺寸",
+        "example": "size=\"small\"",
+        "triggerSuggest": "true"
+      },
+      "maxlength": {
+        "insertText": ":maxlength=\"${1:255}\"",
+        "defaultValue": null,
+        "desc": "最大输入长度",
+        "valueOptions": null,
+        "valueType": "Number",
+        "name": "最大长度",
+        "example": ":maxlength=\"255\"",
+        "triggerSuggest": null
+      },
+      "icon": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "输入框尾部图标，仅在 text 类型下有效",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "图标",
+        "example": "icon=\"close-round\"",
+        "triggerSuggest": null
+      },
+      "rows": {
+        "insertText": ":rows=\"${1:2}\"",
+        "defaultValue": "2",
+        "desc": "文本域默认行数，仅在 textarea 类型下有效",
+        "valueOptions": null,
+        "valueType": "Number",
+        "name": "行数",
+        "example": ":rows=\"2\"",
+        "triggerSuggest": null
+      },
+      "autosize": {
+        "insertText": ":autosize=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "自适应内容高度，仅在 textarea 类型下有效，可传入对象，如 { minRows: 2, maxRows: 6 }",
+        "valueOptions": "boolmode|inputautosizemode",
+        "valueType": "Boolean|Object",
+        "name": "自适应内容高度",
+        "example": ":autosize=\"false\" 或者 :autosize=\"{ minRows: 2, maxRows: 6 }\"",
+        "triggerSuggest": "true"
+      },
+      "autofocus": {
+        "insertText": ":autofocus=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "自动获取焦点",
+        "valueOptions": null,
+        "valueType": "Boolean",
+        "name": "自动获取焦点",
+        "example": ":autofocus=\"false\"",
+        "triggerSuggest": "true"
+      },
+      "placeholder": {
+        "insertText": "placeholder=\"${1:请输入...}\"",
+        "defaultValue": null,
+        "desc": "占位文本",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "占位文本",
+        "example": "placeholder=\"请输入...\"",
+        "triggerSuggest": null
+      },
+      "disabled": {
+        "insertText": "v-bind:disabled=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "设置输入框的禁用状态",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "禁用",
+        "example": ":disabled=\"false\" 或者 v-bind:disabled=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "readonly": {
+        "insertText": "v-bind:readonly=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "设置输入框为只读",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "只读",
+        "example": ":readonly=\"false\" 或者 v-bind:readonly=\"实体.current.字段",
+        "triggerSuggest": "true"
+      },
+      "viewonly": {
+        "insertText": "v-bind:viewonly=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "设置输入框的显示模式",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示模式",
+        "example": ":viewonly=\"false\" 或者 v-bind:viewonly=\"实体.current.字段",
+        "triggerSuggest": "true"
+      },
+      "v-show": {
+        "insertText": "v-show=\"$1\" $0",
+        "defaultValue": "true",
+        "desc": "是否显示",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示",
+        "example": "v-show=\"false\" 或者 v-show=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "format": {
+        "insertText": "format=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "展示的格式",
+        "valueOptions": "inputformatmode",
+        "valueType": "String",
+        "name": "格式",
+        "example": "format=\"n2\"",
+        "triggerSuggest": "true"
+      },
+      "on-enter": {
+        "insertText": "on-enter=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "按下回车键时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "回车",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-click": {
+        "insertText": "on-click=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "设置 icon 属性后，点击图标时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "点击图标",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-change": {
+        "insertText": "on-change=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "数据改变时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "数据改变",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-focus": {
+        "insertText": "on-focus=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "输入框聚焦时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "获得焦点",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-blur": {
+        "insertText": "on-blur=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "输入框失去焦点时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "失去焦点",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-keyup": {
+        "insertText": "on-keyup=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "原生的 keyup 事件",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "键盘弹起",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-keydown": {
+        "insertText": "on-keydown=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "原生的 keydown 事件",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "键盘按下",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-keypress": {
+        "insertText": "on-keypress=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "原生的 keypress 事件",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "键盘按键",
+        "example": null,
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-input widget-code=\"%1\" widget-name=\"%1\" v-model=\"$1\"$0></vui-input>",
+    "example": "<vui-input type=\"text\" widget-code=\"vuiInput1\" size=\"default\" maxlength=\"20\" v-bind:readonly=\"实体.current.字段\" v-bind:disabled=\"实体.current.字段\" v-bind:viewonly=\"实体.current.字段\" v-show=\"false\">\n</vui-input>",
+    "desc": "基本表单组件，支持 input 和 textarea，并在原生控件基础上进行了功能扩展，可以组合使用",
+    "triggerSuggest": "true"
+  },
+  "vui-input-number": {
+    "label": "数值框",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_input_number1\"",
+        "triggerSuggest": null
+      },
+      "value": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "绑定数据，可使用 v-model 双向绑定",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "绑定数据",
+        "example": "value=\"1\" 或者 v-model=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      ":value": {
+        "insertText": "v-model=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "绑定数据，可使用 v-model 双向绑定",
+        "valueOptions": "entityfieldmode",
+        "valueType": "String",
+        "name": "绑定数据",
+        "example": "value=\"1\" 或者 v-model=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "size": {
+        "insertText": "size=\"$1\" $0",
+        "defaultValue": "default",
+        "desc": "输入框尺寸，可选值为large、small、default或者不设置",
+        "valueOptions": "sizemode",
+        "valueType": "String",
+        "name": "输入框尺寸",
+        "example": "size=\"small\"",
+        "triggerSuggest": "true"
+      },
+      "max": {
+        "insertText": ":max=\"${1:100}\"",
+        "defaultValue": "Infinity",
+        "desc": "最大输入长度",
+        "valueOptions": null,
+        "valueType": "Number",
+        "name": "最大值",
+        "example": ":max=\"Infinity\"",
+        "triggerSuggest": null
+      },
+      "min": {
+        "insertText": ":min=\"${1:0}\"",
+        "defaultValue": "-Infinity",
+        "desc": "最大输入长度",
+        "valueOptions": null,
+        "valueType": "Number",
+        "name": "最大值",
+        "example": ":min=\"0\"",
+        "triggerSuggest": null
+      },
+      "step": {
+        "insertText": ":step=\"${1:1}\"",
+        "defaultValue": "1",
+        "desc": "每次改变的步伐，可以是小数",
+        "valueOptions": null,
+        "valueType": "Number",
+        "name": "步伐",
+        "example": ":step=\"1\"",
+        "triggerSuggest": null
+      },
+      "disabled": {
+        "insertText": "v-bind:disabled=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "设置输入框为禁用状态",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "禁用",
+        "example": "v-bind:disabled=\"false\" 或者 v-bind:disabled=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "readonly": {
+        "insertText": "v-bind:readonly=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "设置输入框为只读",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "只读",
+        "example": "v-bind:readonly=\"false\" 或者 v-bind:readonly=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "viewonly": {
+        "insertText": "v-bind:viewonly=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "设置输入框为显示模式",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示模式",
+        "example": "v-bind:viewonly=\"false\" 或者 v-bind:viewonly=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "precision": {
+        "insertText": ":precision=\"${1:3}\"",
+        "defaultValue": null,
+        "desc": "数值精度",
+        "valueOptions": null,
+        "valueType": "Number",
+        "name": "精确度",
+        "example": ":precision=\"3\"",
+        "triggerSuggest": null
+      },
+      "v-show": {
+        "insertText": "v-show=\"$1\" $0",
+        "defaultValue": "true",
+        "desc": "是否显示",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示",
+        "example": "v-show=\"true\" 或者 v-show=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "format": {
+        "insertText": "format=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "展示格式",
+        "valueOptions": "inputformatmode",
+        "valueType": "String",
+        "name": "格式",
+        "example": "format=\"c2￥\"",
+        "triggerSuggest": "true"
+      },
+      "on-change": {
+        "insertText": "on-change=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "数据改变时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "数据改变",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-focus": {
+        "insertText": "on-focus=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "输入框聚焦时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "获得焦点",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-blur": {
+        "insertText": "on-blur=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "输入框失去焦点时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "失去焦点",
+        "example": null,
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-input-number widget-code=\"%1\" widget-name=\"%1\" v-model=\"$1\"$0></vui-input-number>",
+    "example": "<vui-input-number widget-code=\"vuiInputNumber1\" v-model=\"实体.current.字段\" size=\"large\" :max=\"10\" :min=\"1\" v-bind:readonly=\"实体.current.字段\"  v-bind:disabled=\"实体.current.字段\" v-bind:viewonly=\"实体.current.字段\" v-show=\"false\">\n</vui-input-number>",
+    "desc": "使用鼠标或键盘输入一定范围的标准数值",
+    "triggerSuggest": "true"
+  },
+  "vui-layout": {
+    "label": "布局容器",
+    "attributes": {},
+    "autoCompleteSource": "<vui-layout>\n    $0\n</vui-layout>",
+    "example": "<vui-layout style=\"border:1px solid #e5e5e5;height:350px;\">\n        <vui-header style=\"background-color:#dcecd0;\">顶部栏</vui-header>\n        <vui-content style=\"background-color:#cbe3f1;\">内容栏</vui-content>\n        <vui-footer style=\"background-color:#efdbf9;\">底部栏</vui-footer>\n </vui-layout>",
+    "desc": "协助进行页面级整体布局。布局容器，其下可嵌套 Header、Sider、Content、Footer或 Layout 本身，可以放在任何父容器中。",
+    "triggerSuggest": null
+  },
+  "vui-page": {
+    "label": "分页",
+    "attributes": {
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_page1\"",
+        "triggerSuggest": null
+      },
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_page1\"",
+        "triggerSuggest": null
+      },
+      "current": {
+        "insertText": "v-bind:current=\"$1\"$0",
+        "defaultValue": "1",
+        "desc": "当前页码，支持 .sync 修饰符",
+        "valueOptions": "entityfieldmode",
+        "valueType": "Number",
+        "name": "当前页码",
+        "example": ":current=\"1\" 或者 v-bind:current=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "total": {
+        "insertText": "v-bind:total=\"$1\"$0",
+        "defaultValue": "0",
+        "desc": "数据总数",
+        "valueOptions": "entityfieldmode",
+        "valueType": "Number",
+        "name": "总数",
+        "example": ":total=\"100\" 或者 v-bind:total=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "page-size": {
+        "insertText": "v-bind:page-size=\"$1\"$0",
+        "defaultValue": "10",
+        "desc": "每页条数",
+        "valueOptions": "entityfieldmode",
+        "valueType": "Number",
+        "name": "每页条数",
+        "example": ":page-size=\"10\" 或者 v-bind:page-size=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "page-size-opts": {
+        "insertText": "page-size-opts=\"${1:[10,20,30,40]}\"$0",
+        "defaultValue": "[10,20,30,40]",
+        "desc": "每页条数切换的配置",
+        "valueOptions": null,
+        "valueType": "Array",
+        "name": "每页条数切换配置",
+        "example": ":page-size-opts=\"[10,20,30,40]\"",
+        "triggerSuggest": null
+      },
+      "size": {
+        "insertText": "size=\"small\"$0",
+        "defaultValue": null,
+        "desc": "可选值为small（迷你版）或不填（默认）",
+        "valueOptions": "",
+        "valueType": "String",
+        "name": "大小",
+        "example": "size=\"small\"",
+        "triggerSuggest": null
+      },
+      "placement": {
+        "insertText": "placement=\"$1\"$0",
+        "defaultValue": "bottom",
+        "desc": "条数切换弹窗的展开方向，可选值为 bottom 和 top",
+        "valueOptions": "pageplacementmode",
+        "valueType": "String",
+        "name": "展开方向",
+        "example": "placement=\"bottom\"",
+        "triggerSuggest": "true"
+      },
+      "simple": {
+        "insertText": ":simple=\"$1\"$0",
+        "defaultValue": "false",
+        "desc": "简洁版",
+        "valueOptions": "boolmode",
+        "valueType": "Boolean",
+        "name": "简洁",
+        "example": ":simple=\"false\"",
+        "triggerSuggest": "true"
+      },
+      "show-total": {
+        "insertText": ":show-total=\"$1\"$0",
+        "defaultValue": "false",
+        "desc": "显示总数",
+        "valueOptions": "boolmode",
+        "valueType": "Boolean",
+        "name": "显示总数",
+        "example": ":show-total=\"false\"",
+        "triggerSuggest": "true"
+      },
+      "show-elevator": {
+        "insertText": ":show-elevator=\"$1\"$0",
+        "defaultValue": "false",
+        "desc": "显示电梯，可以快速切换到某一页",
+        "valueOptions": "boolmode",
+        "valueType": "Boolean",
+        "name": "显示电梯",
+        "example": ":show-elevator=\"false\"",
+        "triggerSuggest": "true"
+      },
+      "show-sizer": {
+        "insertText": ":show-sizer=\"$1\"$0",
+        "defaultValue": "false",
+        "desc": "显示分页，用来改变page-size",
+        "valueOptions": null,
+        "valueType": "Boolean",
+        "name": "显示分页",
+        "example": ":show-sizer=\"false\"",
+        "triggerSuggest": "true"
+      },
+      "on-change": {
+        "insertText": "on-change=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "页码改变的回调，返回改变后的页码",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "页码改变",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-page-size-change": {
+        "insertText": "on-page-size-change=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "切换每页条数时的回调，返回切换后的每页条数",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "键盘按键",
+        "example": null,
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-page widget-code=\"%1\" widget-name=\"%1\" :page-size=\"10$1\"$0></vui-page>",
+    "example": "<vui-page :total=\"100\" :show-elevator=\"true\"></vui-page>\n<vui-page :current=\"2\" :total=\"50\" :simple=\"true\"></vui-page>",
+    "desc": "当数据量较多时，使用分页可以快速进行数据切换",
+    "triggerSuggest": null
+  },
+  "vui-panel": {
+    "label": "面板",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_panel1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_panel1\"",
+        "triggerSuggest": null
+      },
+      "name": {
+        "insertText": null,
+        "defaultValue": "index",
+        "desc": "当前面板的 name，与 Collapse的value对应，不填为索引值",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "面板Name",
+        "example": "name=\"panel1\"",
+        "triggerSuggest": "true"
+      },
+      ":name": {
+        "insertText": "v-bind:name=\"$1\" $0",
+        "defaultValue": "index",
+        "desc": "当前面板的 name，与 Collapse的value对应，不填为索引值",
+        "valueOptions": "entityfieldmode",
+        "valueType": "String",
+        "name": "面板Name",
+        "example": "name=\"panel1\"",
+        "triggerSuggest": "true"
+      }
+    },
+    "autoCompleteSource": "<vui-panel name=\"panel1\" widget-code=\"%1\" widget-name=\"%1\">面板\n    <div slot=\"content\">\n        $0\n    </div>\n</vui-panel>",
+    "example": "<vui-panel name=\"panel1\">面板1\n    <p slot=\"content\">1111111</p>\n</vui-panel>",
+    "desc": "面板",
+    "triggerSuggest": null
+  },
+  "vui-radio-item": {
+    "label": "单选组-项",
+    "attributes": {
+      "value": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "单选框标识值",
+        "valueOptions": null,
+        "valueType": "Number|String",
+        "name": "标识值",
+        "example": "value=\"标识值\"",
+        "triggerSuggest": null
+      },
+      "text": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "单选框显示值，如果未设置，则使用标识值",
+        "valueOptions": null,
+        "valueType": "Number|String",
+        "name": "显示值",
+        "example": "text=\"显示值\"",
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-radio-item value=\"${1:标识值}\" text=\"${2:显示值}\"></vui-radio-item>",
+    "example": "<vui-radio-list :data-source=\"绑定实体.current\" value-field=\"标识字段\" text-field=\"显示字段\" v-bind:disabled=\"实体.current.字段\" v-bind:viewonly=\"实体.current.字段\" v-show=\"实体.current.字段\">\n <vui-radio-item value=\"bj\" text=\"北京\"></vui-radio-item>\n <vui-radio-item value=\"sh\" text=\"上海\"></vui-radio-item>\n <vui-radio-item value=\"sz\" text=\"深圳\"></vui-radio-item>\n</vui-radio-list>",
+    "desc": "单选组,自定义项",
+    "triggerSuggest": null
+  },
+  "vui-radio-list": {
+    "label": "单选组",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_radiolist1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_radiolist1\"",
+        "triggerSuggest": null
+      },
+      "data-source": {
+        "insertText": ":data-source=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "绑定数据",
+        "valueOptions": "entitymode",
+        "valueType": "String",
+        "name": "绑定数据",
+        "example": ":data-source=\"实体\"",
+        "triggerSuggest": "true"
+      },
+      "value-field": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "设置标识字段",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "标识字段",
+        "example": "value-field=\"标识字段\"",
+        "triggerSuggest": null
+      },
+      "text-field": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "设置显示字段",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "显示字段",
+        "example": "text-field=\"显示字段\"",
+        "triggerSuggest": null
+      },
+      "item-source": {
+        "insertText": "v-bind:item-source=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "候选项绑定数据",
+        "valueOptions": "datasourcemode",
+        "valueType": "String",
+        "name": "候选项绑定数据",
+        "example": "v-bind:item-source=\"实体\"",
+        "triggerSuggest": "true"
+      },
+      "item-value": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "设置候选项标识字段",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "候选项标识字段",
+        "example": "item-value=\"候选项标识字段\"",
+        "triggerSuggest": null
+      },
+      "item-text": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "设置候选项显示字段",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "候选项显示字段",
+        "example": "item-text=\"候选项显示字段\"",
+        "triggerSuggest": null
+      },
+      "disabled": {
+        "insertText": "v-bind:disabled=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "设置输入框为禁用状态",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "禁用",
+        "example": ":disabled=\"false\" 或者 v-bind:disabled=\"实体.字段\"",
+        "triggerSuggest": "true"
+      },
+      "viewonly": {
+        "insertText": "v-bind:viewonly=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "设置输入框为显示模式",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示模式",
+        "example": ":viewonly=\"false\" 或者 v-bind:viewonly=\"实体.字段\"",
+        "triggerSuggest": "true"
+      },
+      "show-type": {
+        "insertText": "show-type=\"button\"",
+        "defaultValue": null,
+        "desc": "可选值为 button 或不填，为 button 时使用按钮样式",
+        "valueOptions": "showtypemode",
+        "valueType": "String",
+        "name": "显示类型",
+        "example": "show-type=\"button\"",
+        "triggerSuggest": null
+      },
+      "v-show": {
+        "insertText": "v-show=\"$1\" $0",
+        "defaultValue": "true",
+        "desc": "是否显示",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示",
+        "example": "v-show=\"true\" 或者 v-show=\"${1:实体.字段}\"",
+        "triggerSuggest": "true"
+      },
+      "on-change": {
+        "insertText": "on-change=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "在选项状态发生改变时触发，返回当前选中的项。通过修改外部的数据改变时不会触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "数据改变",
+        "example": null,
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-radio-list widget-code=\"%1\" widget-name=\"%1\" :data-source=\"$1\" value-field=\"${2:标识字段}\" text-field=\"${3:显示字段}\" :item-source=\"$4\" item-value=\"${5:候选项标识字段}\" item-text=\"${6:候选项显示字段}\">\n</vui-radio-list>",
+    "example": "<vui-radio-list :data-source=\"绑定实体.current\" value-field=\"标识字段\" text-field=\"显示字段\" :item-source=\"候选项实体\" item-value=\"候选项标识字段\" item-text=\"候选项显示字段\" :disabled=\"实体.字段\" :viewonly=\"实体.字段\" v-show=\"实体.字段\">\n</vui-radio-list>",
+    "desc": "用于实现一组互斥的选项组",
+    "triggerSuggest": "true"
+  },
+  "vui-record-navigator": {
+    "label": "记录导航",
+    "attributes": {
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_recordnavigator1\"",
+        "triggerSuggest": null
+      },
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_recordnavigator1\"",
+        "triggerSuggest": null
+      },
+      "data-source": {
+        "insertText": ":data-source=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "数据来源",
+        "valueOptions": "datasourcemode",
+        "valueType": "String",
+        "name": "数据源",
+        "example": ":data-source=\"实体\"",
+        "triggerSuggest": "true"
+      },
+      "mode": {
+        "insertText": "mode=\"$1\" $0",
+        "defaultValue": "index",
+        "desc": "显示模式：index(显示记录下标索引）、custom(自定义)、field（显示字段值）",
+        "valueOptions": "recordnavigatormode",
+        "valueType": "String",
+        "name": "显示模式",
+        "example": "mode=\"index\"",
+        "triggerSuggest": "true"
+      },
+      "display-field": {
+        "insertText": "display-field=\"${1:字段名}\" $0",
+        "defaultValue": null,
+        "desc": "当mode为field，设置显示字段",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "显示字段",
+        "example": "display-field=\"字段名\"",
+        "triggerSuggest": null
+      },
+      "on-change": {
+        "insertText": "on-change=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "记录切换事件",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "记录切换事件",
+        "example": null,
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-record-navigator widget-code=\"%1\" widget-name=\"%1\" :data-source=\"$1\"$0></vui-record-navigator>",
+    "example": "",
+    "desc": "记录导航",
+    "triggerSuggest": "true"
+  },
+  "vui-row": {
+    "label": "栅格布局行",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_row1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_row1\"",
+        "triggerSuggest": null
+      },
+      "gutter": {
+        "insertText": ":gutter=\"0$1\" $0",
+        "defaultValue": "0",
+        "desc": "栅格间距，单位 px，左右平分",
+        "valueOptions": null,
+        "valueType": "Number",
+        "name": "栅格间距",
+        "example": ":gutter=\"3\"",
+        "triggerSuggest": null
+      },
+      "type": {
+        "insertText": "type=\"flex\"$0",
+        "defaultValue": null,
+        "desc": "布局模式，可选值为flex或不选，在现代浏览器下有效",
+        "valueOptions": "rowtypemode",
+        "valueType": "String",
+        "name": "布局模式",
+        "example": "type=\"flex\"",
+        "triggerSuggest": null
+      },
+      "align": {
+        "insertText": "align=\"$1\"$0",
+        "defaultValue": null,
+        "desc": "flex 布局下的垂直对齐方式，可选值为top、middle、bottom",
+        "valueOptions": "rowalignmode",
+        "valueType": "String",
+        "name": "垂直对齐方式",
+        "example": "align=\"middle\"",
+        "triggerSuggest": "true"
+      },
+      "justify": {
+        "insertText": "justify=\"$1\"$0",
+        "defaultValue": null,
+        "desc": "flex 布局下的水平排列方式，可选值为start、end、center、space-around、space-between",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "水平排列方式",
+        "example": "justify=\"start\"",
+        "triggerSuggest": "true"
+      },
+      "class-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "自定义的class名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "自定义类名",
+        "example": "class-name=\"类名\"",
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-row widget-code=\"%1\" widget-name=\"%1\">\n    ${1:vui-col}\n</vui-row>",
+    "example": "<vui-row justify=\"end\" class=\"code-row-bg\">\n    <vui-col :xs=\"2\" :sm=\"4\" :md=\"6\" :lg=\"8\">Col</vui-col>\n    <vui-col :xs=\"20\" :sm=\"16\" :md=\"12\" :lg=\"8\">Col</vui-col>\n    <vui-col :xs=\"2\" :sm=\"4\" :md=\"6\" :lg=\"8\">Col</vui-col>\n</vui-row>",
+    "desc": "栅格布局行",
+    "triggerSuggest": "true"
+  },
+  "vui-sider": {
+    "label": "侧边栏",
+    "attributes": {
+      "place": {
+        "insertText": "place=\"$1\" $0",
+        "defaultValue": "left",
+        "desc": "侧栏位置，值：left，right",
+        "valueOptions": "siderplacemode",
+        "valueType": "String",
+        "name": "侧栏位置",
+        "example": "place=\"left\"",
+        "triggerSuggest": "true"
+      }
+    },
+    "autoCompleteSource": "<vui-sider>侧边栏$0</vui-sider>",
+    "example": "<vui-layout style=\"border:1px solid #e5e5e5;height:350px;\">\n  <vui-sider place=\"right\" style=\"background-color:#f5e6d4;\">右侧栏</vui-sider>\n  <vui-layout>\n   <vui-header style=\"background-color:#dcecd0;\">顶部栏</vui-header>\n   <vui-content style=\"background-color:#cbe3f1;\">内容栏</vui-content>\n   <vui-footer style=\"background-color:#efdbf9;\">底部栏</vui-footer>\n  </vui-layout>\n </vui-layout>",
+    "desc": "侧边栏，自带默认样式及基本功能，其下可嵌套任何元素，只能放在 Layout 中",
+    "triggerSuggest": null
+  },
+  "vui-switch": {
+    "label": "开关",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_switch1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_switch1\"",
+        "triggerSuggest": null
+      },
+      "value": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "绑定数据，可使用 v-model 双向绑定",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "绑定数据",
+        "example": "value=\"\"",
+        "triggerSuggest": "true"
+      },
+      ":value": {
+        "insertText": "v-model=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "绑定数据，可使用 v-model 双向绑定",
+        "valueOptions": "entityfieldmode",
+        "valueType": "String",
+        "name": "绑定数据",
+        "example": "value=\"\"",
+        "triggerSuggest": "true"
+      },
+      "size": {
+        "insertText": "size=\"$1\" $0",
+        "defaultValue": "default",
+        "desc": "开关的尺寸，可选值为large、small、default或者不写。建议开关如果使用了2个汉字的文字，使用 large。",
+        "valueOptions": "sizemode",
+        "valueType": "String",
+        "name": "尺寸",
+        "example": "size=\"small\"",
+        "triggerSuggest": "true"
+      },
+      "disabled": {
+        "insertText": "v-bind:disabled=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "设置输入框为禁用状态",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "禁用",
+        "example": ":disabled=\"false\" 或者 v-bind:disabled=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "viewonly": {
+        "insertText": "v-bind:viewonly=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "设置输入框为显示模式",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示模式",
+        "example": ":viewonly=\"false\" 或者 v-bind:viewonly=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "v-show": {
+        "insertText": "v-show=\"$1\" $0",
+        "defaultValue": "true",
+        "desc": "是否显示",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示",
+        "example": "v-show=\"true\" 或者 v-show=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "on-change": {
+        "insertText": "on-change=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "开关变化时触发，返回当前的状态",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "数据改变",
+        "example": null,
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-switch widget-code=\"%1\" widget-name=\"%1\" v-model=\"$1\"$0></vui-switch>",
+    "example": "<vui-switch v-model=\"实体.current.字段\" v-bind:disabled=\"实体.current.字段\" v-bind:viewonly=\"实体.current.字段\">\n <span slot=\"open\">开</span>\n <span slot=\"close\">关</span>\n</vui-switch>",
+    "desc": "在两种状态间切换时用到的开关选择器",
+    "triggerSuggest": "true"
+  },
+  "vui-tab-pane": {
+    "label": "页签页",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_tabpane1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_tabpane1\"",
+        "triggerSuggest": null
+      },
+      "name": {
+        "insertText": null,
+        "defaultValue": "",
+        "desc": "用于标识当前面板，对应 value，默认为其索引值",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "名称",
+        "example": "name=\"tab_pane1\" 或者 v-bind:name=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      ":name": {
+        "insertText": "v-bind:name=\"$1\"",
+        "defaultValue": "",
+        "desc": "用于标识当前面板，对应 value，默认为其索引值",
+        "valueOptions": "entityfieldmode",
+        "valueType": "String",
+        "name": "名称",
+        "example": "name=\"tab_pane1\" 或者 v-bind:name=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "label": {
+        "insertText": null,
+        "defaultValue": "",
+        "desc": "选项卡头显示文字",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "显示文字",
+        "example": "label=\"页签页\" 或者 v-bind:lablel=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      ":label": {
+        "insertText": "v-bind:label=\"$1\"",
+        "defaultValue": "",
+        "desc": "选项卡头显示文字",
+        "valueOptions": "entityfieldmode",
+        "valueType": "String",
+        "name": "显示文字",
+        "example": "label=\"页签页\" 或者 v-bind:lablel=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      }
+    },
+    "autoCompleteSource": "<vui-tab-pane widget-code=\"%1\" widget-name=\"%1\" label=\"页签$1\">$0</vui-tab-pane>",
+    "example": "",
+    "desc": "选项卡，用于大块内容的的收纳和展现",
+    "triggerSuggest": null
+  },
+  "vui-tabs": {
+    "label": "页签",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_tabs1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_tabs1\"",
+        "triggerSuggest": null
+      },
+      "value": {
+        "insertText": null,
+        "defaultValue": "",
+        "desc": "当前激活 tab 面板的 name，可以使用 v-model 双向绑定数据",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "绑定数据",
+        "example": "value=\"tab_pane1\"",
+        "triggerSuggest": "true"
+      },
+      ":value": {
+        "insertText": "v-model=\"$1\" $0",
+        "defaultValue": "",
+        "desc": "当前激活 tab 面板的 name，可以使用 v-model 双向绑定数据",
+        "valueOptions": "entityfieldmode",
+        "valueType": "String",
+        "name": "绑定数据",
+        "example": "value=\"tab_pane1\"",
+        "triggerSuggest": "true"
+      },
+      "on-click": {
+        "insertText": "on-click=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "tab 被点击时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "选项卡点击",
+        "example": null,
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-tabs widget-code=\"%1\" widget-name=\"%1\">\n    ${1:vui-tab-pane}$0\n</vui-tabs>",
+    "example": "",
+    "desc": "选项卡切换组件，常用于平级区域大块内容的的收纳和展现",
+    "triggerSuggest": "true"
+  },
+  "vui-time-picker": {
+    "label": "时间",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_time_picker1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_time_picker1\"",
+        "triggerSuggest": null
+      },
+      "value": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "绑定数据，可使用 v-model 双向绑定",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "绑定数据",
+        "example": "value=\"12:39\"",
+        "triggerSuggest": "true"
+      },
+      ":value": {
+        "insertText": "v-model=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "绑定数据，可使用 v-model 双向绑定",
+        "valueOptions": "entityfieldmode",
+        "valueType": "String",
+        "name": "绑定数据",
+        "example": "value=\"12:39\"",
+        "triggerSuggest": "true"
+      },
+      "type": {
+        "insertText": "type=\"$1\" $0",
+        "defaultValue": "time",
+        "desc": "显示类型，可选值为 time、timerange",
+        "valueOptions": "datetimetypemode",
+        "valueType": "String",
+        "name": "类型",
+        "example": "type=\"time\"",
+        "triggerSuggest": "true"
+      },
+      "placeholder": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "占位文本",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "占位文本",
+        "example": "placeholder=\"选择时间\"",
+        "triggerSuggest": null
+      },
+      "format": {
+        "insertText": "format=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "展示的日期格式",
+        "valueOptions": "datetimeformatmode",
+        "valueType": "String",
+        "name": "格式",
+        "example": "format=\"HH:mm:ss\"",
+        "triggerSuggest": "true"
+      },
+      "steps": {
+        "insertText": ":steps=\"[0,${1:15},${2:30}]\"",
+        "defaultValue": null,
+        "desc": "下拉列表的时间间隔，数组的三项分别对应小时、分钟、秒。例如设置为 [1, 15] 时，分钟会显示：00、15、30、45。",
+        "valueOptions": null,
+        "valueType": "Array",
+        "name": "时间间隔",
+        "example": ":steps=\"[0,15,30]\"",
+        "triggerSuggest": null
+      },
+      "size": {
+        "insertText": "size=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "输入框尺寸，可选值为large、small、default或者不设置",
+        "valueOptions": "sizemode",
+        "valueType": "String",
+        "name": "输入框尺寸",
+        "example": "size=\"default\"",
+        "triggerSuggest": "true"
+      },
+      "disabled": {
+        "insertText": "v-bind:disabled=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "设置输入框为禁用状态",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "禁用",
+        "example": ":disabled=\"false\" 或者 v-bind:disabled=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "readonly": {
+        "insertText": "v-bind:readonly=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "设置输入框为只读",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "只读",
+        "example": ":readonly=\"false\" 或者 [v-bind:readonly=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "viewonly": {
+        "insertText": "v-bind:viewonly=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "设置输入框为显示模式",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示模式",
+        "example": ":viewonly=\"false\" 或者 v-bind:viewonly=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "editable": {
+        "insertText": "v-bind:editable=\"$1\" $0",
+        "defaultValue": "true",
+        "desc": "文本框是否可以输入，只在没有使用 slot 时有效",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "可编辑",
+        "example": ":editable=\"true\" 或者 v-bind:editable=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "transfer": {
+        "insertText": ":transfer=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "是否将弹层放置于 body 内，在 Tabs、带有 fixed 的 Table 列内使用时，建议添加此属性，它将不受父级样式影响，从而达到更好的效果",
+        "valueOptions": "boolmode",
+        "valueType": "Boolean",
+        "name": "弹层放置",
+        "example": ":transfer=\"false\"",
+        "triggerSuggest": "true"
+      },
+      "clearable": {
+        "insertText": ":clearable=\"$1\" $0",
+        "defaultValue": "true",
+        "desc": "是否显示清除按钮",
+        "valueOptions": "boolmode",
+        "valueType": "Boolean",
+        "name": "显示清除按钮",
+        "example": ":clearable=\"true\"",
+        "triggerSuggest": "true"
+      },
+      "v-show": {
+        "insertText": "v-show=\"$1\" $0",
+        "defaultValue": "true",
+        "desc": "是否显示",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示",
+        "example": "v-show=\"true\" 或者 v-show=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "on-change": {
+        "insertText": "on-change=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "时间发生变化时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "数据改变",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-open-change": {
+        "insertText": "on-open-change=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "弹出浮层和关闭浮层时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "弹出改变",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-ok": {
+        "insertText": "on-ok=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "点击确定按钮时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "点击确定",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-clear": {
+        "insertText": "on-clear=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "在清空日期时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "清空日期",
+        "example": null,
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-time-picker widget-code=\"%1\" widget-name=\"%1\" type=\"$1\"$0></vui-time-picker>",
+    "example": "<vui-time-picker widget-code=\"vuiTimePicker1\" type=\"time\" v-model=\"实体.current.字段\" placeholder=\"选择时间\" style=\"width: 200px\" v-show=\"false\"></vui-time-picker>",
+    "desc": "选择或输入标准时间，支持选择范围",
+    "triggerSuggest": "true"
+  },
+  "vui-tree-grid": {
+    "label": "树表",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_treegrid1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_treegrid1\"",
+        "triggerSuggest": null
+      },
+      "data-source": {
+        "insertText": ":data-source=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "列表绑定的数据源",
+        "valueOptions": "datasourcemode",
+        "valueType": "String",
+        "name": "数据源",
+        "example": ":data-source=\"实体\"",
+        "triggerSuggest": "true"
+      },
+      "parent-field": {
+        "insertText": null,
+        "defaultValue": "PID",
+        "desc": "父节点字段",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "父节点字段",
+        "example": "parent-field=\"父节点字段\"",
+        "triggerSuggest": null
+      },
+      "allow-resize": {
+        "insertText": ":allow-resize=\"$1\" $0",
+        "defaultValue": "true",
+        "desc": "是否允许拖动列表列改变宽度",
+        "valueOptions": null,
+        "valueType": "Boolean",
+        "name": "允许改变列宽",
+        "example": ":allow-resize=\"true\"",
+        "triggerSuggest": "true"
+      },
+      "show-header": {
+        "insertText": ":show-header=\"$1\" $0",
+        "defaultValue": "true",
+        "desc": "是否显示列头",
+        "valueOptions": null,
+        "valueType": "Boolean",
+        "name": "显示列头",
+        "example": ":show-header=\"true\"",
+        "triggerSuggest": "true"
+      },
+      "height": {
+        "insertText": ":height=\"${1:500}\"",
+        "defaultValue": "1",
+        "desc": "列表高度",
+        "valueOptions": null,
+        "valueType": "Number|String",
+        "name": "高度",
+        "example": ":height=\"500\" 或者 height=\"100%\"",
+        "triggerSuggest": null
+      },
+      "width": {
+        "insertText": ":width=\"${1:500}\"",
+        "defaultValue": "1",
+        "desc": "列表宽度",
+        "valueOptions": null,
+        "valueType": "Number|String",
+        "name": "宽度",
+        "example": ":width=\"500\" 或者 width=\"100%\"",
+        "triggerSuggest": null
+      },
+      "frozen-columns": {
+        "insertText": ":frozen-columns=\"${1:0}\"",
+        "defaultValue": "0",
+        "desc": "冻结列数，从左开始",
+        "valueOptions": null,
+        "valueType": "Number",
+        "name": "冻结列数",
+        "example": ":frozen-columns=\"0\"",
+        "triggerSuggest": null
+      },
+      "readonly": {
+        "insertText": "v-bind:readonly=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "设置是否只读",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "只读",
+        "example": ":readonly=\"false\" 或者 v-bind:readonly=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "v-show": {
+        "insertText": "v-show=\"$1\" $0",
+        "defaultValue": "true",
+        "desc": "是否显示",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "显示",
+        "example": "v-show=\"true\" 或者 v-show=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "selectionMode": {
+        "insertText": "selectionMode=\"$1\" $0",
+        "defaultValue": "Single",
+        "desc": "选择模式:'Single'：单选，'Multi'：多选，'Cascade'：级联",
+        "valueOptions": "treegridselectionMode",
+        "valueType": "String",
+        "name": "选择模式",
+        "example": "selectionMode=\"Single\"",
+        "triggerSuggest": "true"
+      },
+      "on-row-click": {
+        "insertText": "on-row-click=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "单击某一行时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "单击行",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-row-dblclick": {
+        "insertText": "on-row-dblclick=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "单击某一行时触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "双击行",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-current-change": {
+        "insertText": "on-current-change=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "当表格的当前行发生变化的时候会触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "当前行改变",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-selection-change": {
+        "insertText": "on-selection-change=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "在多选模式下有效，只要选中项发生变化时就会触发",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "选中项改变",
+        "example": null,
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-tree-grid widget-code=\"%1\" widget-name=\"%1\" :data-source=\"$1\">\n    <vui-tree-grid-column field=\"$0\" title=\"列名\"></vui-tree-grid-column>\n</vui-tree-grid>",
+    "example": "<vui-tree-grid widget-code=\"grid1\" :data-source=\"实体\">\n  <vui-tree-grid-column field=\"field1\" title=\"列名\"}\"></vui-tree-column>\n</vui-tree-grid>",
+    "desc": "主要用于展示大量结构化数据",
+    "triggerSuggest": "true"
+  },
+  "vui-tree-grid-column": {
+    "label": "树表列",
+    "attributes": {
+      "widget-code": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件唯一编号",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件编号",
+        "example": "widget-code=\"vui_treegridcolumn1\"",
+        "triggerSuggest": null
+      },
+      "widget-name": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "控件名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "控件名称",
+        "example": "widget-name=\"vui_treegridcolumn1\"",
+        "triggerSuggest": null
+      },
+      "field": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "绑定字段",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "绑定字段",
+        "example": "field=\"字段名称\"",
+        "triggerSuggest": null
+      },
+      "title": {
+        "insertText": null,
+        "defaultValue": null,
+        "desc": "标题名称",
+        "valueOptions": null,
+        "valueType": "String",
+        "name": "标题名称",
+        "example": "title=\"标题名称\"",
+        "triggerSuggest": null
+      },
+      "width": {
+        "insertText": ":width=\"${1:500}\"",
+        "defaultValue": "*",
+        "desc": "宽度",
+        "valueOptions": null,
+        "valueType": "Number|String",
+        "name": "宽度",
+        "example": ":width=\"500\" 或者 width=\"100%\"",
+        "triggerSuggest": null
+      },
+      "min-width": {
+        "insertText": ":min-width=\"${1:0}\"",
+        "defaultValue": "0",
+        "desc": "最小宽度",
+        "valueOptions": null,
+        "valueType": "Number|String",
+        "name": "最小宽度",
+        "example": ":min-width=\"0\"",
+        "triggerSuggest": null
+      },
+      "align": {
+        "insertText": "align=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "对齐方式：left、center、right",
+        "valueOptions": "gridcolumnalign",
+        "valueType": "String",
+        "name": "对齐方式",
+        "example": "align=\"left\"",
+        "triggerSuggest": "true"
+      },
+      "readonly": {
+        "insertText": "v-bind:readonly=\"$1\" $0",
+        "defaultValue": "false",
+        "desc": "设置是否只读",
+        "valueOptions": "boolmode|entityfieldmode",
+        "valueType": "Boolean",
+        "name": "只读",
+        "example": ":readonly=\"false\" 或者 v-bind:readonly=\"实体.current.字段\"",
+        "triggerSuggest": "true"
+      },
+      "format": {
+        "insertText": "format=\"$1\" $0",
+        "defaultValue": null,
+        "desc": "格式化输出",
+        "valueOptions": "inputformatmode",
+        "valueType": "String",
+        "name": "格式化",
+        "example": "format=\"n2\"",
+        "triggerSuggest": "true"
+      },
+      "on-link": {
+        "insertText": "on-link=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "链接事件",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "链接",
+        "example": null,
+        "triggerSuggest": null
+      },
+      "on-change": {
+        "insertText": "on-change=\"handleEvent('%1')\"",
+        "defaultValue": null,
+        "desc": "值变化事件",
+        "valueOptions": "eventmode",
+        "valueType": "event",
+        "name": "值改变",
+        "example": null,
+        "triggerSuggest": null
+      }
+    },
+    "autoCompleteSource": "<vui-tree-grid-column widget-code=\"%1\" widget-name=\"%1\" field=\"$0\" title=\"列名$1\"></vui-tree-grid-column>",
+    "example": "<vui-tree-grid-column field=\"listName\" title=\"清单名称\" :width=\"300\"></vui-tree-grid-column>",
+    "desc": "树表列",
+    "triggerSuggest": null
+  }
+}

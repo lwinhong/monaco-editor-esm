@@ -1,22 +1,23 @@
-import util from "./util";
-import { eventBus } from "./event-bus";
+import util from "./util"
+import { eventBus } from "./event-bus"
+import ds from "../dataSource/dataSourceHandler"
 
 (() => {
-  const qs = util.getQueryString();
+  const qs = util.getQueryString()
   if (qs) {
-    var tmp = qs["mode"];
-    if (tmp) editorMode = tmp;
-
-    tmp = qs["token"];
-    if (tmp) divEditorToken = tmp;
-    tmp = qs["form"];
-    if (tmp) formType = tmp;
+    var tmp = qs["mode"]
+    if (tmp) editorMode = tmp
+    tmp = qs["token"]
+    if (tmp) divEditorToken = tmp
+    tmp = qs["form"]
+    if (tmp) formType = tmp
   }
 })()
 
 var appVue
 const init = (vueObj) => {
   appVue = vueObj
+  ds.initDs()
 }
 
 /**
@@ -51,5 +52,9 @@ function executeCmdFromWinform(cmdId, value) {
 }
 
 export default {
-  executeCmdToWinform, executeCmdFromWinform, init, appVue: () => appVue
+  executeCmdToWinform,
+  executeCmdFromWinform,
+  init,
+  appVue: () => appVue,
+  dataSourceHandler: ds
 }

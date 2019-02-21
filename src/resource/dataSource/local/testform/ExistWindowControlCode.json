@@ -1,1 +1,8 @@
-[]
+﻿{
+  "existControlCodes": [
+    "JGDiv2"
+  ],
+  "currentComponent": "copy",
+  "referenceComponents": "",
+  "divCode": "JGDiv2"
+}

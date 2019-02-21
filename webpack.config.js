@@ -22,7 +22,7 @@ module.exports = env => {
             library: "vdk",
         },
         // node: {
-        //     fs: "empty"
+        //      fs: "empty"
         // },
         module: {
             rules: [

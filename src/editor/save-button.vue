@@ -7,7 +7,7 @@
     @on-click="closeDropdownButton"
   >
     <div class="dropBtn">
-      <div class="save-close" @click="emit('saveAndClose')">
+      <div class="save-close" @click="$emit('saveAndClose')">
         <Icon type="ios-list-box" class="iconsave"></Icon>
         <span>保存并关闭</span>
       </div>

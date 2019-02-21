@@ -1,1 +1,142 @@
-﻿{}
+﻿{
+  "v-on:click": {
+    "source": "eventmode",
+    "name": "点击事件",
+    "desc": "v-on:click=\"$emit('button_click1')\"",
+    "insertText": "v-on:click=\"handleEvent('${1:%1}')\"$0",
+    "triggerSuggest": null
+  },
+  "v-res:src": {
+    "source": "resources|entityfieldmode",
+    "name": "本地资源",
+    "desc": "v-res:src=\"'资源编码'\" 或者 v-res:src=\"实体.字段\"",
+    "insertText": "",
+    "triggerSuggest": "true"
+  },
+  "v-url:src": {
+    "source": "entityfieldmode",
+    "name": "资源(指定url)",
+    "desc": "v-url:src=\"'url地址'\" 或者 v-url:src=\"实体.字段\"",
+    "insertText": "",
+    "triggerSuggest": "true"
+  },
+  "v-id2url:src": {
+    "source": "entityfieldmode",
+    "name": "资源(后台资源id)",
+    "desc": "v-id2url:src=\"'资源id'\" 或者 v-id2url:src=\"实体.字段\"",
+    "insertText": "",
+    "triggerSuggest": "true"
+  },
+  "v-bind:href": {
+    "source": "entityfieldmode",
+    "name": "属性绑定href",
+    "desc": "v-bind:href=\"实体.字段\"",
+    "insertText": "",
+    "triggerSuggest": "true"
+  },
+  "v-bind:download": {
+    "source": "entityfieldmode",
+    "name": "属性绑定download",
+    "desc": "v-bind:download=\"实体.字段\"",
+    "insertText": "",
+    "triggerSuggest": "true"
+  },
+  "v-bind:target": {
+    "source": "entityfieldmode",
+    "name": "属性绑定target",
+    "desc": "v-bind:target=\"实体.字段\"",
+    "insertText": "",
+    "triggerSuggest": "true"
+  },
+  "v-bind:ping": {
+    "source": "entityfieldmode",
+    "name": "属性绑定ping",
+    "desc": "v-bind:ping=\"实体.字段\"",
+    "insertText": "",
+    "triggerSuggest": "true"
+  },
+  "v-bind:rel": {
+    "source": "entityfieldmode",
+    "name": "属性绑定rel",
+    "desc": "v-bind:rel=\"实体.字段\"",
+    "insertText": "",
+    "triggerSuggest": "true"
+  },
+  "v-bind:hreflang": {
+    "source": "entityfieldmode",
+    "name": "属性绑定hreflang",
+    "desc": "v-bind:hreflang=\"实体.字段\"",
+    "insertText": "",
+    "triggerSuggest": "true"
+  },
+  "v-bind:type": {
+    "source": "entityfieldmode",
+    "name": "属性绑定type",
+    "desc": "v-bind:type=\"实体.字段\"",
+    "insertText": "",
+    "triggerSuggest": "true"
+  },
+  "v-text": {
+    "source": "entityfieldmode",
+    "name": "显示文本(单向)",
+    "desc": "v-text=\"实体.字段\"",
+    "insertText": "",
+    "triggerSuggest": "true"
+  },
+  "v-model": {
+    "source": "entityfieldmode",
+    "name": "实体字段(双向)",
+    "desc": "v-model=\"实体.字段\"",
+    "insertText": "",
+    "triggerSuggest": "true"
+  },
+  "v-model.lazy": {
+    "source": "entityfieldmode",
+    "name": "实体字段(双向,延时)",
+    "desc": "v-model.lazy=\"实体.字段\"",
+    "insertText": null,
+    "triggerSuggest": "true"
+  },
+  "v-for": {
+    "source": "datasourcemode",
+    "name": "for循环",
+    "desc": "v-for=\"rd in 实体\"",
+    "insertText": "v-for=\"$1\"$0",
+    "triggerSuggest": "true"
+  },
+  "v-if": {
+    "source": "boolmode|entityfieldmode",
+    "name": "if条件判断",
+    "desc": "v-if=\"实体.字段!=实体.字段\"；动态的向DOM树内添加或者删除DOM元素",
+    "insertText": "",
+    "triggerSuggest": "true"
+  },
+  "v-else-if": {
+    "source": "boolmode|entityfieldmode",
+    "name": "if条件判断",
+    "desc": "同v-if 配套使用,v-else-if=\"实体.字段!=实体.字段\"；动态的向DOM树内添加或者删除DOM元素",
+    "insertText": "",
+    "triggerSuggest": "true"
+  },
+  "v-else": {
+    "source": "",
+    "name": "v-else",
+    "desc": "同v-if 配套使用",
+    "insertText": "v-else $0",
+    "triggerSuggest": null
+  },
+  "v-html": {
+    "source": "entityfieldmode",
+    "name": "Html片段",
+    "desc": "v-html=\"实体.字段\"",
+    "insertText": "",
+    "triggerSuggest": "true"
+  },
+  "v-show": {
+    "source": "boolmode|entityfieldmode",
+    "name": "元素显示隐藏",
+    "desc": "v-show=\"实体.字段\" 值为布尔类型；通过设置DOM元素的display样式属性控制显示隐藏",
+    "insertText": "",
+    "triggerSuggest": "true"
+  }
+}

@@ -2,12 +2,11 @@
   <div id="vlist">
     <div class="message-titleBar">v 指令</div>
     <i-table
-     
       border
       :data="listDataSource"
       size="small"
       :columns="columns"
-      @on-row-dbclick="rowDbClick"
+      @on-row-dblclick="rowDbClick"
       :height="140"
     ></i-table>
   </div>
@@ -17,10 +16,7 @@ export default {
   name: "Vlist",
   data() {
     return {
-      listDataSource: [
-        { v: "v-text", desc: "文本哦", simple: "<span v-text='实体.字段'/>" },
-        { v: "v-text", desc: "文本哦", simple: "<span v-text='实体.字段'/>" }
-      ],
+      listDataSource: [],
       columns: [
         {
           type: "index",
@@ -45,7 +41,27 @@ export default {
     };
   },
   methods: {
-    rowDbClick(row, index) {}
+    rowDbClick(row, index) {
+      this.$emit("insertVlanguage", row.v);
+    },
+    loadVList() {
+      const tree = this.listDataSource;
+      tree.splice(0, tree.length);
+      try {
+        window.global.dataSourceHandler.getDataSource().getVlanguage(data => {
+          if (!data) return;
+          $.each(data, function(i, data) {
+            let en = { v: i, desc: data.name, simple: data.desc };
+            tree.push(en);
+          });
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  },
+  mounted() {
+    this.loadVList();
   }
 };
 </script>

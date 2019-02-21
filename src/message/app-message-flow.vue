@@ -17,7 +17,7 @@
       @localMessage="localMessage"
       v-show="messageListVisible"
     ></message>
-    <v-list v-show="vListVisible"></v-list>
+    <v-list v-show="vListVisible" @insertVlanguage="insertVlanguage"></v-list>
   </div>
 </template>
 <script>
@@ -81,11 +81,13 @@ export default {
     //定位错误信息【错误和建议】
     localMessage(row, index, type) {
       this.$emit("localMessage", row, index, type);
+    },
+    insertVlanguage(vlanguage) {
+      this.$emit("insertVlanguage", vlanguage);
     }
   },
   mounted() {
     $(function() {
-      
       var srcPosiY = 0,
         destPosiY = 0,
         moveY = 0,
@@ -132,7 +134,7 @@ export default {
   width: 100%;
   height: 3px;
   border: 1px solid rgb(204, 204, 204);
-  border-top:none;
+  border-top: none;
   border-left: none;
 }
 
@@ -147,7 +149,7 @@ export default {
   left: 0;
   position: fixed;
   /* width: 100%;  */
-   z-index: 5; 
+  z-index: 5;
   right: 43px;
   vertical-align: middle;
   background-color: white;
