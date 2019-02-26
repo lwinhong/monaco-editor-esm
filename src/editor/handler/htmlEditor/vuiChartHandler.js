@@ -1,43 +1,47 @@
 import debounce from 'lodash/debounce'
 import editorUtil from './editorUtil'
 
-var openChartCmdId
-var chartSettingsValue;
-var editorTemplate;
-var modelTemplate;
-var lastPosition;
-var canShowOpenChartWidget;
 const canShowOpenChartWidgetKey = "canShowOpenChartWidget"
 
+var openChartCmdId
+var chartSettingsValue
+var editorTemplate
+var modelTemplate
+var lastPosition
+var canShowOpenChartWidget
+
+/**
+ * 获取打开图表设计自动完成项
+ */
 const getChartCompletion = () => {
     return {
         label: "打开图表设计",
         kind: monaco.languages.CompletionItemKind.Keyword,
         insertText: { value: "$0" },
         command: {
-            id: vuiChartHandler.getOpenChartCmdId(),
+            id: openChartCmdId,
             title: "图表设计"
         }
     }
 }
 
 /**
-    * 初始化图表编辑器命令
-    * @param {编辑器} editor 
-    * @param {model} model 
-    */
+ * 初始化图表编辑器命令
+ * @param {编辑器} editor 
+ * @param {model} model 
+ */
 function initOpenChartCommand(editor, model) {
 
-    editorTemplate = editor;
-    modelTemplate = model;
+    editorTemplate = editor
+    modelTemplate = model
 
-    var ocs = $("#openChartSettings");
-    ocs.bind("click", openChartCmd);
+    var ocs = $("#openChartSettings")
+    ocs.bind("click", openChartCmd)
 
     //按 esc键退出 打开图标 按钮
     canShowOpenChartWidget = editor.createContextKey(canShowOpenChartWidgetKey, false)
     editor.addCommand(monaco.KeyCode.Escape,
-        () => showChartSettingwidget(false), canShowOpenChartWidgetKey);
+        () => showChartSettingwidget(false), canShowOpenChartWidgetKey)
 
     //添加 打开图表设计器命令
     openChartCmdId = editor.addCommand(0, openChartCmd, '')
@@ -52,7 +56,7 @@ function initOpenChartCommand(editor, model) {
     })
 
     editor.onMouseDown(function (e) {
-        mouseEventTemplate = e
+        //mouseEventTemplate = e
         debounce(() =>
             showChartSettingButton(model, e.target.position, e), 100)()
     })
@@ -62,28 +66,28 @@ function initOpenChartCommand(editor, model) {
  * 打开图标设计器的命令
  */
 function openChartCmd() {
-    var position = lastPosition;
-    chartSettingsValue = getValue(modelTemplate, position);
-    openChartSetting(position);
+    var position = lastPosition
+    chartSettingsValue = getValue(modelTemplate, position)
+    openChartSetting(position)
 }
 
 /**
-* 打开图标设计器
-* @param {当前鼠标位置} position 
-*/
+ * 打开图标设计器
+ * @param {当前鼠标位置} position 
+ */
 function openChartSetting(position) {
-    var oldValue = chartSettingsValue;
-    showChartSettingwidget(false);
+    var oldValue = chartSettingsValue
+    showChartSettingwidget(false)
 
-    var result = executeCmdWithValue(cmdData.editChart, oldValue.value);
+    var result = executeCmdWithValue(cmdData.editChart, oldValue.value)
     if (result) {
-        var jsonData = JSON.parse(result);
+        var jsonData = JSON.parse(result)
         if (jsonData.ok) {
             editorTemplate.executeEdits('openChart', [{
                 range: selectOldValue(oldValue, position),
                 text: jsonData.value,
                 forceMoveMarkers: true
-            }]);
+            }])
 
             // modelTemplate.applyEdits([{
             //     range: selectOldValue(oldValue, position),
@@ -94,13 +98,13 @@ function openChartSetting(position) {
 }
 
 /**
-     * 获取就数据的范围
-     * @param {旧数据} oldValue 
-     * @param {当前鼠标位置} position 
-     */
+ * 获取就数据的范围
+ * @param {旧数据} oldValue 
+ * @param {当前鼠标位置} position 
+ */
 function selectOldValue(oldValue, position) {
     if (!oldValue || !oldValue.value || $.trim(oldValue.value) === "")
-        return monaco.Range.fromPositions(position);
+        return monaco.Range.fromPositions(position)
 
     if (oldValue.startColumn && oldValue.endColumn) {
         var range = {
@@ -108,18 +112,18 @@ function selectOldValue(oldValue, position) {
             startColumn: oldValue.startColumn,
             endLineNumber: position.lineNumber,
             endColumn: oldValue.endColumn
-        };
-        return range;
+        }
+        return range
     }
 
     var matches = modelTemplate.findMatches(oldValue, true, false, false)
     for (let i = 0; i < matches.length; i++) {
-        const match = matches[i];
-        var r = match.range;
+        const match = matches[i]
+        var r = match.range
         if (r.startLineNumber === position.lineNumber)
-            return r;
+            return r
     }
-    return monaco.Range.fromPositions(position);
+    return monaco.Range.fromPositions(position)
 }
 
 /**
@@ -131,107 +135,97 @@ function selectOldValue(oldValue, position) {
 function showChartSettingButton(model, position, mouseEvent) {
 
     if (mouseEvent && !mouseEvent.event.leftButton)
-        return;
+        return
 
     if (isNeedShowCharttingWidget(model, position)) {
-        showChartSettingwidget(true, mouseEvent);
+        showChartSettingwidget(true, mouseEvent)
     }
 }
 
+/**
+ * 是否需要显示 CharttingWidget
+ * @param {编辑器model} model 
+ * @param {位置} position 
+ */
 function isNeedShowCharttingWidget(model, position) {
-    var selection = editorTemplate.getSelection();
+    var selection = editorTemplate.getSelection()
     if (selection && selection.startLineNumber && selection.endLineNumber) {
         if (selection.startLineNumber != selection.endLineNumber) {
-            showChartSettingwidget(false);
-            return;
+            showChartSettingwidget(false)
+            return false
         }
     }
 
-    var startLineNumber = 1;
-    if (position.lineNumber > 10) {
-        startLineNumber = position.lineNumber - 10;
-    }
+    chartSettingsValue = ""
 
-    //获取开始倒光标位置的文本
-    var text = model.getValueInRange({
-        startLineNumber: startLineNumber,
-        startColumn: 1,
-        endLineNumber: position.lineNumber,
-        endColumn: position.column
-    });
-    chartSettingsValue = "";
-
-    var textTrimed = $.trim(text);
+    const text = editorUtil.getLastHtml(position, model, null, 10)
+    const textTrimed = $.trim(text)
     //空白什么都没
     if (textTrimed === "") {
         showChartSettingwidget(false);
-        return;
+        return false
     }
 
-    var substringText = text.substring(text.lastIndexOf("<"));
-    var tagMatch = substringText.match(tagStart);
+    const tagMatch = editorUtil.matchTagStart(text)
     if (!tagMatch) {
-        showChartSettingwidget(false);
-        return;
+        showChartSettingwidget(false)
+        return false
     }
-    var tagName = tagMatch[1];
+    const tagName = tagMatch[1]
     if (!"vui-chart".equalIgnoreCase(tagName)) {
-        showChartSettingwidget(false);
-        return;
+        showChartSettingwidget(false)
+        return false
     }
 
-    var lastAttrName = vuiDataHandler.getLastProp(text + "\"");
+    const lastAttrName = editorUtil.getLastProp(text + "\"")
     if ("chartSettings".equalIgnoreCase(lastAttrName)) {
-        var tokens = monaco.editor.tokenize(textTrimed + "\"", "html");
-
-        var token = tokens[tokens.length - 1];
+        const tokens = monaco.editor.tokenize(textTrimed + "\"", "html")
+        const token = tokens[tokens.length - 1]
         if (token.length >= 5) {
-            var condition1 = (token[token.length - 1].type === "attribute.value.html" &&
+            const condition1 = (token[token.length - 1].type === "attribute.value.html" &&
                 token[token.length - 2].type === "delimiter.html" &&
-                token[token.length - 3].type === "attribute.name.html");
+                token[token.length - 3].type === "attribute.name.html")
 
-            var condition2 = (token[token.length - 1].type === "attribute.value.html" &&
+            const condition2 = (token[token.length - 1].type === "attribute.value.html" &&
                 token[token.length - 2].type === "" &&
                 token[token.length - 3].type === "delimiter.html" &&
                 token[token.length - 4].type === "" &&
-                token[token.length - 5].type === "attribute.name.html");
+                token[token.length - 5].type === "attribute.name.html")
 
-            var condition3 = (token[token.length - 1].type === "attribute.value.html" &&
+            const condition3 = (token[token.length - 1].type === "attribute.value.html" &&
                 token[token.length - 2].type === "delimiter.html" &&
                 token[token.length - 3].type === "" &&
-                token[token.length - 4].type === "attribute.name.html");
+                token[token.length - 4].type === "attribute.name.html")
 
-            var condition4 = (token[token.length - 1].type === "attribute.value.html" &&
+            const condition4 = (token[token.length - 1].type === "attribute.value.html" &&
                 token[token.length - 2].type === "" &&
                 token[token.length - 3].type === "delimiter.html" &&
-                token[token.length - 4].type === "attribute.name.html");
+                token[token.length - 4].type === "attribute.name.html")
 
             if (condition1 || condition2 || condition3 || condition4) {
-                if ("vui-chart".equalIgnoreCase(tagName)) {
-                    // showChartSettingwidget(true, mouseEvent);
-                    //showChartSettingwidgetByCommand(mouseEvent);
-                    return true;
-                }
+                if ("vui-chart".equalIgnoreCase(tagName))
+                    return true
             }
         }
     }
-    showChartSettingwidget(false);
-    return false;
+    showChartSettingwidget(false)
+    return false
 }
+
 /**
-* 显示/隐藏 打开图标编辑器 widget
-* @param {显示} show 
-* @param {鼠标位置} mouseEvent 
-*/
+ * 显示/隐藏 打开图标编辑器 widget
+ * @param {显示} show 
+ * @param {鼠标位置} mouseEvent 
+ */
 function showChartSettingwidget(show, mouseEvent) {
-    canShowOpenChartWidget.set(show);
-    var ocs = $("#openChartSettings");
+    canShowOpenChartWidget.set(show)
+    var ocs = $("#openChartSettings")
     if (show) {
-        ocs.css("top", mouseEvent.event.posy + 10);
-        ocs.css("left", mouseEvent.event.posx);
-        ocs.show();
+        ocs.css("top", mouseEvent.event.posy + 10)
+        ocs.css("left", mouseEvent.event.posx)
+        ocs.show()
     } else {
-        ocs.hide();
+        ocs.hide()
     }
 }
 
@@ -241,9 +235,12 @@ function showChartSettingwidget(show, mouseEvent) {
  * @param {鼠标位置} position 
  */
 function getValue(model, position) {
-    return getValueAtPoint(model, position, true)
+    return editorUtil.getValueAtPoint(model, position, true)
 }
 
+/**
+ * 输出
+ */
 export default {
-    getChartCompletion, getOpenChartCmdId: () => openChartCmdId
+    getChartCompletion, getOpenChartCmdId: () => openChartCmdId, initOpenChartCommand
 }

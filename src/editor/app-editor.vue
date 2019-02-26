@@ -32,7 +32,6 @@
 import AppChartWidget from "../editor/app-chart-widget.vue";
 import editorHandler from "../editor/handler/editorHandler.js";
 import AppMessageFlow from "../message/app-message-flow.vue";
-import eslintHandler from "./handler/eslintHandler.js";
 import SaveButton from "./save-button.vue";
 
 const tabs = [];

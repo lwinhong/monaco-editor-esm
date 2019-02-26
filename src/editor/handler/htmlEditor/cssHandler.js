@@ -34,7 +34,7 @@ const getUrlResourcesComps = () => {
     }
 
     //自定义div还要加上share资源
-    if (IsDevEditorMode()) {
+    if (isDevEditorMode()) {
         var devRes = "url(\"%1\")"
         resources = options.devResources
         if (resources)

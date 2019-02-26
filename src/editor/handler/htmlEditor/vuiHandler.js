@@ -1,10 +1,10 @@
 import editorUtil from './editorUtil'
 import debounce from 'lodash/debounce'
 import chartHandler from './vuiChartHandler'
+import hoverHandler from './vuiHoverHandler'
 
-const widgetCodeReg = /widget-code\s{0,}=\s{0,}["']\s{0,}([\w\S-\.]+)\s{0,}["']/i
 const tagEnd = /<\/([\w-\s]+)>/
-const tagStart = /<([\w-]+)/
+const widgetCodeReg = /widget-code\s{0,}=\s{0,}["']\s{0,}([\w\S-\.]+)\s{0,}["']/i
 const triggerSuggestCommand = { id: 'editor.action.triggerSuggest', title: 123 }
 
 var editorObj
@@ -17,8 +17,8 @@ export const vuiIntelliSense = (editor, editorsObj) => {
     }
     editorObj = editorsObj
 
-    editor.onDidChangeModelContent(function (e) {
-        isTriggerByBrackets = e.changes[0].text === '<';
+    editor.onDidChangeModelContent((e) => {
+        isTriggerByBrackets = e.changes[0].text === '<'
     })
 
     monaco.languages.registerHoverProvider("html", {
@@ -30,6 +30,10 @@ export const vuiIntelliSense = (editor, editorsObj) => {
         triggerCharacters: ["<", "=", "\""],
         provideCompletionItems: autoCompleteHandler
     })
+
+    //如果是template编辑器的话，图表初始化
+    if (editorsObj.editorKey === editorsObj.devEditorKeys.template)
+        chartHandler.initOpenChartCommand(editor, editorsObj.model)
 }
 
 /*********** vui ******** */
@@ -83,7 +87,7 @@ function autoCompleteHandler(model, position) {
         return createVuiCompletions(isTriggerByBrackets, model)
     }
 
-    var tagMatch = substringText.match(tagStart)
+    var tagMatch = editorUtil.matchTagStart(substringText)
     var tagName = ""
     if (tagMatch)
         tagName = tagMatch[1]
@@ -148,18 +152,18 @@ function createVuiCompletions(isFromBrackets, model) {
     $.each(vuis, function (vui, vuiData) {
         var insertText;
         var code = editorUtil.newWidgetCode(vui, existCodes);
-        var soruce = vuiData.autoCompleteSource;
+        var soruce = vuiData.autoCompleteSource
         if (soruce) {
-            soruce = String.format(soruce, code);
+            soruce = String.format(soruce, code)
             if (isFromBrackets)
-                soruce = soruce.substring(1);
+                soruce = soruce.substring(1)
             insertText = soruce;
         } else {
-            insertText = (isFromBrackets ? "" : "<") + vui;
+            insertText = (isFromBrackets ? "" : "<") + vui
             //元数据存在widget-code才加上
             if (vuiData.attributes && vuiData.attributes["widget-code"])
-                insertText += ' widget-code="' + code + '"';
-            insertText += "></" + vui + ">";
+                insertText += ' widget-code="' + code + '"'
+            insertText += "></" + vui + ">"
         }
         var vui = {
             label: " " + vui,
@@ -168,7 +172,7 @@ function createVuiCompletions(isFromBrackets, model) {
             insertText: {
                 value: insertText
             }
-        };
+        }
         if ("true".equalIgnoreCase(vuiData.triggerSuggest)) {
             //完成之后要执行的命令，这里是继续提示
             vui.command = triggerSuggestCommand
@@ -223,12 +227,12 @@ function createVuiPropCompletions(tag, widgetCode, props) {
         if (propData.valueType === "event") {
             var tmp = (widgetCode + "_" + attr).replace(/-/g, "")
             insertText = "v-on:" + String.format(insertText, editorUtil.newEventName(tmp, eixstEvenCodes))
-            if (IsDevEditorMode()) {
+            if (isDevEditorMode()) {
                 insertText = insertText.replace(/handleEvent/, "\\$emit")
             }
         }
 
-        var prop = {
+        const prop = {
             label: " " + attr,
             kind: monaco.languages.CompletionItemKind.Keyword,
             documentation: propData.description,
@@ -236,10 +240,10 @@ function createVuiPropCompletions(tag, widgetCode, props) {
         }
 
         if ("vui-chart".equalIgnoreCase(tag) && "chartSettings".equalIgnoreCase(attr)) {
-            // prop.command = {
-            //     id: vuiChartHandler.getOpenChartCmdId(),
-            //     title: "打开图表设计"
-            // }
+            prop.command = {
+                id: chartHandler.getOpenChartCmdId(),
+                title: "打开图表设计"
+            }
         } else if ("true".equalIgnoreCase(propData.triggerSuggest)) {
             prop.command = triggerSuggestCommand
         }
@@ -263,7 +267,7 @@ function createVlanuageCompletions(widgetCode, props) {
         if (p.insertText && p.insertText !== "") {
             if (com === "v-on:click") {
                 var insertText = p.insertText
-                if (IsDevEditorMode()) {
+                if (isDevEditorMode()) {
                     insertText = insertText.replace(/handleEvent/, "\\$emit")
                 }
                 var tmp = (widgetCode + "_click").replace(/-/g, "")
@@ -289,7 +293,13 @@ function createVlanuageCompletions(widgetCode, props) {
     })
 }
 
-
+/**
+ * 生成属性值自动提示和完成数据
+ * @param {vui} tagName 
+ * @param {html} htmlText 
+ * @param {要插入的片段} insertSupplement 
+ * @param {widgetcode} widgetCode 
+ */
 function createPropValueCompletions(tagName, htmlText, insertSupplement, widgetCode) {
     const propName = editorUtil.getLastProp(htmlText + "\"")
     if (!propName)
@@ -320,7 +330,7 @@ function createPropValueCompletions(tagName, htmlText, insertSupplement, widgetC
 
     //如果是事件,生成js中的call('aa')
     if (propData && propData.valueType === "event" && options) {
-        if (IsDevEditorMode()) {
+        if (isDevEditorMode()) {
             options.splice(0, options.length)
             options.push("\\$emit('%1')")
         } else {
@@ -373,6 +383,11 @@ function createPropValueCompletions(tagName, htmlText, insertSupplement, widgetC
     return props
 }
 
+
+/************************ */
+
+/*********** 公共方法 ******** */
+
 /**
  * 在验证用户输入数据之后触发
  * @param {editor model} model 
@@ -389,29 +404,8 @@ function afterValidationAll(model) {
     }, 1)()
 }
 
-/************************ */
-
-/*********** hover ******** */
-function hoverHandler(model, position) {
-    var title = 'titltlt123456'
-    var value = 'valualaula'
-    return {
-        contents: [
-            { value: `**${title}**` },
-            {
-                value: '```html\n' + value + "\n\n更多详细：Shift + F1" + '\n```'
-            }
-        ]
-    };
-}
-/************************ */
-/*********** 公共方法 ******** */
-
-
-
-
 /************************** */
 
 export default {
-    afterValidationAll
+    afterValidationAll, editorUtil
 }

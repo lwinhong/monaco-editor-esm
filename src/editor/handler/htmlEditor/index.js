@@ -1,4 +1,4 @@
-export * from './helpHandler'
+export * from './vuiHelpHandler'
 export * from './vuiHandler'
 export * from './themeVarHandler'
 export * from '../../emmet/monaco-emmet'

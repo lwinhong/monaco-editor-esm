@@ -29,7 +29,6 @@ export default {
   methods: {
     chartWidgetClick() {
       this.$emit("chart-widget-click");
-      this.global.testGlobal();
     }
   }
 };

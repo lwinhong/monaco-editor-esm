@@ -1,14 +1,14 @@
-import eslintState from "./eslint/eslint-state"
-import { getRuleUrl } from "./eslint/eslint-state"
-import v3Config from "./eslint/v3-config"
+import eslintState from "./eslint-state"
+import { getRuleUrl } from "./eslint-state"
+import v3Config from "./v3-config"
 import debounce from "lodash/debounce"
 
 const suggestRules = v3Config.suggest
 const playgroundState = new eslintState()
-var editorData = {}
+//var editorData = {}
 
 const init = (editorDataMap) => {
-    editorData = editorDataMap
+    //editorData = editorDataMap
 }
 
 /**

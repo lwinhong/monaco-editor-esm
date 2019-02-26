@@ -11,6 +11,7 @@
   "dependencies": {
     "fs": "0.0.1-security",
     "highlight.js": "^9.13.1",
+    "htmlparser2": "^3.10.1",
     "iview": "^3.2.1",
     "jquery": "^3.3.1",
     "vue-smooth-dnd": "^0.2.8"

@@ -1,6 +1,7 @@
 import util from '../../../app/util'
 
 const propReg = /([\w-:\.]+)(\s*=\s*)("[^"]*"|'[^']*')/g
+const tagStart = /<([\w-]+)/
 
 function getDataSource() {
     return window.global.dataSourceHandler.getDataSource()
@@ -122,6 +123,14 @@ function newEventName(baseName) {
     return newUniqueCode(baseName, existEventCodes);
 }
 
+/**
+ * 匹配html标签
+ * @param {匹配文本} text 
+ */
+function matchTagStart(text) {
+    return text.match(tagStart);
+}
+
 /************************************************** js 相关处理 *************************************************** */
 /**
 * 获取所有js函数名称
@@ -161,16 +170,16 @@ function getAllJsFunctions(editorData, editorKey) {
     }
 
     const editors = [editorData[editorKey.javascript], editorData[editorKey.moduleJavaScript]]
-    var result = [];
+    var result = []
     $.each(editors, function (i, editor) {
         if (editor && editor.editor) {
-            var functions = getJsFunctionName(editor.editor.getValue());
+            var functions = getJsFunctionName(editor.editor.getValue())
             if (functions) {
-                result = result.concat(functions);
+                result = result.concat(functions)
             }
         }
-    });
-    return result;
+    })
+    return result
 }
 
 /************************************************** js 相关处理 END *************************************************** */
@@ -197,14 +206,21 @@ function newWidgetCode(tag, existCodes) {
     if (!existCodes)
         existCodes = getExistWidgetCodes()
 
-    const ds = getDataSource()
-    const existCodesDs = ds.getExistWindowControlCodes()
-    var existControlCodes = existCodesDs.existControlCodes
+    var existControlCodes = getExistWindowControlCodes()
     if (existControlCodes) {
         existCodes = existCodes.concat(existControlCodes)
     }
 
-    return newUniqueCode(existCodesDs.divCode + "_" + tag.split("-").join(""), existCodes)
+    return newUniqueCode(divCode + "_" + tag.split("-").join(""), existCodes)
+}
+
+/**
+ * 获取在窗体中已存在的控件编码
+ */
+function getExistWindowControlCodes() {
+    const ds = getDataSource()
+    const existCodesDs = ds.getExistWindowControlCodes()
+    return existCodesDs.existControlCodes
 }
 
 /**
@@ -229,7 +245,7 @@ function getExistWidgetCodesWithSources(html) {
  */
 function getExistEventCodes(want2Update, html) {
     if (want2Update || !existEventCodes) {
-        existEventCodes = IsDevEditorMode()
+        existEventCodes = isDevEditorMode()
             ? getExistCodeCommon(emitEventReg, html) : getExistCodeCommon(handleEventReg, html)
     }
     if (!existEventCodes)
@@ -338,9 +354,42 @@ function getVuiPropData(vuiTag, propName) {
     }
     return null
 }
+
+/**
+   * 根据vlang的编码获取相应的数据
+   * @param {} code 
+   * @returns {} 
+   */
+function getVlangWithCode(code) {
+    const ds = getDataSource()
+    var vlang = ds.getVlanguage()
+    if (vlang) {
+        var result = null
+        var isExist = vlang[code]
+        if (isExist) {
+            result = isExist
+        } else {
+            $.each(vlang, function (com, data) {
+                if (com.equalIgnoreCase(code)) {
+                    result = data
+                    return false
+                }
+                return true
+            })
+        }
+        return result
+    }
+}
 /************************************************** vui相关数据获取 END *************************************************** */
 
 /************************************************** 根据光标位置获取编辑器中字符数据 *************************************************** */
+
+/**
+ * 根据位置获取 位置下的值
+ * @param {model} model 
+ * @param {位置} position 
+ * @param {是否获取属性值} isGetAttributeValue 
+ */
 function getEditorValueAtPoint(model, position, isGetAttributeValue) {
 
     var data = getTokensAtLine(position.lineNumber, model);
@@ -384,17 +433,17 @@ function getEditorValueAtPoint(model, position, isGetAttributeValue) {
     };
 }
 
-function getStateBeforeLine(lineNumber, model) {
-    const tokenizationSupport = model._tokens.tokenizationSupport;
-    var state = tokenizationSupport.getInitialState();
+// function getStateBeforeLine(lineNumber, model) {
+//     const tokenizationSupport = model._tokens.tokenizationSupport;
+//     var state = tokenizationSupport.getInitialState();
 
-    for (let i = 1; i < lineNumber; i++) {
-        var tokenizationResult = tokenizationSupport.tokenize(model.getLineContent(i), state, 0);
-        state = tokenizationResult.endState;
-    }
+//     for (let i = 1; i < lineNumber; i++) {
+//         var tokenizationResult = tokenizationSupport.tokenize(model.getLineContent(i), state, 0);
+//         state = tokenizationResult.endState;
+//     }
 
-    return state;
-}
+//     return state;
+// }
 
 function getTokensAtLine(lineNumber, model) {
     var tokenizationSupport = model._tokens.tokenizationSupport;
@@ -417,12 +466,42 @@ function getTokensAtLine(lineNumber, model) {
     };
 }
 
-/************************************************** 根据光标位置获取编辑器中字符数据 END *************************************************** */
+/**
+ * 获取当前光标下前50行的html 文本
+ * @param {postion} position 
+ * @param {model} model 
+ * @param {currentWord} currentWord 
+ * @returns {LastHtml} 
+ */
+function getLastHtml(position, model, currentWord, lineCount) {
 
+    lineCount = lineCount || 50
+    const startLineNumber = position.lineNumber > lineCount ? position.lineNumber - lineCount : 1
+    const endCol = currentWord ? currentWord.endColumn : position.column;
+
+    //获取开始倒光标位置的文本
+    const text = model.getValueInRange({
+        startLineNumber: startLineNumber,
+        startColumn: 1,
+        endLineNumber: position.lineNumber,
+        endColumn: endCol
+    })
+
+    const textTrimed = $.trim(text);
+    //空白什么都没
+    if (!textTrimed)
+        return null
+
+    const substringText = text.substring(text.lastIndexOf("<"))
+    return substringText
+}
+
+/************************************************** 根据光标位置获取编辑器中字符数据 END *************************************************** */
 
 export default {
     getVuiData, getVuiPropData, getValueOptions, newWidgetCode,
     getExistWidgetCodes, getExistEventCodes, getDataSource, newEventName,
     getWidgetCodeProperty, getLastProp, getAllJsFunctions, getWidgetCodePropertyValue,
-    getEditorValueAtPoint
+    getEditorValueAtPoint, getTokensAtLine, getLastHtml, matchTagStart,
+    getVlangWithCode, getExistWidgetCodesWithSources, getExistWindowControlCodes
 }

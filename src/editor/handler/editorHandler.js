@@ -1,8 +1,8 @@
 import debounce from 'lodash/debounce'
-import eslintHandler from '../handler/eslintHandler'
-import { vuiIntelliSense, vuiHelp, emmetHTML, eventBus, themeVarHandler, scriptHandler, cssHandler } from './htmlEditor'
 import vuiHandler from './htmlEditor/vuiHandler'
 import monacoLoader from "../../monaco-editor/monaco-loader"
+import validateHandler from './htmlEditor/validate/validateHandler'
+import { vuiIntelliSense, vuiHelp, emmetHTML, eventBus, themeVarHandler, scriptHandler, cssHandler } from './htmlEditor'
 
 const devEditorKeys = { template: 'template', script: 'script', style: 'style', themeLess: 'themeLess', varLess: 'varLess' }
 const defaultEditorKeys = { html: 'html', javascript: 'javascript', css: 'css', moduleCss: 'moduleCss', moduleJavascript: 'moduleJavascript' }
@@ -10,15 +10,14 @@ const defaultEditorKeys = { html: 'html', javascript: 'javascript', css: 'css', 
 var editorData = {}
 var parentVue
 
-eslintHandler.init(editorData)
-
+/**
+ * 初始化
+ * @param {编辑器vue对象} editorVue 
+ */
 const Init = (editorVue) => {
     parentVue = editorVue
-    // eventBus.$on('executeCmdFromWinform', function (cmd, value) {
-    //     executeCommand(cmd, value)
-    // })
-
     eventBus.$on('executeCmdFromWinform', executeCommand)
+    validateHandler.validateInit(parentVue, { editorData, devEditorKeys, defaultEditorKeys, vuiHandler })
 }
 
 /*************** 页签 **************/
@@ -43,13 +42,10 @@ const addEditorTabPage = (tabs) => {
  * @param {编辑器语言} language
  */
 const addTab = (tabs, key, text, editorContainerId, language) => {
-    if (!tabs)
-        return
+    if (!tabs) return
 
     for (let index = 0; index < tabs.length; index++) {
-        const element = tabs[index];
-        if (element.key === key)
-            return
+        if (tabs[index].key === key) return
     }
 
     tabs.push({ key: key, text: text, editorContainerId: editorContainerId, language: language })
@@ -77,6 +73,10 @@ const addDevTab = (tabs) => {
     addTab(tabs, devEditorKeys.varLess, "var.less", "editor_var", "less")
 }
 
+/**
+ * 获取编辑器页签text
+ * @param {编辑器页签key} tabKey 
+ */
 const getTabText = tabKey => {
     if (parentVue) {
         for (var i = 0; i < parentVue.tabs.length; i++) {
@@ -102,8 +102,6 @@ const options = {
     folding: true
     //glyphMargin:true
 }
-
-var isEditing = false;
 
 /**
  * 新增monaco编辑器
@@ -157,8 +155,8 @@ const initEditor = (editorObj, tabData) => {
     //template 或者 html编辑器：注册Emmet，vui智能提示相关
     if (tabData.key === devEditorKeys.template || tabData.key === defaultEditorKeys.html) {
         emmetHTML(editor)
-        vuiIntelliSense(editor, { editorData, devEditorKeys, defaultEditorKeys })
-        vuiHelp(editor)
+        vuiIntelliSense(editor, { editorData, devEditorKeys, defaultEditorKeys, editorKey: tabData.key, model })
+        vuiHelp(editor, model)
     }
     //注册theme页签相关
     if (tabData.key === devEditorKeys.themeLess) {
@@ -174,10 +172,8 @@ const initEditor = (editorObj, tabData) => {
     }
     //鼠标按下
     editor.onMouseDown(function (e) {
-        if (parentVue) {
-            //隐藏浮动的错误信息
+        if (parentVue) //隐藏浮动的错误信息
             parentVue.$refs.messageFlow.tryToHide()
-        }
     })
     //光标位置
     editor.onDidChangeCursorPosition(function (e) {
@@ -186,20 +182,19 @@ const initEditor = (editorObj, tabData) => {
     //内容改变
     editor.onDidChangeModelContent(function (e) {
         if (e.changes[0].text === ' ') {
-            debounce(() => {
-                executeCommand('triggerSuggest', editor)
-            }, 200)();
+            debounce(() => { executeCommand('triggerSuggest', editor) }, 200)()
         }
-
-        const currentKey = parentVue.tabSelectedIndex
-        if (!isEditing &&
-            (currentKey === devEditorKeys.template || currentKey === devEditorKeys.script))
-            didChangedContent(model, editor, currentKey)
     })
 
+    validateHandler.validateRegisterEvent(editor, parentVue)
     addMenuAction(editor, tabData)
 }
 
+/**
+ * 添加一个编辑器右键上下文菜单
+ * @param {编辑器} editor 
+ * @param {页签数据} tabData 
+ */
 const addMenuAction = (editor, tabData) => {
     //添加右键菜单（在资源管理器中打开）
     editor.addAction({
@@ -216,48 +211,11 @@ const addMenuAction = (editor, tabData) => {
     })
 }
 
-var inputTimeoutTimer; //计时器
-const didChangedContent = (model, editor, tabKey) => {
-    isEditing = true
-    //触发值改变之前，清除重置之前的计时器
-    if (inputTimeoutTimer)
-        window.clearInterval(inputTimeoutTimer);
-
-    inputTimeoutTimer = window.setTimeout(function () {
-        debounce(() => {
-            try {
-                var lintValue = getLintValue(model, tabKey)
-                const eslintMsg = eslintHandler.invalidateEslint(lintValue)
-                const afterMarker = eslintHandler.updateMarkers(editor, eslintMsg)
-                setMessageFlowData(afterMarker, tabKey, null, true)
-            } catch (error) {
-                console.error('onDidChangeContent:' + error)
-            } finally {
-                isEditing = false
-            }
-        }, 1)()
-        vuiHandler.afterValidationAll(IsDevEditorMode()
-            ? editorData[devEditorKeys.template].model
-            : editorData[defaultEditorKeys.html].model)
-    }, 999)
-}
-
-const getLintValue = (model, editorKey) => {
-    var lintValue = model.getValue()
-
-    if (editorKey === devEditorKeys.script)
-        lintValue = "<script>\n " + lintValue + "\n </script>"
-    else if (editorKey === devEditorKeys.template)
-        lintValue = "<template>\n " + lintValue + "\n </template>"
-
-    return lintValue
-}
-
 /**
  * 设置编辑器焦点
  * @param {编辑器} editor 
  */
-function setMonacoEditorFocus(editorKey) {
+const setMonacoEditorFocus = (editorKey) => {
     try {
         const editor = editorData[editorKey].editor
         if (editor)
@@ -285,6 +243,11 @@ const editorLayout = () => {
         }
     }
 }
+
+/**
+ * 异步设置编辑器重新布局
+ * @param {超时时间} timeout 
+ */
 const editorLayoutDelay = (timeout) => {
     if (!timeout || !isNaN(timeout))
         timeout = 200
@@ -293,6 +256,9 @@ const editorLayoutDelay = (timeout) => {
 
 window.onresize = editorLayout;
 
+/**
+ * 获取当前选中编辑器的数据
+ */
 const getSelectedEditorData = () => {
     var data = editorData[parentVue.tabSelectedIndex];
     return data;
@@ -301,6 +267,10 @@ const getSelectedEditorData = () => {
 /*************** monaco editor end **************/
 
 /*************** 执行命令 **************/
+
+/**
+ * 常用编辑器的命令
+ */
 const monacoEditorCmd = {
     format: "editor.action.formatDocument",
     commentLine: "editor.action.commentLine",
@@ -309,6 +279,11 @@ const monacoEditorCmd = {
     quickCommand: 'editor.action.quickCommand'
 }
 
+/**
+ * 执行命令
+ * @param {命令} cmd 
+ * @param {值} value 
+ */
 const executeCommand = (cmd, value) => {
     console.log("cmd: " + cmd + "-> value:" + value)
     switch (cmd) {
@@ -342,11 +317,22 @@ const executeCommand = (cmd, value) => {
     }
 }
 
+/**
+ * 根据actionId 触发一个action
+ * @param {action} actionId 
+ * @param {是否设置焦点} focus 
+ */
 const triggerMonacoEditor = (actionId, focus) => {
     const editor = editorData[parentVue.tabSelectedIndex].editor
     triggerMonacoEditorAction(actionId, editor, focus)
 }
 
+/**
+ * 根据actionId 触发一个action
+ * @param {action} actionId 
+ * @param {编辑器} editor 
+ * @param {是否设置焦点} focus 
+ */
 const triggerMonacoEditorAction = (actionId, editor, focus) => {
     if (!editor)
         return
@@ -355,6 +341,13 @@ const triggerMonacoEditorAction = (actionId, editor, focus) => {
     editor.trigger('', actionId, {})
 }
 
+/**
+ * 插入数据到编辑器
+ * @param {编辑器} editor 
+ * @param {待插入的值} value 
+ * @param {位置} range 
+ * @param {插入之后是否设置焦点} setFocus 
+ */
 const insertValueToEditor = (editor, value, range, setFocus) => {
     try {
         if (!editor)
@@ -379,73 +372,6 @@ const insertValueToEditor = (editor, value, range, setFocus) => {
 
 /*************** 执行命令 end **************/
 
-/********************** 验证信息 **********************/
-
-const setMessageFlowData = (messages, editorKey, dataType, clearBefore) => {
-    if (parentVue) {
-
-        const flow = parentVue.$refs.messageFlow
-        const errorData = flow.errorData
-        const suggestData = flow.suggestData
-
-        if (clearBefore) {
-            clearMessageFlowData(editorKey, dataType);
-        }
-        if (messages) {
-            const editorName = editorData[editorKey].text
-            for (let index = 0; index < messages.length; index++) {
-                const msg = messages[index]
-                msg.moduleKey = editorKey
-                msg.moduleName = editorName
-                if (monaco.MarkerSeverity.Error === msg.severity) {
-                    errorData.push(msg)
-                } else if (monaco.MarkerSeverity.Hint === msg.severity) {
-                    suggestData.push(msg)
-                }
-            }
-        }
-        updateFootbarMsg()
-    }
-}
-
-const clearMessageFlowData = (editorKey, dataType) => {
-    if (!parentVue)
-        return
-
-    const flow = parentVue.$refs.messageFlow
-    const datas = [flow.errorData, flow.suggestData]
-
-    for (let index = 0; index < datas.length; index++) {
-        const data = datas[index];
-        if (editorKey) {
-            for (var i = data.length - 1; i >= 0; i--) { //校验指定的编辑器之前删除该编辑器之前校验的数据
-                var element = data[i];
-                if (element.moduleKey === editorKey) {
-                    data.splice(i, 1);
-                }
-            }
-        }
-        else {
-            if (!dataType || dataType === 'error')
-                data.splice(0, data.length)
-            if (!dataType || dataType === 'suggest')
-                data.splice(0, data.length)
-        }
-    }
-}
-
-const updateFootbarMsg = () => {
-    var obj = { errorMsgCount: 0, suggestMsgCount: 0 }
-    if (parentVue) {
-        const flow = parentVue.$refs.messageFlow
-
-        obj.errorMsgCount = flow.errorData.length
-        obj.suggestMsgCount = flow.suggestData.length
-    }
-    eventBus.$emit('updateMessageCount', obj)
-}
-/********************** 验证信息 end **********************/
-
 export default {
     Init,
     addEditorTabPage,
@@ -457,8 +383,6 @@ export default {
     setMonacoEditorFocusDelay,
     editorLayout,
     editorLayoutDelay,
-    eslintHandler,
-    getLintValue,
     executeCommand,
     getSelectedEditorData,
     insertValueToEditor

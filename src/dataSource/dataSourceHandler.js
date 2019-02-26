@@ -58,7 +58,10 @@ const initlocalDs = () => {
     loadJsonData(entitiesJsonPath, data => entitiesData = data)
     loadJsonData(resourceJsonPath, data => resourceData = data)
     //loadJsonData(viewStatePath, data => viewStateData = data)
-    loadJsonData(existWindowControlCodePath, data => existWindowControlCodeData = data)
+    loadJsonData(existWindowControlCodePath, data => {
+        existWindowControlCodeData = data
+        divCode = data.divCode
+    })
 }
 
 /**
@@ -103,6 +106,8 @@ const getResources = callback => {
 
 const getExistWindowControlCodes = callback => {
     getDataSourceCommon(existWindowControlCodeData, existWindowControlCodePath, callback)
+    if (existWindowControlCodeData)
+        divCode = existWindowControlCodeData.divCode
     return existWindowControlCodeData
 }
 
