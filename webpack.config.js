@@ -18,8 +18,8 @@ module.exports = env => {
         output: {
             path: path.resolve(__dirname, "./dist"),
             filename: "index.js",
-            libraryTarget: "var",
-            library: "vdk",
+            // libraryTarget: "var",
+            // library: "vdk",
         },
         // node: {
         //      fs: "empty"

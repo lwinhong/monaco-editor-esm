@@ -1,81 +1,27 @@
 <template>
   <div>
-    <div class="cardView">
+    <div class="cardView" v-for="data in eventData" :key="data.code">
       <div class="cardView-hd">
         <h6 class="title">
-          <span>事件1</span>
+          <span v-text="data.name"></span>
           <a href="#" title="修改事件名称">
             <icon type="ios-create-outline" size="18"></icon>
           </a>
         </h6>
-        <icon type="ios-trash-outline" size="18" class="extra"></icon>
+        <icon v-if="data.type==='user'" type="ios-trash-outline" size="18" class="extra"></icon>
       </div>
       <div class="cardView-bd">
         <i-form :label-width="60">
           <form-item label="事件编码">
-            <i-input size="small"></i-input>
+            <i-input size="small" v-model="data.code" :readonly="data.type ==='auto'"></i-input>
           </form-item>
           <form-item label="处理方法">
-            <i-input size="small" readonly>
+            <i-input size="small" v-model="data.method" readonly>
               <icon slot="append" type="md-open"></icon>
             </i-input>
           </form-item>
           <form-item label="参数映射">
-            <i-input size="small" readonly>
-              <icon slot="append" type="md-open"></icon>
-            </i-input>
-          </form-item>
-        </i-form>
-      </div>
-    </div>
-    <div class="cardView">
-      <div class="cardView-hd">
-        <h6 class="title">
-          <span>事件1</span>
-          <a href="#" title="修改事件名称">
-            <icon type="ios-create-outline" size="18"></icon>
-          </a>
-        </h6>
-      </div>
-      <div class="cardView-bd">
-        <i-form :label-width="60">
-          <form-item label="事件编码">
-            <i-input size="small" disabled></i-input>
-          </form-item>
-          <form-item label="处理方法">
-            <i-input size="small" readonly>
-              <icon slot="append" type="md-open"></icon>
-            </i-input>
-          </form-item>
-          <form-item label="参数映射">
-            <i-input size="small" readonly>
-              <icon slot="append" type="md-open"></icon>
-            </i-input>
-          </form-item>
-        </i-form>
-      </div>
-    </div>
-    <div class="cardView">
-      <div class="cardView-hd">
-        <h6 class="title">
-          <span>事件1</span>
-          <a href="#" title="修改事件名称">
-            <icon type="ios-create-outline" size="18"></icon>
-          </a>
-        </h6>
-      </div>
-      <div class="cardView-bd">
-        <i-form :label-width="60">
-          <form-item label="事件编码">
-            <i-input size="small" disabled></i-input>
-          </form-item>
-          <form-item label="处理方法">
-            <i-input size="small" readonly>
-              <icon slot="append" type="md-open"></icon>
-            </i-input>
-          </form-item>
-          <form-item label="参数映射">
-            <i-input size="small" readonly>
+            <i-input size="small" v-model="data.mapping" readonly>
               <icon slot="append" type="md-open"></icon>
             </i-input>
           </form-item>
@@ -89,7 +35,22 @@ export default {
   name: "eventView",
   data() {
     return {
-      code: "// type your code \n"
+      eventData: [
+        {
+          name: "事件1",
+          code: "onclick1",
+          mapping: "",
+          method: "jgbutton_click1",
+          type: "user"
+        },
+        {
+          name: "事件2",
+          code: "onclick2",
+          mapping: "已设置",
+          method: "jgbutton_click2",
+          type: "auto"
+        }
+      ]
     };
   },
   methods: {
@@ -166,7 +127,6 @@ export default {
 </style>
 
 <style >
-
 </style>
 
 

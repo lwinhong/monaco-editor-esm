@@ -35,17 +35,9 @@ const validateInit = (parentVue, editorObjs) => {
     eslintHandler.init(editorData)
 }
 
-const validateRegisterEvent = (editor, parentVue) => {
-    if (!editor) {
-        console.log("validateHandler：editor 对象 null")
-        return null
-    }
-
-    //内容改变
-    editor.onDidChangeModelContent(() => {
-        if (!isValidating)
-            triggerValidate(parentVue.tabSelectedIndex)
-    })
+const doValidate = (editorKey) => {
+    if (!isValidating)
+        triggerValidate(editorKey)
 }
 
 /**
@@ -102,14 +94,14 @@ const validateHtml = () => {
  * 验证js
  */
 const validateJavaScript = (editorKey) => {
-    const editoyKeys = [defaultEditorKeys.moduleJavascript, defaultEditorKeys.javascript]
+    const editorKeys = [defaultEditorKeys.moduleJavascript, defaultEditorKeys.javascript]
     var msgs
 
     if (isDevEditorMode()) {
         editorKey = devEditorKeys.script
         const editorData = getEditorData(editorKey)
         msgs = eslintValidate(editorData.model, editorData.editor, editorKey, devEditorKeys)
-        editoyKeys.push(editorKey)
+        editorKeys.push(editorKey)
         if (msgs)
             setMessageFlowData(msgs, editorKey)
     }
@@ -300,4 +292,4 @@ const creatErrorInfo = (message, range, module, source) => {
     }
 }
 
-export default { validateRegisterEvent, validateInit, creatErrorInfo, validationAll }
+export default { doValidate, validateInit, creatErrorInfo, validationAll }

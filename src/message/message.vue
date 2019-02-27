@@ -82,7 +82,7 @@ export default {
                 {
                   attrs: {
                     href: "javascript: void(0);",
-                    title: params.row.ruleUrl
+                    title: `点击打开错误详细 ${params.row.ruleUrl}`
                   },
                   on: {
                     click: () => {

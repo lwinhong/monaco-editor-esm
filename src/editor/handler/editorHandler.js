@@ -1,6 +1,5 @@
 import debounce from 'lodash/debounce'
 import vuiHandler from './htmlEditor/vuiHandler'
-import monacoLoader from "../../monaco-editor/monaco-loader"
 import validateHandler from './htmlEditor/validate/validateHandler'
 import { vuiIntelliSense, vuiHelp, emmetHTML, eventBus, themeVarHandler, scriptHandler, cssHandler } from './htmlEditor'
 
@@ -16,7 +15,7 @@ var parentVue
  */
 const Init = (editorVue) => {
     parentVue = editorVue
-    eventBus.$on('executeCmdFromWinform', executeCommand)
+    eventBus.$on('executeCmdFromWinform', executeCommand)//注册一个用来接受来自信息的事件
     validateHandler.validateInit(parentVue, { editorData, devEditorKeys, defaultEditorKeys, vuiHandler })
 }
 
@@ -41,14 +40,14 @@ const addEditorTabPage = (tabs) => {
  * @param {编辑器容器id} editorContainerId 
  * @param {编辑器语言} language
  */
-const addTab = (tabs, key, text, editorContainerId, language) => {
+const addTab = (tabs, key, text, language) => {
     if (!tabs) return
 
     for (let index = 0; index < tabs.length; index++) {
         if (tabs[index].key === key) return
     }
 
-    tabs.push({ key: key, text: text, editorContainerId: editorContainerId, language: language })
+    tabs.push({ key, text, language })
 }
 
 /**
@@ -56,9 +55,9 @@ const addTab = (tabs, key, text, editorContainerId, language) => {
  * @param {页签集合} tabs 
  */
 const addDefaultTab = (tabs) => {
-    addTab(tabs, defaultEditorKeys.html, "HTML", "editor_html", "html")
-    addTab(tabs, defaultEditorKeys.moduleCss, "模块Css", "editor_module_css", "javascript")
-    addTab(tabs, defaultEditorKeys.moduleJavascript, "模块JavaScript", "editor_module_javaScript", "css")
+    addTab(tabs, defaultEditorKeys.html, "HTML", "html")
+    addTab(tabs, defaultEditorKeys.moduleCss, "模块Css", "javascript")
+    addTab(tabs, defaultEditorKeys.moduleJavascript, "模块JavaScript", "css")
 }
 
 /**
@@ -66,11 +65,11 @@ const addDefaultTab = (tabs) => {
  * @param {页签集合} tabs 
  */
 const addDevTab = (tabs) => {
-    addTab(tabs, devEditorKeys.template, "template", "editor_template", "html")
-    addTab(tabs, devEditorKeys.script, "script", "editor_script", "javascript")
-    addTab(tabs, devEditorKeys.style, "style", "editor_style", "css")
-    addTab(tabs, devEditorKeys.themeLess, "theme.less", "editor_theme", "less")
-    addTab(tabs, devEditorKeys.varLess, "var.less", "editor_var", "less")
+    addTab(tabs, devEditorKeys.template, "template", "html")
+    addTab(tabs, devEditorKeys.script, "script", "javascript")
+    addTab(tabs, devEditorKeys.style, "style", "css")
+    addTab(tabs, devEditorKeys.themeLess, "theme.less", "less")
+    addTab(tabs, devEditorKeys.varLess, "var.less", "less")
 }
 
 /**
@@ -92,53 +91,21 @@ const getTabText = tabKey => {
 
 /***************monaco editor **************/
 
-const options = {
-    // wordWrap: editorWordWrap,
-    // minimap: { enabled: editorMinimapEnabled },
-    formatOnPaste: true,
-    mouseWheelZoom: true,
-    renderLineHighlight: "none",
-    showFoldingControls: "mouseover",
-    folding: true
-    //glyphMargin:true
-}
-
 /**
- * 新增monaco编辑器
- * @param {编辑器key} editorKey 
- * @param {编辑器容器id} containerId 
- * @param {编辑器语言} language 
- * @param {值} value 
+ * monaco编辑器新建完成之后要处理的事件
+ * @param {编辑器} editor 
+ * @param {页签数据} tab 
+ * @param {是否设置焦点} isSetFocus 
  */
-const newMonacoEditor = (editorKey, containerId, language, value) => {
-    const container = document.getElementById(containerId)
-    if (container) {
-        const model = monaco.editor.createModel(value, language)
-        const editor = monaco.editor.create(container, Object.assign(
-            { model: model }, options
-        ))
-        editorData[editorKey] = { editor: editor, model: model, text: getTabText(editorKey) };
-        return { editor, model }
-    } else {
-        console.log('newMonacoEditor: container is undefined')
+const afterMonacoEditorCreated = (editor, tab, isSetFocus) => {
+    const editorKey = tab.key
+    const model = editor.getModel()
+    const editorObj = { editor, model, text: getTabText(editorKey) }
+    editorData[editorKey] = editorObj
+    initEditor(editorObj, tab)
+    if (isSetFocus) {
+        setMonacoEditorFocusDelay(editorKey, 100)
     }
-    return null
-}
-
-/**
- * 根据页签集合添加monaco编辑器
- * @param {页签集合} tabs 
- */
-const addMonacoEditor = (tabs) => {
-    debounce(() => {
-        monacoLoader.load("resource/monaco-editor", () => {
-            $.each(tabs, function (i, d) {
-                let obj = newMonacoEditor(d.key, d.editorContainerId, d.language)
-                initEditor(obj, d)
-            })
-            setMonacoEditorFocusDelay(tabs[0].key, 100)
-        })
-    }, 100)()
 }
 
 /**
@@ -152,22 +119,24 @@ const initEditor = (editorObj, tabData) => {
 
     const editor = editorObj.editor
     const model = editorObj.model
+    const editorKey = tabData.key
+
     //template 或者 html编辑器：注册Emmet，vui智能提示相关
-    if (tabData.key === devEditorKeys.template || tabData.key === defaultEditorKeys.html) {
+    if (editorKey === devEditorKeys.template || editorKey === defaultEditorKeys.html) {
         emmetHTML(editor)
-        vuiIntelliSense(editor, { editorData, devEditorKeys, defaultEditorKeys, editorKey: tabData.key, model })
+        vuiIntelliSense(editor, { editorData, devEditorKeys, defaultEditorKeys, editorKey, model })
         vuiHelp(editor, model)
     }
     //注册theme页签相关
-    if (tabData.key === devEditorKeys.themeLess) {
+    if (editorKey === devEditorKeys.themeLess) {
         themeVarHandler(editor, editorData, devEditorKeys)
     }
     //注册script页签提示
-    if (tabData.key === devEditorKeys.script) {
+    if (editorKey === devEditorKeys.script) {
         scriptHandler(editor)
     }
     //注册css提示
-    if (tabData.key === defaultEditorKeys.css || tabData.key === defaultEditorKeys.moduleCss || tabData.key === devEditorKeys.style) {
+    if (editorKey === defaultEditorKeys.css || editorKey === defaultEditorKeys.moduleCss || editorKey === devEditorKeys.style) {
         cssHandler()
     }
     //鼠标按下
@@ -181,15 +150,18 @@ const initEditor = (editorObj, tabData) => {
     })
     //内容改变
     editor.onDidChangeModelContent(function (e) {
-        if (e.changes[0].text === ' ') {
-            debounce(() => { executeCommand('triggerSuggest', editor) }, 200)()
-        }
+        if (e.changes[0].text === ' ')
+            triggerSuggest(editor)
+
+        validateHandler.doValidate(editorKey)
     })
 
-    validateHandler.validateRegisterEvent(editor, parentVue)
     addMenuAction(editor, tabData)
 }
 
+const triggerSuggest = (editor) => {
+    debounce(() => { executeCommand('triggerSuggest', editor) }, 200)()
+}
 /**
  * 添加一个编辑器右键上下文菜单
  * @param {编辑器} editor 
@@ -206,7 +178,7 @@ const addMenuAction = (editor, tabData) => {
         contextMenuOrder: 0,
         run: function (ed) {
             //executeCmd(cmdData.openWidthExplorer);
-            return null;
+            return null
         }
     })
 }
@@ -230,7 +202,7 @@ const setMonacoEditorFocus = (editorKey) => {
  * @param {编辑器key} editorKey 
  */
 const setMonacoEditorFocusDelay = (editorKey, timeout) => {
-    debounce(() => setMonacoEditorFocus(editorKey), timeout)();
+    debounce(() => setMonacoEditorFocus(editorKey), timeout)()
 }
 
 /**
@@ -239,7 +211,7 @@ const setMonacoEditorFocusDelay = (editorKey, timeout) => {
 const editorLayout = () => {
     for (var prop in editorData) {
         if (editorData.hasOwnProperty(prop) && editorData[prop].editor) {
-            editorData[prop].editor.layout();
+            editorData[prop].editor.layout()
         }
     }
 }
@@ -251,17 +223,17 @@ const editorLayout = () => {
 const editorLayoutDelay = (timeout) => {
     if (!timeout || !isNaN(timeout))
         timeout = 200
-    debounce(editorLayout, timeout)();
+    debounce(editorLayout, timeout)()
 }
 
-window.onresize = editorLayout;
+window.onresize = editorLayout
 
 /**
  * 获取当前选中编辑器的数据
  */
 const getSelectedEditorData = () => {
-    var data = editorData[parentVue.tabSelectedIndex];
-    return data;
+    var data = editorData[parentVue.tabSelectedIndex]
+    return data
 }
 
 /*************** monaco editor end **************/
@@ -288,10 +260,10 @@ const executeCommand = (cmd, value) => {
     console.log("cmd: " + cmd + "-> value:" + value)
     switch (cmd) {
         case "showMessageFlow"://显示错误列表
-            parentVue.$refs.messageFlow.toggleShow(value);
+            parentVue.$refs.messageFlow.toggleShow(value)
             break
         case "vlist":
-            parentVue.$refs.messageFlow.toggleShow(cmd);
+            parentVue.$refs.messageFlow.toggleShow(cmd)
             break
         case "format"://格式化
             triggerMonacoEditor(monacoEditorCmd.format, true)
@@ -304,7 +276,7 @@ const executeCommand = (cmd, value) => {
             break
         case "find":
             triggerMonacoEditor(monacoEditorCmd.find)
-            break;
+            break
         case "quickCommand":
             triggerMonacoEditor(monacoEditorCmd.quickCommand)
             break
@@ -313,7 +285,10 @@ const executeCommand = (cmd, value) => {
             break
         case "insertValue":
             insertValueToEditor(null, value, null)
-            break;
+            break
+        case "theme":
+            parentVue.theme = value
+            break
     }
 }
 
@@ -375,7 +350,6 @@ const insertValueToEditor = (editor, value, range, setFocus) => {
 export default {
     Init,
     addEditorTabPage,
-    addMonacoEditor,
     devEditorKeys,
     defaultEditorKeys,
     editorData,
@@ -385,5 +359,6 @@ export default {
     editorLayoutDelay,
     executeCommand,
     getSelectedEditorData,
-    insertValueToEditor
+    insertValueToEditor,
+    afterMonacoEditorCreated
 }

@@ -11,8 +11,15 @@
       </Content>
       <Footer class="titleBackColor">
         <ul>
+          <!-- <li v-for="item in rightBarBottomItems" :key="item.key">
+            <Dropdown transfer placement="left-end">
+              <a href="javascript:void(0)">{{item.text}}</a>
+              <template v-if="item.childs">
+                <bar-item :items="item.childs"></bar-item>
+              </template>
+            </Dropdown>
+          </li>-->
           <li>
-            <!-- placement="left-end" -->
             <Dropdown transfer placement="left-end">
               <a href="javascript:void(0)">模板</a>
               <!-- <Icon type="ios-arrow-down"></Icon> -->
@@ -23,7 +30,7 @@
             </Dropdown>
           </li>
           <li>
-            <Dropdown transfer placement="left-end">
+            <Dropdown transfer placement="left-end" @on-click="rightBarItemClick">
               <a href="javascript:void(0)">设置</a>
               <DropdownMenu slot="list">
                 <DropdownItem>自动换行</DropdownItem>
@@ -33,8 +40,8 @@
                     <Icon type="ios-arrow-forward"></Icon>
                   </DropdownItem>
                   <DropdownMenu slot="list">
-                    <DropdownItem>vs</DropdownItem>
-                    <DropdownItem>vs dark</DropdownItem>
+                    <DropdownItem name="vs">vs</DropdownItem>
+                    <DropdownItem name="vs dark">vs dark</DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
                 <DropdownItem>自动备份</DropdownItem>
@@ -58,24 +65,60 @@
   </div>
 </template>
 <script>
+import BarItem from "./rightBaritem.vue";
+import { eventBus } from "../app/event-bus";
+
 export default {
   name: "AppRightBar",
+  components: { BarItem },
   data() {
     return {
       rightBarTopItems: [
         { key: "entity", text: "实体", icon: "" },
         { key: "event", text: "事件", icon: "" },
         { key: "preview", text: "预览", icon: "" }
+      ],
+      rightBarBottomItems: [
+        {
+          key: "template",
+          text: "模板",
+          icon: "",
+          childs: [
+            { key: "createTemplate", text: "生成模板", icon: "" },
+            { key: "applyTemplate", text: "应用模板", icon: "" }
+          ]
+        },
+        {
+          key: "setting",
+          text: "设置",
+          icon: "",
+          childs: [
+            {
+              key: "theme",
+              text: "主题",
+              icon: "",
+              childs: [
+                { key: "vs", text: "vs", icon: "" },
+                { key: "vs dark", text: "vs dark", icon: "" }
+              ]
+            }
+          ]
+        },
+        { key: "help", text: "帮助", icon: "" }
       ]
     };
   },
   methods: {
     rightBarItemClick(item) {
-      if (item.key === "preview") {
-        window.global.executeCmdToWinform(item.key);
+      window.global.executeCmdFromWinform("theme","vs-dark");
+      if (item) {
+        if (item.key && item.key === "preview") {
+          window.global.executeCmdToWinform(item.key);
+        } else {
+          this.$emit("itemClick", item);
+        }
       } else {
-        //this.currentView = item.key;
-        this.$emit("itemClick", item);
+        this.$emit("itemClick");
       }
     }
   }
@@ -86,7 +129,7 @@ export default {
   overflow: hidden;
   height: 100%;
   background-color: white;
-  z-index:99999999;
+  z-index: 99999999;
 }
 .rightBar ul {
   /*设置导航栏的框框*/
@@ -99,7 +142,7 @@ export default {
   list-style-type: none; /* 去掉li前的点 */
   height: 50px;
   margin: 1px 0px;
-   border-bottom: rgb(204, 204, 204) 1px solid; 
+  border-bottom: rgb(204, 204, 204) 1px solid;
 }
 
 .rightBar a {
@@ -119,7 +162,7 @@ export default {
 </style>
 <style>
 .rightBar .ivu-dropdown {
-    width: 100%;
+  width: 100%;
 }
 </style>
 

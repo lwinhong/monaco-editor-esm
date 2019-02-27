@@ -56,5 +56,6 @@ export default {
   executeCmdFromWinform,
   init,
   appVue: () => appVue,
-  dataSourceHandler: ds
+  dataSourceHandler: ds, 
+  eventBus
 }

@@ -71,7 +71,7 @@ function messageToMarker(message) {
         source: source,
         message: msg,
         ruleId: message.ruleId,
-        ruleUrl: getRuleUrl(message.ruleId) + "#readme",
+        ruleUrl: getRuleUrl(message.ruleId),
         startLineNumber,
         startColumn,
         endLineNumber,

@@ -1,7 +1,7 @@
 {
   "name": "vue-eslint-demo",
-  "version": "1.7.4",
-  "description": "The online demo to check `eslint-plugin-vue`.",
+  "version": "1.8.0",
+  "description": "thie editor base on microsoft monaco editor. for toone v3",
   "engines": {
     "node": ">=8"
   },
@@ -9,10 +9,10 @@
     "dist"
   ],
   "dependencies": {
-    "fs": "0.0.1-security",
+    "graceful-fs": "^4.1.15",
     "highlight.js": "^9.13.1",
     "htmlparser2": "^3.10.1",
-    "iview": "^3.2.1",
+    "iview": "^3.2.2",
     "jquery": "^3.3.1",
     "vue-smooth-dnd": "^0.2.8"
   },
@@ -32,8 +32,8 @@
     "cpx": "^1.5.0",
     "cross-env": "^5.1.1",
     "css-loader": "^1.0.0",
-    "eslint": "^5.7.0",
-    "eslint-plugin-vue": "^5.0.0-beta.3",
+    "eslint": "^5.14.1",
+    "eslint-plugin-vue": "^5.2.2",
     "eslint4b": "^5.7.0",
     "file-loader": "^2.0.0",
     "fs-extra": "^7.0.0",
@@ -50,7 +50,7 @@
     "url-loader": "^1.1.2",
     "vue": "^2.5.9",
     "vue-eslint-editor": "^0.1.2",
-    "vue-eslint-parser": "^3.2.2",
+    "vue-eslint-parser": "^6.0.2",
     "vue-loader": "^15.4.2",
     "vue-template-compiler": "^2.5.9",
     "webpack": "^4.21.0",

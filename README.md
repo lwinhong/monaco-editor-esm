@@ -8,7 +8,7 @@ The online demo to check [eslint-plugin-vue](https://github.com/vuejs/eslint-plu
 
 ## 💿 Installation
 
-Open https://mysticatea.github.io/vue-eslint-demo/
+Open https://github.com/lwinhong/monaco-editor-esm
 
 - It does not support browsers which don't support ES2015.
 
@@ -21,7 +21,7 @@ Open https://mysticatea.github.io/vue-eslint-demo/
 
 ## 📰 Changelog
 
-- [GitHub Releases](https://github.com/mysticatea/vue-eslint-demo/releases)
+- [GitHub Releases](https://github.com/lwinhong/monaco-editor-esm)
 
 ## 🍻 Contributing
 
