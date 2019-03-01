@@ -51,8 +51,14 @@ function initOpenChartCommand(editor, model) {
     editor.onDidChangeCursorSelection(cur => {
         lastPosition = cur.selection.getPosition()
 
-        debounce(() =>
-            isNeedShowCharttingWidget(model, lastPosition), 1)();
+        debounce(() => {
+            try {
+                isNeedShowCharttingWidget(model, lastPosition)
+            }
+            catch (error) {
+                console.log("图表：光标改变，判断是否需要显示图表weiget异常->" + error)
+            }
+        }, 1)();
     })
 
     editor.onMouseDown(function (e) {
@@ -136,9 +142,13 @@ function showChartSettingButton(model, position, mouseEvent) {
 
     if (mouseEvent && !mouseEvent.event.leftButton)
         return
-
-    if (isNeedShowCharttingWidget(model, position)) {
-        showChartSettingwidget(true, mouseEvent)
+    try {
+        if (isNeedShowCharttingWidget(model, position)) {
+            showChartSettingwidget(true, mouseEvent)
+        }
+    }
+    catch (error) {
+        console.log("图表：判断是否需要显示 打开图标编辑器 widget异常->" + error)
     }
 }
 
@@ -235,7 +245,7 @@ function showChartSettingwidget(show, mouseEvent) {
  * @param {鼠标位置} position 
  */
 function getValue(model, position) {
-    return editorUtil.getValueAtPoint(model, position, true)
+    return editorUtil.getEditorValueAtPoint(model, position, true)
 }
 
 /**

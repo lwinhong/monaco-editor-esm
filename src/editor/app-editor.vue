@@ -57,8 +57,7 @@ export default {
   mounted() {
     let me = this;
     editorHandler.Init(me);
-    editorHandler.addEditorTabPage(tabs);
-    //editorHandler.addMonacoEditor(tabs);
+    if (divFlag === "testform") editorHandler.addEditorTabPage(tabs, {});
   },
   computed: {
     flowMessageWidthTrigger() {
@@ -187,7 +186,7 @@ export default {
 
 <style scoped>
 .foot-message-flow-show {
-  bottom: 45px;
+  bottom: 43px;
   /* z-index: 99; */
 }
 </style>

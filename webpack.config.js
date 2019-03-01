@@ -22,7 +22,7 @@ module.exports = env => {
             // library: "vdk",
         },
         // node: {
-        //      fs: "empty"
+        //     fs: "empty"
         // },
         module: {
             rules: [
@@ -160,7 +160,7 @@ module.exports = env => {
                         },
                     ],
                 }
-            ],
+            ]
         },
         resolve: {
             alias: {
@@ -169,7 +169,6 @@ module.exports = env => {
             extensions: [".mjs", ".js", ".vue", ".json"],
         },
         plugins: [
-            new VueLoaderPlugin(),
             //, new MonacoWebpackPlugin()
             new CopyWebpackPlugin([{
                 from: './src/resource',
@@ -177,7 +176,11 @@ module.exports = env => {
             }, {
                 from: './src/monaco-editor/vs',
                 to: 'resource/monaco-editor/vs',
-            }])
+            },{
+                from:'./node_modules/iview/dist/styles',
+                to: 'resource/styles'
+            }]),
+            new VueLoaderPlugin(),
         ],
         devServer: {
             contentBase: path.join(__dirname, "dist"),

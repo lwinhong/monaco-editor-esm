@@ -11,6 +11,8 @@ import ds from "../dataSource/dataSourceHandler"
     if (tmp) divEditorToken = tmp
     tmp = qs["form"]
     if (tmp) formType = tmp
+    tmp = qs["divFlag"]
+    if (tmp) divFlag = tmp
   }
 })()
 

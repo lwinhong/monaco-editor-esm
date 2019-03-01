@@ -1,4 +1,4 @@
-# vue-eslint-demo
+# monaco-editor-esm
 
 The online demo to check [eslint-plugin-vue](https://github.com/vuejs/eslint-plugin-vue#readme).
 

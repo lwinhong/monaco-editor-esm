@@ -132,20 +132,23 @@ export default {
 #expander {
   background-color: transparent;
   width: 100%;
-  height: 3px;
+  height: 5px;
   border: 1px solid rgb(204, 204, 204);
-  border-top: none;
+  border-bottom: none;
   border-left: none;
-}
-
-#expander:hover {
+  position: absolute;
+  top: 0px;
   cursor: n-resize;
 }
+
+/* #expander:hover {
+  cursor: n-resize;
+} */
 
 #foot-message-flow {
   /* bottom: -100%; */
   /* bottom: 0px; */
-  height: 140px;
+  height: 200px;
   left: 0;
   position: fixed;
   /* width: 100%;  */
@@ -156,7 +159,7 @@ export default {
 }
 
 #controlboxs {
-  top: 3px;
+  top: 0px;
   right: 6px;
   z-index: 1050;
   position: absolute;
@@ -172,5 +175,17 @@ export default {
   color: #2d8cf0;
 } */
 </style>
+<style>
+.message-titleBar {
+  background-color: rgb(238, 238, 240);
+  height: 18px;
+  padding-left: 5px;
+  border-right: 1px solid #dcdee2;
+}
+.message-titleBar span {
+  cursor: pointer;
+}
+</style>
+
 
 

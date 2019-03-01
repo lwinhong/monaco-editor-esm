@@ -19,17 +19,21 @@ const Init = (editorVue) => {
     validateHandler.validateInit(parentVue, { editorData, devEditorKeys, defaultEditorKeys, vuiHandler })
 }
 
+const doLoad = (value) => {
+    addEditorTabPage(parentVue.tabs, value)
+}
+
 /*************** 页签 **************/
 
 /**
  * 添加编辑器页签页
  * @param {页签集合} tabs 
  */
-const addEditorTabPage = (tabs) => {
-    if (editorMode == editorModeEnum.dev)
-        addDevTab(tabs)
+const addEditorTabPage = (tabs, editorValueJosn) => {
+    if (isDevEditorMode())
+        addDevTab(tabs, editorValueJosn)
     else
-        addDefaultTab(tabs)
+        addDefaultTab(tabs, editorValueJosn)
     return tabs
 }
 
@@ -40,36 +44,42 @@ const addEditorTabPage = (tabs) => {
  * @param {编辑器容器id} editorContainerId 
  * @param {编辑器语言} language
  */
-const addTab = (tabs, key, text, language) => {
+const addTab = (tabs, key, text, language, editorValue) => {
     if (!tabs) return
 
     for (let index = 0; index < tabs.length; index++) {
         if (tabs[index].key === key) return
     }
 
-    tabs.push({ key, text, language })
+    tabs.push({ key, text, language, editorValue })
 }
 
 /**
  * 添加默认的页签页
  * @param {页签集合} tabs 
  */
-const addDefaultTab = (tabs) => {
-    addTab(tabs, defaultEditorKeys.html, "HTML", "html")
-    addTab(tabs, defaultEditorKeys.moduleCss, "模块Css", "javascript")
-    addTab(tabs, defaultEditorKeys.moduleJavascript, "模块JavaScript", "css")
+const addDefaultTab = (tabs, editorValueJosn) => {
+    addTab(tabs, defaultEditorKeys.html, "HTML", "html", editorValueJosn.Html || "")
+    addTab(tabs, defaultEditorKeys.moduleCss, "模块Css", "javascript", editorValueJosn.ModuleCss || "")
+    addTab(tabs, defaultEditorKeys.moduleJavascript, "模块JavaScript", "css", editorValueJosn.ModuleJavaScript)
+
+    if (editorValueJosn.Css)
+        addTab(tabs, defaultEditorKeys.css, "全局Css", "javascript", editorValueJosn.Css || "")
+    if (editorValueJosn.JavaScript)
+        addTab(tabs, defaultEditorKeys.javascript, "全局JavaScript", "css", editorValueJosn.JavaScript || "")
 }
 
 /**
  * 添加dev页签页
  * @param {页签集合} tabs 
  */
-const addDevTab = (tabs) => {
-    addTab(tabs, devEditorKeys.template, "template", "html")
-    addTab(tabs, devEditorKeys.script, "script", "javascript")
-    addTab(tabs, devEditorKeys.style, "style", "css")
-    addTab(tabs, devEditorKeys.themeLess, "theme.less", "less")
-    addTab(tabs, devEditorKeys.varLess, "var.less", "less")
+const addDevTab = (tabs, editorValueJosn) => {
+    addTab(tabs, devEditorKeys.template, "template", "html", editorValueJosn.Template || "")
+    addTab(tabs, devEditorKeys.script, "script", "javascript", editorValueJosn.Script || "")
+    if (editorValueJosn.Style)
+        addTab(tabs, devEditorKeys.style, "style", "css", editorValueJosn.Style || "")
+    addTab(tabs, devEditorKeys.themeLess, "theme.less", "less", editorValueJosn.ThemeLess || "")
+    addTab(tabs, devEditorKeys.varLess, "var.less", "less", editorValueJosn.VarLess || "")
 }
 
 /**
@@ -102,6 +112,10 @@ const afterMonacoEditorCreated = (editor, tab, isSetFocus) => {
     const model = editor.getModel()
     const editorObj = { editor, model, text: getTabText(editorKey) }
     editorData[editorKey] = editorObj
+
+    if (tab.editorValue)
+        model.setValue(tab.editorValue)
+
     initEditor(editorObj, tab)
     if (isSetFocus) {
         setMonacoEditorFocusDelay(editorKey, 100)
@@ -259,6 +273,9 @@ const monacoEditorCmd = {
 const executeCommand = (cmd, value) => {
     console.log("cmd: " + cmd + "-> value:" + value)
     switch (cmd) {
+        case "load":
+            doLoad(value)
+            break
         case "showMessageFlow"://显示错误列表
             parentVue.$refs.messageFlow.toggleShow(value)
             break

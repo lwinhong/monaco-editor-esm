@@ -17,7 +17,7 @@
         @on-row-dblclick="localMessage"
         v-show="isError"
         size="small"
-        :height="140"
+        :height="200"
       ></i-table>
       <i-table
         :columns="msgColumn"
@@ -25,7 +25,7 @@
         @on-row-dblclick="localMessage"
         v-show="isSuggest"
         size="small"
-        :height="140"
+        :height="200"
       ></i-table>
     </div>
   </div>
@@ -148,14 +148,5 @@ export default {
   padding-right: 5px !important;
 }
 
-.message-titleBar {
-  background-color: rgb(238, 238, 240);
-  height: 18px;
-  padding-left: 5px;
-  border-right: 1px solid #dcdee2;
-}
-.message-titleBar span {
-  cursor: pointer;
-}
 </style>
 

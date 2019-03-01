@@ -7,7 +7,7 @@
       size="small"
       :columns="columns"
       @on-row-dblclick="rowDbClick"
-      :height="140"
+      :height="200"
     ></i-table>
   </div>
 </template>

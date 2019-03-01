@@ -18,6 +18,11 @@ var suggestData
 var editorData
 var editorObj
 
+/**
+ * 初始化验证信息
+ * @param {编辑器vue示例} parentVue 
+ * @param {所有编辑器示例对象} editorObjs 
+ */
 const validateInit = (parentVue, editorObjs) => {
     editorObj = editorObjs
 
@@ -35,6 +40,10 @@ const validateInit = (parentVue, editorObjs) => {
     eslintHandler.init(editorData)
 }
 
+/**
+ * 处理验证
+ * @param {编辑器key} editorKey 
+ */
 const doValidate = (editorKey) => {
     if (!isValidating)
         triggerValidate(editorKey)
