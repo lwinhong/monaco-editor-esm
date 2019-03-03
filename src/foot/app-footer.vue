@@ -23,11 +23,8 @@
       </li>
 
       <!-- 显示当前选中的行列 -->
-      <li class="li-right">
-        <a
-          href="javascript:void(0)"
-          @click="$emit('itemClick', {key:'setEditorFocus', value:'focus'})"
-        >{{rowColMsg}}</a>
+      <li class="li-right" @click="$emit('itemClick', {key:'setEditorFocus', value:'focus'})">
+       {{rowColMsg}}
       </li>
 
       <!-- 显示错误和建议 -->
@@ -36,15 +33,12 @@
         v-show="errorMsgVisible"
         class="li-right"
         v-for="msg in messageFlowData"
-        :key="msg.key"
+        :key="msg.key" @click="$emit('itemClick', {key:'showMessageFlow', value:msg.key})"
       >
-        <a
-          href="javscript:void(0);"
-          @click="$emit('itemClick', {key:'showMessageFlow', value:msg.key})"
-        >
+ 
           <Icon :type="msg.icon" :color="msg.color" :size="15"/>
           {{msg.key==='error'?errorMsgCount:suggestMsgCount}}
-        </a>
+   
       </li>
     </ul>
   </div>

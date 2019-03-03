@@ -1,13 +1,14 @@
 import debounce from 'lodash/debounce'
 import vuiHandler from './htmlEditor/vuiHandler'
 import validateHandler from './htmlEditor/validate/validateHandler'
-import { vuiIntelliSense, vuiHelp, emmetHTML, eventBus, themeVarHandler, scriptHandler, cssHandler } from './htmlEditor'
+import { vuiIntelliSense, vuiHelp, emmetHTML, eventBus, themeVarHandler, scriptHandler, cssHandler, cmdData } from './htmlEditor'
 
 const devEditorKeys = { template: 'template', script: 'script', style: 'style', themeLess: 'themeLess', varLess: 'varLess' }
 const defaultEditorKeys = { html: 'html', javascript: 'javascript', css: 'css', moduleCss: 'moduleCss', moduleJavascript: 'moduleJavascript' }
 
-var editorData = {}
+const editorData = {}
 var parentVue
+var isAnyValueChanged = false
 
 /**
  * 初始化
@@ -113,13 +114,14 @@ const afterMonacoEditorCreated = (editor, tab, isSetFocus) => {
     const editorObj = { editor, model, text: getTabText(editorKey) }
     editorData[editorKey] = editorObj
 
-    if (tab.editorValue)
+    if (tab.editorValue) {
         model.setValue(tab.editorValue)
+        tab.editorValue = null
+    }
 
     initEditor(editorObj, tab)
-    if (isSetFocus) {
+    if (isSetFocus)
         setMonacoEditorFocusDelay(editorKey, 100)
-    }
 }
 
 /**
@@ -164,18 +166,26 @@ const initEditor = (editorObj, tabData) => {
     })
     //内容改变
     editor.onDidChangeModelContent(function (e) {
-        if (e.changes[0].text === ' ')
-            triggerSuggest(editor)
-
-        validateHandler.doValidate(editorKey)
+        onDidChangeModelContent(e, editor, editorKey)
     })
 
     addMenuAction(editor, tabData)
 }
 
-const triggerSuggest = (editor) => {
-    debounce(() => { executeCommand('triggerSuggest', editor) }, 200)()
+const onDidChangeModelContent = (e, editor, editorKey) => {
+    isAnyValueChanged = true
+
+    if (e.changes[0].text === ' ')
+        debounce(() => { executeCommand('triggerSuggest', editor) }, 200)()//弹出建议提示
+
+    //验证输入
+    validateHandler.doValidate(editorKey, null, () => {
+        debounce(function () {
+            window.global.executeCmdToWinform(cmdData.cacheChangedValue, getAllValue());//将改变的数据发送winform端
+        }, 1)();
+    })
 }
+
 /**
  * 添加一个编辑器右键上下文菜单
  * @param {编辑器} editor 
@@ -364,6 +374,41 @@ const insertValueToEditor = (editor, value, range, setFocus) => {
 
 /*************** 执行命令 end **************/
 
+/*************** 保存 end **************/
+
+//获取全部编辑器的代码
+const getAllValue = () => {
+    var allValue = {
+        IsValueChanged: isAnyValueChanged
+    }
+    for (var prop in editorData) {
+        allValue[prop] = editorData[prop].model.getValue()
+    }
+    return allValue
+}
+
+const save = () => {
+
+}
+
+const saveAndClose = (isValidation) => {
+
+}
+
+const saveViewState = () => {
+    var allValue = {
+        "selectedIndex": parentVue.tabSelectedIndex,
+        // "errorState": errorViewHandler.getState()
+    }
+
+    for (var prop in editorData) {
+        allValue[prop] = editorData[prop].editor.saveViewState()
+    }
+    return allValue
+}
+
+/*************** 保存 end **************/
+
 export default {
     Init,
     addEditorTabPage,
@@ -377,5 +422,6 @@ export default {
     executeCommand,
     getSelectedEditorData,
     insertValueToEditor,
-    afterMonacoEditorCreated
+    afterMonacoEditorCreated,
+    cmdData
 }

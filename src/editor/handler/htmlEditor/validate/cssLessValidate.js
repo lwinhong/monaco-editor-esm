@@ -1,7 +1,22 @@
-
 const invalidateChar = ["'", '"', '(', ')', ' ', '~', '+']
+const oldDecorations = {}
 
 export const validateCssHandler = (editorKey, editorData, editorUtil, creatErrorInfo) => {
+    var newDecorations = []
+    const findMatches = (model, source, msgs, creatErrorInfo, editorKey, tokens) => {
+        var matches = model.findMatches(source, true, false, false)
+        if (matches) {
+            for (const match of matches) {
+                var range = match.range
+                if (!isComment(tokens, range.startLineNumber, range.startColumn)) {
+                    var error = getErrorMessage(source)
+                    msgs.push(creatErrorInfo(error, range, editorKey, source))
+                    editorUtil.pushDecorations(range, error, newDecorations)
+                }
+            }
+        }
+    }
+
     try {
         const devResource = editorUtil.getDataSource().getVuiPropValueOptions().devResources
         if (!devResource || devResource.length === 0)
@@ -20,19 +35,11 @@ export const validateCssHandler = (editorKey, editorData, editorUtil, creatError
         return msgs
     } catch (error) {
         console.log(error)
+    } finally {
+        var old = editorUtil.updateDecorations(newDecorations, oldDecorations[editorKey] || [], editorData[editorKey].editor)
+        oldDecorations[editorKey] = old
     }
     return null
-}
-
-const findMatches = (model, source, msgs, creatErrorInfo, editorKey, tokens) => {
-    var matches = model.findMatches(source, true, false, false)
-    if (matches) {
-        for (const match of matches) {
-            var range = match.range
-            if (!isComment(tokens, range.startLineNumber, range.startColumn))
-                msgs.push(creatErrorInfo(getErrorMessage(source), range, editorKey, source))
-        }
-    }
 }
 
 /**
@@ -58,3 +65,4 @@ const isComment = (tokens, startLineNumber, startColumn) => {
 const getErrorMessage = (source) => {
     return `文件资源：“${source}” 存在非法字符! 不能有空格、单双引号、+ 、~ 、( 、)`
 }
+

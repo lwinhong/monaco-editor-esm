@@ -84,7 +84,7 @@ const checkWidgetCode = (model, editor, editorKey, editorObj) => {
     }
 
     //将错误装饰添加编辑器
-    updateDecorations(newDecorations, editor)
+    oldDecorations = updateDecorations(newDecorations, oldDecorations, editor)
 
     return errorData
 }
@@ -156,7 +156,7 @@ const validateMathResult = (tokens, startLineNumber, startColumn) => {
         for (var j = targetToten.length - 1; j >= 0; j--) {
             var token = targetToten[j]
             if (token.offset <= startColumn &&
-                (token.type === "comment.html" || token.type === "comment.content.html")) 
+                (token.type === "comment.html" || token.type === "comment.content.html"))
                 return false
         }
     }
@@ -185,13 +185,11 @@ const pushDecorations = (range, hoverMsg, newDecorations) => {
  * 将Decorations设置到编辑器
  * @param {新的Decorations} newDecorations 
  */
-const updateDecorations = (newDecorations, editor) => {
+const updateDecorations = (newDecorations, oldDecorations, editor) => {
     if (newDecorations.length > 0) {
-        oldDecorations = editor.deltaDecorations(oldDecorations, newDecorations)
-        return false
+        return editor.deltaDecorations(oldDecorations, newDecorations)
     } else {
-        oldDecorations = editor.deltaDecorations(oldDecorations, [])
-        return true
+        return editor.deltaDecorations(oldDecorations, [])
     }
 }
 

@@ -44,16 +44,16 @@ const validateInit = (parentVue, editorObjs) => {
  * 处理验证
  * @param {编辑器key} editorKey 
  */
-const doValidate = (editorKey) => {
+const doValidate = (editorKey, beforeValidate, afterValidate) => {
     if (!isValidating)
-        triggerValidate(editorKey)
+        triggerValidate(editorKey, beforeValidate, afterValidate)
 }
 
 /**
  * 触发数据校验
  * @param {编辑器key} editorKey 
  */
-const triggerValidate = (editorKey) => {
+const triggerValidate = (editorKey, beforeValidate, afterValidate) => {
 
     //触发值改变之前，清除重置之前的计时器
     if (inputTimeoutTimer)
@@ -61,8 +61,14 @@ const triggerValidate = (editorKey) => {
 
     inputTimeoutTimer = window.setTimeout(() => {
         debounce(() => {
+            if (beforeValidate && typeof beforeValidate === 'function')
+                beforeValidate()
+
             isValidating = true
             validationAll(editorKey)
+            
+            if (afterValidate && typeof afterValidate === 'function')
+                afterValidate()
             editorObj.vuiHandler.afterValidationAll(isDevEditorMode()
                 ? editorData[devEditorKeys.template].model
                 : editorData[defaultEditorKeys.html].model)

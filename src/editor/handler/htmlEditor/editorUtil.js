@@ -498,10 +498,41 @@ function getLastHtml(position, model, currentWord, lineCount) {
 
 /************************************************** 根据光标位置获取编辑器中字符数据 END *************************************************** */
 
+/**
+ * 收集和生成decoration数组
+ * @param {monaco.range} range 
+ * @param {鼠标提示信息} hoverMsg 
+ * @param {decoration数组} newDecorations 
+ */
+const pushDecorations = (range, hoverMsg, newDecorations) => {
+    newDecorations.push({
+        range: range,
+        options: {
+            inlineClassName: "squiggly-error",
+            hoverMessage: { value: hoverMsg },
+            afterContentClassName: "inline-widgetcode-illegal",
+            linesDecorationsClassName: "lineDecoration-error"
+        }
+    })
+}
+
+/**
+ * 将Decorations设置到编辑器
+ * @param {新的Decorations} newDecorations 
+ */
+const updateDecorations = (newDecorations, oldDecorations, editor) => {
+    if (newDecorations.length > 0) {
+        return editor.deltaDecorations(oldDecorations, newDecorations)
+    } else {
+        return editor.deltaDecorations(oldDecorations, [])
+    }
+}
+
 export default {
     getVuiData, getVuiPropData, getValueOptions, newWidgetCode,
     getExistWidgetCodes, getExistEventCodes, getDataSource, newEventName,
     getWidgetCodeProperty, getLastProp, getAllJsFunctions, getWidgetCodePropertyValue,
     getEditorValueAtPoint, getTokensAtLine, getLastHtml, matchTagStart,
-    getVlangWithCode, getExistWidgetCodesWithSources, getExistWindowControlCodes
+    getVlangWithCode, getExistWidgetCodesWithSources, getExistWindowControlCodes,
+    pushDecorations, updateDecorations
 }

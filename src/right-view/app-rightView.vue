@@ -10,10 +10,11 @@
           :key="item.key"
           :title="item.title"
           v-show="(currentView != 'entity' && item.key==='add')? false : true"
+           @click="topBarItemClick(item)"
         >
           <a href="javascript:void(0)" class="rightFloat">
             {{item.text? item.text:''}}
-            <Icon v-if="item.icon" :type="item.icon" @click="topBarItemClick(item)" :size="16"/>
+            <Icon v-if="item.icon" :type="item.icon" :size="16"/>
           </a>
         </li>
       </ul>
@@ -31,8 +32,8 @@
   </div>
 </template>
 <script>
-import entityView from "./entityView.vue";
-import eventView from "./eventView.vue";
+import entityView from "./entity/entityView.vue";
+import eventView from "./event/eventView.vue";
 import AppSearch from "./app-search.vue";
 
 export default {
@@ -82,20 +83,21 @@ export default {
   },
   methods: {
     topBarItemClick(item) {
-      if (item.key === "search") {
-        this.searchVisible = !this.searchVisible;
-        if (this.searchVisible) {
-          //this.$refs.seach.setFocus();
-        }
-      } else if (item.key === "refresh") {
-        if (this.entityViewVisible) {
-          this.$refs.entityView.buildTree();
-        }
+      if (item) {
+        if (item.key === "search") {
+          this.searchVisible = !this.searchVisible;
+          if (this.searchVisible) {
+            //this.$refs.seach.setFocus();
+          }
+        } else if (item.key === "refresh") {
+          if (this.entityViewVisible) {
+            this.$refs.entityView.buildTree();
+          }
+        } else this.$emit("closeClick");
       } else this.$emit("closeClick");
     },
     onSearch(value) {
-      if (this.entityViewVisible)
-        this.$refs.entityView.onSearch(value);
+      if (this.entityViewVisible) this.$refs.entityView.onSearch(value);
       else this.$refs.eventView.onSearch(value);
     },
     changeRightView(viewKey) {

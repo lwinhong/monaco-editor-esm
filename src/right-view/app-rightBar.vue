@@ -4,21 +4,13 @@
     <Layout>
       <Content class="titleBackColor">
         <ul>
-          <li v-for="item in rightBarTopItems" :key="item.key">
-            <a href="javscript:void(0)" @click="rightBarItemClick(item)">{{item.text}}</a>
+          <li v-for="item in rightBarTopItems" :key="item.key" @click="rightBarItemClick(item)">
+            {{item.text}}
           </li>
         </ul>
       </Content>
       <Footer class="titleBackColor">
         <ul>
-          <!-- <li v-for="item in rightBarBottomItems" :key="item.key">
-            <Dropdown transfer placement="left-end">
-              <a href="javascript:void(0)">{{item.text}}</a>
-              <template v-if="item.childs">
-                <bar-item :items="item.childs"></bar-item>
-              </template>
-            </Dropdown>
-          </li>-->
           <li>
             <Dropdown transfer placement="left-end">
               <a href="javascript:void(0)">模板</a>
@@ -65,18 +57,16 @@
   </div>
 </template>
 <script>
-import BarItem from "./rightBaritem.vue";
 import { eventBus } from "../app/event-bus";
 
 export default {
   name: "AppRightBar",
-  components: { BarItem },
   data() {
     return {
       rightBarTopItems: [
         { key: "entity", text: "实体", icon: "" },
         { key: "event", text: "事件", icon: "" },
-        { key: "preview", text: "预览", icon: "" }
+        // { key: "preview", text: "预览", icon: "" }
       ],
       rightBarBottomItems: [
         {
