@@ -89,6 +89,8 @@ define(["require", "exports"], function (require, exports) {
         octaldigits: /[0-7]+(_+[0-7]+)*/,
         binarydigits: /[0-1]+(_+[0-1]+)*/,
         hexdigits: /[[0-9a-fA-F]+(_+[0-9a-fA-F]+)*/,
+        regexpctl: /[(){}\[\]\$\^|\-*+?\.]/,
+        regexpesc: /\\(?:[bBdDfnrstvwWn0\\\/]|@regexpctl|c[A-Z]|x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4})/,
         // The main tokenizer for our languages
         tokenizer: {
             root: [
@@ -108,6 +110,8 @@ define(["require", "exports"], function (require, exports) {
                 // [/[A-Z][\w\$]*/, 'identifier'],
                 // whitespace
                 { include: '@whitespace' },
+                // regular expression: ensure it is terminated before beginning (otherwise it is an opeator)
+                [/\/(?=([^\\\/]|\\.)+\/([gimsuy]*)(\s*)(\.|;|\/|,|\)|\]|\}|$))/, { token: 'regexp', bracket: '@open', next: '@regexp' }],
                 // delimiters and operators
                 [/[()\[\]]/, '@brackets'],
                 [/[<>](?!@symbols)/, '@brackets'],
@@ -122,7 +126,7 @@ define(["require", "exports"], function (require, exports) {
                 [/(@digits)[eE]([\-+]?(@digits))?/, 'number.float'],
                 [/(@digits)\.(@digits)([eE][\-+]?(@digits))?/, 'number.float'],
                 [/0[xX](@hexdigits)/, 'number.hex'],
-                [/0(@octaldigits)/, 'number.octal'],
+                [/0[oO]?(@octaldigits)/, 'number.octal'],
                 [/0[bB](@binarydigits)/, 'number.binary'],
                 [/(@digits)/, 'number'],
                 // delimiter: after number because of .\d floats
@@ -149,6 +153,25 @@ define(["require", "exports"], function (require, exports) {
                 [/[^\/*]+/, 'comment.doc'],
                 [/\*\//, 'comment.doc', '@pop'],
                 [/[\/*]/, 'comment.doc']
+            ],
+            // We match regular expression quite precisely
+            regexp: [
+                [/(\{)(\d+(?:,\d*)?)(\})/, ['regexp.escape.control', 'regexp.escape.control', 'regexp.escape.control']],
+                [/(\[)(\^?)(?=(?:[^\]\\\/]|\\.)+)/, ['regexp.escape.control', { token: 'regexp.escape.control', next: '@regexrange' }]],
+                [/(\()(\?:|\?=|\?!)/, ['regexp.escape.control', 'regexp.escape.control']],
+                [/[()]/, 'regexp.escape.control'],
+                [/@regexpctl/, 'regexp.escape.control'],
+                [/[^\\\/]/, 'regexp'],
+                [/@regexpesc/, 'regexp.escape'],
+                [/\\\./, 'regexp.invalid'],
+                [/(\/)([gimsuy]*)/, [{ token: 'regexp', bracket: '@close', next: '@pop' }, 'keyword.other']],
+            ],
+            regexrange: [
+                [/-/, 'regexp.escape.control'],
+                [/\^/, 'regexp.invalid'],
+                [/@regexpesc/, 'regexp.escape'],
+                [/[^\]]/, 'regexp'],
+                [/\]/, { token: 'regexp.escape.control', next: '@pop', bracket: '@close' }]
             ],
             string_double: [
                 [/[^\\"]+/, 'string'],

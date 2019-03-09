@@ -16,7 +16,7 @@ var isAnyValueChanged = false
  */
 const Init = (editorVue) => {
     parentVue = editorVue
-    eventBus.$on('executeCmdFromWinform', executeCommand)//注册一个用来接受来自信息的事件
+    eventBus.$on("executeCmd", executeCommand)//注册一个用来接受来自信息的事件
     validateHandler.validateInit(parentVue, { editorData, devEditorKeys, defaultEditorKeys, vuiHandler })
 }
 
@@ -31,6 +31,7 @@ const doLoad = (value) => {
  * @param {页签集合} tabs 
  */
 const addEditorTabPage = (tabs, editorValueJosn) => {
+    console.log("loadTabs&MonacoEditor")
     if (isDevEditorMode())
         addDevTab(tabs, editorValueJosn)
     else
@@ -61,13 +62,13 @@ const addTab = (tabs, key, text, language, editorValue) => {
  */
 const addDefaultTab = (tabs, editorValueJosn) => {
     addTab(tabs, defaultEditorKeys.html, "HTML", "html", editorValueJosn.Html || "")
-    addTab(tabs, defaultEditorKeys.moduleCss, "模块Css", "javascript", editorValueJosn.ModuleCss || "")
-    addTab(tabs, defaultEditorKeys.moduleJavascript, "模块JavaScript", "css", editorValueJosn.ModuleJavaScript)
+    addTab(tabs, defaultEditorKeys.moduleCss, "模块Css", "css", editorValueJosn.ModuleCss || "")
+    addTab(tabs, defaultEditorKeys.moduleJavascript, "模块JavaScript", "javascript", editorValueJosn.ModuleJavaScript)
 
     if (editorValueJosn.Css)
-        addTab(tabs, defaultEditorKeys.css, "全局Css", "javascript", editorValueJosn.Css || "")
+        addTab(tabs, defaultEditorKeys.css, "全局Css", "css", editorValueJosn.Css || "")
     if (editorValueJosn.JavaScript)
-        addTab(tabs, defaultEditorKeys.javascript, "全局JavaScript", "css", editorValueJosn.JavaScript || "")
+        addTab(tabs, defaultEditorKeys.javascript, "全局JavaScript", "javascript", editorValueJosn.JavaScript || "")
 }
 
 /**
@@ -166,13 +167,13 @@ const initEditor = (editorObj, tabData) => {
     })
     //内容改变
     editor.onDidChangeModelContent(function (e) {
-        onDidChangeModelContent(e, editor, editorKey)
+        onDidChangeModelContent(e, editor, model, editorKey)
     })
 
     addMenuAction(editor, tabData)
 }
 
-const onDidChangeModelContent = (e, editor, editorKey) => {
+const onDidChangeModelContent = (e, editor, model, editorKey) => {
     isAnyValueChanged = true
 
     if (e.changes[0].text === ' ')
@@ -181,7 +182,8 @@ const onDidChangeModelContent = (e, editor, editorKey) => {
     //验证输入
     validateHandler.doValidate(editorKey, null, () => {
         debounce(function () {
-            window.global.executeCmdToWinform(cmdData.cacheChangedValue, getAllValue());//将改变的数据发送winform端
+            window.global.executeCmdToWinform(cmdData.cacheChangedValue, getAllValue())//将改变的数据发送winform端
+            window.global.executeCmdInternal(cmdData.editorChanged, { code: model.getValue(), editorKey })
         }, 1)();
     })
 }
@@ -316,6 +318,9 @@ const executeCommand = (cmd, value) => {
         case "theme":
             parentVue.theme = value
             break
+        case "loadEvent":
+            window.global.executeCmdToWinform(cmdData.reloadEvent, getAllValue())
+            break
     }
 }
 
@@ -388,7 +393,7 @@ const getAllValue = () => {
 }
 
 const save = () => {
-
+    return getAllValue()
 }
 
 const saveAndClose = (isValidation) => {
@@ -423,5 +428,8 @@ export default {
     getSelectedEditorData,
     insertValueToEditor,
     afterMonacoEditorCreated,
-    cmdData
+    cmdData,
+    save,
+    saveAndClose,
+    saveViewState
 }

@@ -29,6 +29,8 @@ define(["require", "exports", "../typescript/typescript"], function (require, ex
         octaldigits: typescript_1.language.octaldigits,
         binarydigits: typescript_1.language.binarydigits,
         hexdigits: typescript_1.language.hexdigits,
+        regexpctl: typescript_1.language.regexpctl,
+        regexpesc: typescript_1.language.regexpesc,
         tokenizer: typescript_1.language.tokenizer,
     };
 });

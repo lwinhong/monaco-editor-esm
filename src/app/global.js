@@ -2,7 +2,7 @@ import util from "./util"
 import { eventBus } from "./event-bus"
 import ds from "../dataSource/dataSourceHandler"
 
-(() => {
+const getQuery = () => {
     const qs = util.getQueryString()
     if (qs) {
         var tmp = qs["mode"]
@@ -13,13 +13,18 @@ import ds from "../dataSource/dataSourceHandler"
         if (tmp) formType = tmp
         tmp = qs["divFlag"]
         if (tmp) divFlag = tmp
+        tmp = qs["editorShowType"]
+        if (tmp) editorShowType = tmp
+        console.log("global-divFlag:" + divFlag + "\n mode:" + editorMode)
     }
-})()
+}
+getQuery()
 
 var appVue
-const init = (vueObj) => {
+const init = async (vueObj) => {
     appVue = vueObj
-    ds.initDs()
+    await ds.initDs(divFlag)
+    executeCmdFromWinform("dataLoaded")
 }
 
 /**
@@ -28,21 +33,35 @@ const init = (vueObj) => {
  * @param {value} value 
  */
 function executeCmdToWinform(cmdId, value) {
+    executeCmdToWinformasync(cmdId, value)
+}
 
-    var defaultValue = {
-        FormToken: divEditorToken,
-        divFlag: divFlag
-    }
-    var resultValue = defaultValue;
-    if (value) {
-        resultValue = Object.assign({}, value, defaultValue)
-    }
+async function executeCmdToWinformReturn(cmdId, value) {
+    var result = await executeCmdToWinformasync(cmdId, value, true)
+    return result
+}
 
-    const last = JSON.stringify(resultValue); //将JSON对象转化为JSON字符
-    console.log("2Winform:" + last)
-    if (vmonacoEditor) {
-        const retValue = vmonacoEditor.vhtmlKeysCommand(cmdId, divEditorToken, last)
-        return retValue
+/**
+ * 执行发到winform的命令
+ * @param {cmd} cmdId 
+ * @param {value} value 
+ */
+function executeCmdToWinformasync(cmdId, value, isNeedCallBack) {
+    if (divFlag != "testform" && vmonacoEditor) {
+
+        const last = JSON.stringify(value);
+        console.log("2Winform:" + last)
+
+        if (isNeedCallBack) {
+            return new Promise((resolve, reject) => {
+                vmonacoEditor.vhtmlKeysCommand(cmdId, divEditorToken, last, (value) => {
+                    resolve(value)
+                })
+            })
+        }
+        else {
+            vmonacoEditor.vhtmlKeysCommand(cmdId, divEditorToken, last)
+        }
     }
     return null
 }
@@ -53,12 +72,23 @@ function executeCmdToWinform(cmdId, value) {
  * @param {值} value 
  */
 function executeCmdFromWinform(cmdId, value) {
-    eventBus.$emit('executeCmdFromWinform', cmdId, value)
+    eventBus.$emit("executeCmd", cmdId, value)
+}
+
+/**
+ * 执行来自winform的命令
+ * @param {cmd} cmdId 
+ * @param {值} value 
+ */
+function executeCmdInternal(cmdId, value) {
+    executeCmdFromWinform(cmdId, value)
 }
 
 export default {
     executeCmdToWinform,
     executeCmdFromWinform,
+    executeCmdToWinformReturn,
+    executeCmdInternal,
     init,
     appVue: () => appVue,
     dataSourceHandler: ds,

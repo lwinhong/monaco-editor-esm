@@ -30,7 +30,8 @@ const suggest = [
     "no-redeclare",
     "no-useless-escape",
     "vue/attributes-order",
-    "vue/order-in-components"
+    "vue/order-in-components",
+    "vue/camelcase"
 ]
 export default { ignoreRules, suggest }
 

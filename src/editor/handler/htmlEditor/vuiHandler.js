@@ -169,9 +169,8 @@ function createVuiCompletions(isFromBrackets, model) {
             label: " " + vui,
             kind: monaco.languages.CompletionItemKind.Keyword,
             documentation: vuiData.label,
-            insertText: {
-                value: insertText
-            }
+            insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+            insertText
         }
         if ("true".equalIgnoreCase(vuiData.triggerSuggest)) {
             //完成之后要执行的命令，这里是继续提示
@@ -179,7 +178,9 @@ function createVuiCompletions(isFromBrackets, model) {
         }
         comletions.push(vui)
     })
-    return comletions
+    return {
+        suggestions: comletions
+    }
 }
 
 /**
@@ -197,7 +198,9 @@ function createPropCompletions(tag, widgetCode, isExistWidgetCode, model) {
     if (!isExistWidgetCode)
         props.push(editorUtil.getWidgetCodeProperty(tag))
 
-    return props
+    return {
+        suggestions: props
+    }
 }
 
 /**
@@ -236,7 +239,8 @@ function createVuiPropCompletions(tag, widgetCode, props) {
             label: " " + attr,
             kind: monaco.languages.CompletionItemKind.Keyword,
             documentation: propData.description,
-            insertText: { value: insertText }
+            insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+            insertText
         }
 
         if ("vui-chart".equalIgnoreCase(tag) && "chartSettings".equalIgnoreCase(attr)) {
@@ -263,7 +267,7 @@ function createVlanuageCompletions(widgetCode, props) {
         return
 
     $.each(commons, function (com, p) {
-        var insertValue = ""
+        var insertText = ""
         if (p.insertText && p.insertText !== "") {
             if (com === "v-on:click") {
                 var insertText = p.insertText
@@ -271,20 +275,19 @@ function createVlanuageCompletions(widgetCode, props) {
                     insertText = insertText.replace(/handleEvent/, "\\$emit")
                 }
                 var tmp = (widgetCode + "_click").replace(/-/g, "")
-                insertValue = String.format(insertText, editorUtil.newEventName(tmp))
+                insertText = String.format(insertText, editorUtil.newEventName(tmp))
             } else {
-                insertValue = p.insertText
+                insertText = p.insertText
             }
         }
-        if (insertValue === "")
-            insertValue = com + "=\"${1:}\" "
+        if (insertText === "")
+            insertText = com + "=\"${1:}\" "
         var propCommon = {
             label: " " + com,
             kind: monaco.languages.CompletionItemKind.Keyword,
+            insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
             documentation: com,
-            insertText: {
-                value: insertValue
-            }
+            insertText
         }
         if ("true".equalIgnoreCase(p.triggerSuggest)) {
             propCommon.command = triggerSuggestCommand
@@ -366,8 +369,9 @@ function createPropValueCompletions(tagName, htmlText, insertSupplement, widgetC
             var propCommon = {
                 label: option,
                 kind: monaco.languages.CompletionItemKind.Keyword,
+                insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
                 documentation: option,
-                insertText: { value: option }
+                insertText: option 
             }
             props.push(propCommon)
         })
@@ -380,7 +384,9 @@ function createPropValueCompletions(tagName, htmlText, insertSupplement, widgetC
         props.push(editorUtil.getWidgetCodePropertyValue(tagName))
     }
 
-    return props
+    return {
+        suggestions: props
+    }
 }
 
 

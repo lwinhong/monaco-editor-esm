@@ -1,4 +1,4 @@
-import util  from '../../../app/util'
+import util from '../../../app/util'
 
 const reg = /(@[\w-_]+)\s*\:/gi
 
@@ -46,19 +46,18 @@ const appendVarItems = (items, editorData, devEditorKeys) => {
  * @param {智能提示集合} items 
  */
 const applendDevResrouceItems = items => {
-    window.global.dataSourceHandler.getDataSource().getVuiPropValueOptions(props => {
-        if (!props)
-            return;
-        if (props && props.hasOwnProperty("devResources")) {
-            var resources = props["devResources"]
-            if (resources) {
-                $.each(resources, function (i, d) {
-                    var prop = newCompletionItem(d, d, d)
-                    items.push(prop)
-                })
-            }
-        }
-    });
+    const props = window.global.dataSourceHandler.getDataSource().getVuiPropValueOptions()
+    if (!props)
+        return
+
+    const resources = props["devResources"]
+    if (!resources)
+        return
+
+    for (const res of resources) {
+        const prop = newCompletionItem(res, res, res)
+        items.push(prop)
+    }
 }
 
 /**
@@ -66,16 +65,13 @@ const applendDevResrouceItems = items => {
  * @param {智能提示集合} items 
  */
 const appendComponentThemeVars = items => {
-    window.global.dataSourceHandler.getDataSource().getThemeVars(data => {
-        if (!data)
-            return
-        if (data) {
-            $.each(data, function (i, d) {
-                var prop = newCompletionItem(d, d, d)
-                items.push(prop)
-            })
-        }
-    })
+    const data = window.global.dataSourceHandler.getDataSource().getThemeVars()
+    if (!data) return
+
+    for (const themeVar of data) {
+        const prop = newCompletionItem(themeVar, themeVar, themeVar)
+        items.push(prop)
+    }
 }
 
 export const themeVarHandler = (editor, editorData, devEditorKeys) => {

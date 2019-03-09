@@ -173,10 +173,16 @@ module.exports = env => {
             new CopyWebpackPlugin([{
                 from: './src/resource',
                 to: 'resource',
-            }, {
+            },
+            {
                 from: './src/monaco-editor/vs',
                 to: 'resource/monaco-editor/vs',
-            },{
+            },
+            // {
+            //     from: './node_modules/monaco-editor/dev/vs',
+            //     to: 'resource/monaco-editor/vs',
+            // },
+            {
                 from:'./node_modules/iview/dist/styles',
                 to: 'resource/styles'
             }]),

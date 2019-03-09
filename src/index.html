@@ -16,6 +16,8 @@
         }
     </style>
     <link rel="stylesheet" href="resource/styles/iview.css">
+    <link rel="stylesheet" href="resource/styles/style.css">
+    <link rel="stylesheet" href="resource/styles/fonts/vicon.css">
     <script type="text/javascript" src="resource/jquery-3.3.1.min.js"></script>
     <script>
         const editorModeEnum = { dev: 'dev', default: 'default' }
@@ -23,7 +25,10 @@
         var editorMode = editorModeEnum.dev;
         var divEditorToken = "123456789";
         var divFlag = "testform";
-        var formType = 'Mobile';
+        var formType = 'Mobile';//窗体类型（Common，Bootstrap，Mobile）
+        var editorShowType = 'FormDesigner'//对话框  Dialog, //用户控件 UserControl, //窗体编辑器模式 FormDesigner 
+
+       
         var divCode;
         function isDevEditorMode() {
             return editorMode === editorModeEnum.dev;

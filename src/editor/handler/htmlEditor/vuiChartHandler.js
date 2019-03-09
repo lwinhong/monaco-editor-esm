@@ -1,5 +1,6 @@
 import debounce from 'lodash/debounce'
 import editorUtil from './editorUtil'
+import { cmdData } from '../../../app/command'
 
 const canShowOpenChartWidgetKey = "canShowOpenChartWidget"
 
@@ -38,13 +39,13 @@ function initOpenChartCommand(editor, model) {
     var ocs = $("#openChartSettings")
     ocs.bind("click", openChartCmd)
 
-    //按 esc键退出 打开图标 按钮
+    //按 esc键退出 ‘打开图表’ 按钮
     canShowOpenChartWidget = editor.createContextKey(canShowOpenChartWidgetKey, false)
     editor.addCommand(monaco.KeyCode.Escape,
         () => showChartSettingwidget(false), canShowOpenChartWidgetKey)
 
     //添加 打开图表设计器命令
-    openChartCmdId = editor.addCommand(0, openChartCmd, '')
+    openChartCmdId = editor.addCommand(monaco.KeyCode.F9 | monaco.KeyCode.Alt, openChartCmd, '')
     //添加 打开 '打开图标编辑器' widget命令
     // openChartSettingsWidgetCommand = editor.addCommand(0, () => showChartSettingwidget(true, mouseEventTemplate), '!suggestWidgetVisible');
 
@@ -63,8 +64,9 @@ function initOpenChartCommand(editor, model) {
 
     editor.onMouseDown(function (e) {
         //mouseEventTemplate = e
-        debounce(() =>
-            showChartSettingButton(model, e.target.position, e), 100)()
+        if (e.target.detail != "editor.contrib.quickOpenEditorWidget" && e.event.leftButton)
+            debounce(() =>
+                showChartSettingButton(model, e.target.position, e), 100)()
     })
 }
 
@@ -85,7 +87,7 @@ function openChartSetting(position) {
     var oldValue = chartSettingsValue
     showChartSettingwidget(false)
 
-    var result = executeCmdWithValue(cmdData.editChart, oldValue.value)
+    var result = window.global.executeCmdToWinformReturn(cmdData.editChart, oldValue.value)
     if (result) {
         var jsonData = JSON.parse(result)
         if (jsonData.ok) {

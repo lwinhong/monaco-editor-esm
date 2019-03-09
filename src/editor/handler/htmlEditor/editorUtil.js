@@ -14,13 +14,13 @@ function getDataSource() {
 * @returns {} 
 */
 function newUniqueCode(baseName, existCodes) {
-    var index = 1;
+    var index = 1
     while (true) {
         if ($.inArray(baseName + index, existCodes) !== -1) {
-            index++;
-        } else {
-            break;
+            index++
+            continue
         }
+        break
     }
     return baseName + index;
 }
@@ -38,33 +38,32 @@ function getExistCodeCommon(reg, htmlString, isRemoveComments, isTrimCode, isRet
     if (isReturnCodeAndSource)
         existCodes = {}
 
-    var sourceString = htmlString;
+    var sourceString = htmlString
 
     if (isRemoveComments)
-        sourceString = util.removeComments(sourceString);
+        sourceString = util.removeComments(sourceString)
     if (isTrimCode === undefined)
-        isTrimCode = true;
+        isTrimCode = true
 
     while (true) {
-        var results = reg.exec(sourceString);
+        const results = reg.exec(sourceString)
         if (results) {
-            var result = results[1];
-            var code = isTrimCode ? result.trim() : result;
+            const result = results[1]
+            const code = isTrimCode ? result.trim() : result
             if (isReturnCodeAndSource) {
-                var exist = existCodes[code];
-                if (exist) {
-                    exist.push(results[0]);
-                } else {
-                    existCodes[code] = [results[0]];
-                }
-            } else {
-                existCodes.push(isTrimCode ? result.trim() : result);
-            }
-        } else {
-            break;
+                const exist = existCodes[code]
+                if (exist)
+                    exist.push(results[0])
+                else
+                    existCodes[code] = [results[0]]
+            } else
+                existCodes.push(isTrimCode ? result.trim() : result)
+
+            continue
         }
+        break
     }
-    return existCodes;
+    return existCodes
 }
 
 /**
@@ -100,9 +99,9 @@ function getValueOptions(optionKey) {
         var options = ds.getVuiPropValueOptions()
         if (options) {
             var result = new Array()
-            var keys = optionKey.split("|")
+            const keys = optionKey.split("|")
             $.each(keys, function (index, obj) {
-                var option = options[obj]
+                const option = options[obj]
                 if (option) {
                     result = result.concat(option)
                 }
@@ -120,7 +119,7 @@ function getValueOptions(optionKey) {
  * @returns {} 
  */
 function newEventName(baseName) {
-    return newUniqueCode(baseName, existEventCodes);
+    return newUniqueCode(baseName, existEventCodes)
 }
 
 /**
@@ -128,7 +127,7 @@ function newEventName(baseName) {
  * @param {匹配文本} text 
  */
 function matchTagStart(text) {
-    return text.match(tagStart);
+    return text.match(tagStart)
 }
 
 /************************************************** js 相关处理 *************************************************** */
@@ -145,7 +144,7 @@ function getAllJsFunctions(editorData, editorKey) {
      */
     function getJsFunctionName(script) {
         if (!script)
-            return null;
+            return null
 
         const newFunction = /(var)(\s+)((?:[a-z][a-z0-9_]*))(\s{0,})(=)(\s{0,})(new)(\s+)(Function)/gi
         const normalFunction = /(function)(\s+)((?:[a-z][a-z0-9_]*))/gi
@@ -173,10 +172,9 @@ function getAllJsFunctions(editorData, editorKey) {
     var result = []
     $.each(editors, function (i, editor) {
         if (editor && editor.editor) {
-            var functions = getJsFunctionName(editor.editor.getValue())
-            if (functions) {
+            const functions = getJsFunctionName(editor.editor.getValue())
+            if (functions) 
                 result = result.concat(functions)
-            }
         }
     })
     return result

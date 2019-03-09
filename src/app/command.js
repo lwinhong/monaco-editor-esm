@@ -14,7 +14,7 @@ export const cmdData = {
     openValidateRule: "OpenValidateRule",
     editChart: "EditChart",
     showChartButton: "ShowChartButton",
-    cacheChangedValue: "CacheChangedValue"
+    cacheChangedValue: "CacheChangedValue",
+    reloadEvent: "ReloadEvent"
 
-    
 }

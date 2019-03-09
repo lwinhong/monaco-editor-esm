@@ -12,8 +12,14 @@
   </div>
 </template>
 <script>
+import { eventBus } from "../app/event-bus";
 export default {
   name: "Vlist",
+  created() {
+    eventBus.$on("executeCmd", (cmdId, value) => {
+      if (cmdId === "dataLoaded" || "updateData" === cmdId) this.loadVList();
+    });
+  },
   data() {
     return {
       listDataSource: [],
@@ -48,12 +54,13 @@ export default {
       const tree = this.listDataSource;
       tree.splice(0, tree.length);
       try {
-        window.global.dataSourceHandler.getDataSource().getVlanguage(data => {
-          if (!data) return;
-          $.each(data, function(i, data) {
-            let en = { v: i, desc: data.name, simple: data.desc };
-            tree.push(en);
-          });
+        const datas = window.global.dataSourceHandler
+          .getDataSource()
+          .getVlanguage();
+        if (!datas) return;
+        $.each(datas, function(i, data) {
+          let en = { v: i, desc: data.name, simple: data.desc };
+          tree.push(en);
         });
       } catch (error) {
         console.error(error);
@@ -61,7 +68,7 @@ export default {
     }
   },
   mounted() {
-    this.loadVList();
+    //this.loadVList();
   }
 };
 </script>

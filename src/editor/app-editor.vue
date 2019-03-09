@@ -2,7 +2,6 @@
   <div class="fill">
     <app-chart-widget
       :visible="appChartWidgetVisible"
-      @chart-widget-click="openChartSetting"
       :top="chartWidgetTop"
       :left="chartWidgetLeft"
     ></app-chart-widget>
@@ -32,7 +31,7 @@
 </template>
 <script>
 import AppChartWidget from "../editor/app-chart-widget.vue";
-import editorHandler from "../editor/handler/editorHandler.js";
+import editorHandler from "../editor/handler/editorHandler";
 import AppMessageFlow from "../message/app-message-flow.vue";
 import SaveButton from "./save-button.vue";
 import Monaco from "./monaco-editor/monaco.vue";
@@ -57,7 +56,10 @@ export default {
   mounted() {
     let me = this;
     editorHandler.Init(me);
-    if (divFlag === "testform") editorHandler.addEditorTabPage(tabs, {});
+    if (divFlag === "testform") {
+      editorHandler.addEditorTabPage(tabs, {});
+    }
+    this.saveButtonVisible = editorShowType !== "FormDesigner";
   },
   computed: {
     flowMessageWidthTrigger() {
@@ -88,12 +90,14 @@ export default {
         tabs[0].key === tab.key
       );
     },
-    save() {},
-    saveAndClose() {
-      alert("saveAndClolse");
+    save() {
+      return editorHandler.save();
     },
-    openChartSetting() {
-      alert("openChartWidget");
+    saveAndClose() {
+      return editorHandler.saveAndClose(true);
+    },
+    saveViewState() {
+      return editorHandler.saveViewState();
     },
     openChartWidget(point) {
       this.chartWidgetTop = point.y;

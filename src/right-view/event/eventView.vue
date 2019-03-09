@@ -1,27 +1,52 @@
 <template>
-  <div>
-    <div class="cardView" v-for="data in eventData" :key="data.code">
+  <div id="eventView">
+    <div class="cardView" v-for="(data, index) in eventData" :key="data.EventCode+index">
       <div class="cardView-hd">
         <h6 class="title">
-          <span v-text="data.name"></span>
-          <a href="#" title="修改事件名称">
-            <icon type="ios-create-outline" size="18"></icon>
-          </a>
+          <span v-text="data.EventName"></span>
+          <poptip placement="bottom-start" width="120">
+            <a href="#" title="修改名称" class="edit">
+              <icon type="ios-create-outline" size="18"></icon>
+            </a>
+            <div slot="title">修改名称</div>
+            <div slot="content">
+              <i-input size="small" v-model="eventName"></i-input>
+              <br>
+              <i-button type="primary" @click="eventChanged(data)" size="small">完成</i-button>
+            </div>
+          </poptip>
         </h6>
-        <icon v-if="data.type==='user'" type="ios-trash-outline" size="18" class="extra"></icon>
+        <icon
+          v-if="data.EventType=== 'User'"
+          type="ios-trash-outline"
+          size="18"
+          class="extra"
+          @click="eventData.splice(index, 1)"
+        ></icon>
       </div>
       <div class="cardView-bd">
         <i-form :label-width="60">
           <form-item label="事件编码">
-            <i-input size="small" v-model="data.code" :readonly="data.type ==='auto'"></i-input>
+            <template v-if="data.EventType === 'Auto'">
+              <span v-text="data.EventCode"></span>
+              <a @click="codeCopied(data.code)" title="复制编码">
+                <icon type="md-copy" size="16"></icon>
+              </a>
+            </template>
+            <i-input
+              v-else
+              size="small"
+              v-model="data.EventCode"
+              :readonly="data.EventType === 'Auto'"
+            ></i-input>
           </form-item>
           <form-item label="处理方法">
-            <i-input size="small" v-model="data.method" readonly>
+            <i-input size="small" v-model="data.MethodCode" readonly>
               <icon slot="append" type="md-open"></icon>
             </i-input>
           </form-item>
           <form-item label="参数映射">
-            <i-input size="small" v-model="data.mapping" readonly>
+            <i-input size="small" :value="data.ParamMapping?'已设置':''" readonly>
               <icon slot="append" type="md-open"></icon>
             </i-input>
           </form-item>
@@ -31,49 +56,83 @@
   </div>
 </template>
 <script>
+import {
+  addEvent,
+  loadEvent,
+  saveEvent,
+  initEventBus,
+  refresh,
+  updateEventDev,
+  updateEventOld
+} from "./eventHandler";
+
 export default {
   name: "eventView",
+  created() {
+    initEventBus(this);
+  },
   data() {
     return {
-      eventData: [
-        {
-          name: "事件1",
-          code: "onclick1",
-          mapping: "",
-          method: "jgbutton_click1",
-          type: "user"
-        },
-        {
-          name: "事件2",
-          code: "onclick2",
-          mapping: "已设置",
-          method: "jgbutton_click2",
-          type: "auto"
-        }
-      ]
+      eventData: [],
+      eventName: ""
     };
   },
+  mounted() {
+    //this.load();
+  },
   methods: {
-    onSearch(value) {}
+    onSearch(value) {},
+    eventChanged(data) {
+      data.EventName = this.eventName;
+    },
+    codeCopied(code) {
+      this.$Message.success("已复制");
+    },
+    add() {
+      addEvent(this.eventData);
+      //   $("eventView").scrollTop($("eventView")[0].scrollHeight);
+    },
+    refresh() {
+      refresh();
+    },
+    save() {
+      return saveEvent(this.eventData);
+    },
+    load(value) {
+      loadEvent(this.eventData, value);
+    },
+    updateEventDev(value) {
+      updateEventDev(this.eventData, value);
+    },
+    updateEventOld(value) {
+      updateEventOld(this.eventData, value);
+    }
   }
 };
 </script>
 <style scoped>
 .cardView {
-  border-bottom: 1px solid #f5f5f6;
   padding: 8px 0 4px;
+  border-bottom: 1px solid #f5f5f6;
   transition: 0.2s background ease;
 }
-.cardView .cardView-hd {
+.cardView:hover {
+  background: #fafafa;
+}
+.cardView:hover .cardView-hd h6 .edit {
+  color: #33a7ff;
+  display: inline-block;
+}
+.cardView-hd {
   position: relative;
   line-height: 24px;
   padding: 0 12px;
   text-align: left;
-  font-weight: bold;
+  font-weight: 700;
   color: #000;
   font-size: 13px;
 }
-.cardView .cardView-hd h6 > span {
+.cardView-hd h6 > span {
   display: inline-block;
   max-width: 60%;
   white-space: nowrap;
@@ -81,11 +140,24 @@ export default {
   text-overflow: ellipsis;
   vertical-align: middle;
 }
-.cardView .cardView-hd h6 > a {
+.cardView-hd h6 .edit {
   display: none;
   padding-left: 2px;
 }
-.cardView .cardView-hd .extra {
+.cardView-hd .ivu-poptip-title {
+  padding: 8px 16px 4px;
+}
+.cardView-hd .ivu-poptip-title:after {
+  display: none;
+}
+.cardView-hd .ivu-poptip-body {
+  padding-top: 0;
+  text-align: right;
+}
+.cardView-hd .ivu-poptip-body .ivu-btn {
+  margin-top: 6px;
+}
+.cardView-hd .extra {
   position: absolute;
   right: 16px;
   top: 3px;
@@ -93,13 +165,9 @@ export default {
   cursor: pointer;
   transition: 0.3s;
 }
-.cardView .cardView-hd .extra:hover {
-  color: #4285f4;
-}
-.cardView .cardView-bd {
+.cardView-bd {
   padding: 8px 12px 6px;
 }
-
 .cardView-bd .ivu-form-item {
   margin-bottom: 6px;
 }
@@ -113,20 +181,14 @@ export default {
 .cardView-bd .ivu-form-item-content {
   line-height: 24px;
 }
-
-.cardView:hover {
-  background: #fafafa;
+.cardView-bd .ivu-form-item-content a {
+  color: #aaa;
 }
-.cardView:hover .cardView-hd h6 > a {
-  display: inline-block;
+.cardView-bd .ivu-form-item-content a:hover {
+  color: #33a7ff;
 }
-.cardView .ivu-input[disabled],
-.cardView fieldset[disabled] .ivu-input {
+.cardView-bd .ivu-input[disabled],
+.cardView-bd fieldset[disabled] .ivu-input {
   color: #aaa;
 }
 </style>
-
-<style >
-</style>
-
-

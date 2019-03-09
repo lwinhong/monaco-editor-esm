@@ -42,10 +42,10 @@ export default {
   name: "entityView",
   components: { EntityItem },
   created() {
-    eventBus.$on("executeCmdFromWinform", (cmdId, value) => {
-      if ("updateDataSource" === cmdId) this.buildTree();
+    eventBus.$on("executeCmd", (cmdId, value) => {
+      if ("updateData" === cmdId || cmdId === "dataLoaded") this.buildTree();
     });
-  },
+  }, 
   data() {
     return {
       entityTree: [],
@@ -56,13 +56,10 @@ export default {
     setEntityTree(data) {
       this.entityTree.splice(0, this.entityTree.length);
       if (data) {
-        for (let index = 0; index < data.length; index++) {
-          const element = data[index];
-
+        for (const element of data) {
           const items = [];
           if (element.items && element.items.length > 0) {
-            for (let i = 0; i < element.items.length; i++) {
-              const item = element.items[i];
+            for (const item of element.items) {
               items.push({ key: item.code, text: item.name });
             }
           }
@@ -76,7 +73,8 @@ export default {
     },
     onSearch(value) {},
     insert(value) {
-      eventBus.$emit("executeCmdFromWinform", "insertValue", value);
+      //eventBus.$emit("executeCmd", "insertValue", value);
+      window.global.executeCmdInternal("insertValue", value);
     },
     drag(ev, item) {
       ev.effectAllowed = "move";

@@ -4,9 +4,11 @@
     <Layout>
       <Content class="titleBackColor">
         <ul>
-          <li v-for="item in rightBarTopItems" :key="item.key" @click="rightBarItemClick(item)">
-            {{item.text}}
-          </li>
+          <li
+            v-for="item in rightBarTopItems"
+            :key="item.key"
+            @click="rightBarItemClick(item)"
+          >{{item.text}}</li>
         </ul>
       </Content>
       <Footer class="titleBackColor">
@@ -65,7 +67,7 @@ export default {
     return {
       rightBarTopItems: [
         { key: "entity", text: "实体", icon: "" },
-        { key: "event", text: "事件", icon: "" },
+        { key: "event", text: "事件", icon: "" }
         // { key: "preview", text: "预览", icon: "" }
       ],
       rightBarBottomItems: [
@@ -100,7 +102,7 @@ export default {
   },
   methods: {
     rightBarItemClick(item) {
-      window.global.executeCmdFromWinform("theme","vs-dark");
+      //window.global.executeCmdFromWinform("theme","vs-dark");
       if (item) {
         if (item.key && item.key === "preview") {
           window.global.executeCmdToWinform(item.key);

@@ -5,7 +5,6 @@ define('vs/language/css/workerManager',["require", "exports"], function (require
      *--------------------------------------------------------------------------------------------*/
     'use strict';
     Object.defineProperty(exports, "__esModule", { value: true });
-    var Promise = monaco.Promise;
     var STOP_WHEN_IDLE_FOR = 2 * 60 * 1000; // 2min
     var WorkerManager = /** @class */ (function () {
         function WorkerManager(defaults) {
@@ -61,25 +60,15 @@ define('vs/language/css/workerManager',["require", "exports"], function (require
                 resources[_i] = arguments[_i];
             }
             var _client;
-            return toShallowCancelPromise(this._getClient().then(function (client) {
+            return this._getClient().then(function (client) {
                 _client = client;
             }).then(function (_) {
                 return _this._worker.withSyncedResources(resources);
-            }).then(function (_) { return _client; }));
+            }).then(function (_) { return _client; });
         };
         return WorkerManager;
     }());
     exports.WorkerManager = WorkerManager;
-    function toShallowCancelPromise(p) {
-        var completeCallback;
-        var errorCallback;
-        var r = new Promise(function (c, e) {
-            completeCallback = c;
-            errorCallback = e;
-        }, function () { });
-        p.then(completeCallback, errorCallback);
-        return r;
-    }
 });
 
 (function (factory) {
@@ -172,6 +161,34 @@ define('vs/language/css/workerManager',["require", "exports"], function (require
         }
         Location.is = is;
     })(Location = exports.Location || (exports.Location = {}));
+    /**
+     * The LocationLink namespace provides helper functions to work with
+     * [LocationLink](#LocationLink) literals.
+     */
+    var LocationLink;
+    (function (LocationLink) {
+        /**
+         * Creates a LocationLink literal.
+         * @param targetUri The definition's uri.
+         * @param targetRange The full range of the definition.
+         * @param targetSelectionRange The span of the symbol definition at the target.
+         * @param originSelectionRange The span of the symbol being defined in the originating source file.
+         */
+        function create(targetUri, targetRange, targetSelectionRange, originSelectionRange) {
+            return { targetUri: targetUri, targetRange: targetRange, targetSelectionRange: targetSelectionRange, originSelectionRange: originSelectionRange };
+        }
+        LocationLink.create = create;
+        /**
+         * Checks whether the given literal conforms to the [LocationLink](#LocationLink) interface.
+         */
+        function is(value) {
+            var candidate = value;
+            return Is.defined(candidate) && Range.is(candidate.targetRange) && Is.string(candidate.targetUri)
+                && (Range.is(candidate.targetSelectionRange) || Is.undefined(candidate.targetSelectionRange))
+                && (Range.is(candidate.originSelectionRange) || Is.undefined(candidate.originSelectionRange));
+        }
+        LocationLink.is = is;
+    })(LocationLink = exports.LocationLink || (exports.LocationLink = {}));
     /**
      * The Color namespace provides helper functions to work with
      * [Color](#Color) literals.
@@ -490,13 +507,84 @@ define('vs/language/css/workerManager',["require", "exports"], function (require
         }
         TextDocumentEdit.is = is;
     })(TextDocumentEdit = exports.TextDocumentEdit || (exports.TextDocumentEdit = {}));
+    var CreateFile;
+    (function (CreateFile) {
+        function create(uri, options) {
+            var result = {
+                kind: 'create',
+                uri: uri
+            };
+            if (options !== void 0 && (options.overwrite !== void 0 || options.ignoreIfExists !== void 0)) {
+                result.options = options;
+            }
+            return result;
+        }
+        CreateFile.create = create;
+        function is(value) {
+            var candidate = value;
+            return candidate && candidate.kind === 'create' && Is.string(candidate.uri) &&
+                (candidate.options === void 0 ||
+                    ((candidate.options.overwrite === void 0 || Is.boolean(candidate.options.overwrite)) && (candidate.options.ignoreIfExists === void 0 || Is.boolean(candidate.options.ignoreIfExists))));
+        }
+        CreateFile.is = is;
+    })(CreateFile = exports.CreateFile || (exports.CreateFile = {}));
+    var RenameFile;
+    (function (RenameFile) {
+        function create(oldUri, newUri, options) {
+            var result = {
+                kind: 'rename',
+                oldUri: oldUri,
+                newUri: newUri
+            };
+            if (options !== void 0 && (options.overwrite !== void 0 || options.ignoreIfExists !== void 0)) {
+                result.options = options;
+            }
+            return result;
+        }
+        RenameFile.create = create;
+        function is(value) {
+            var candidate = value;
+            return candidate && candidate.kind === 'rename' && Is.string(candidate.oldUri) && Is.string(candidate.newUri) &&
+                (candidate.options === void 0 ||
+                    ((candidate.options.overwrite === void 0 || Is.boolean(candidate.options.overwrite)) && (candidate.options.ignoreIfExists === void 0 || Is.boolean(candidate.options.ignoreIfExists))));
+        }
+        RenameFile.is = is;
+    })(RenameFile = exports.RenameFile || (exports.RenameFile = {}));
+    var DeleteFile;
+    (function (DeleteFile) {
+        function create(uri, options) {
+            var result = {
+                kind: 'delete',
+                uri: uri
+            };
+            if (options !== void 0 && (options.recursive !== void 0 || options.ignoreIfNotExists !== void 0)) {
+                result.options = options;
+            }
+            return result;
+        }
+        DeleteFile.create = create;
+        function is(value) {
+            var candidate = value;
+            return candidate && candidate.kind === 'delete' && Is.string(candidate.uri) &&
+                (candidate.options === void 0 ||
+                    ((candidate.options.recursive === void 0 || Is.boolean(candidate.options.recursive)) && (candidate.options.ignoreIfNotExists === void 0 || Is.boolean(candidate.options.ignoreIfNotExists))));
+        }
+        DeleteFile.is = is;
+    })(DeleteFile = exports.DeleteFile || (exports.DeleteFile = {}));
     var WorkspaceEdit;
     (function (WorkspaceEdit) {
         function is(value) {
             var candidate = value;
             return candidate &&
                 (candidate.changes !== void 0 || candidate.documentChanges !== void 0) &&
-                (candidate.documentChanges === void 0 || Is.typedArray(candidate.documentChanges, TextDocumentEdit.is));
+                (candidate.documentChanges === void 0 || candidate.documentChanges.every(function (change) {
+                    if (Is.string(change.kind)) {
+                        return CreateFile.is(change) || RenameFile.is(change) || DeleteFile.is(change);
+                    }
+                    else {
+                        return TextDocumentEdit.is(change);
+                    }
+                }));
         }
         WorkspaceEdit.is = is;
     })(WorkspaceEdit = exports.WorkspaceEdit || (exports.WorkspaceEdit = {}));
@@ -534,9 +622,11 @@ define('vs/language/css/workerManager',["require", "exports"], function (require
             if (workspaceEdit) {
                 this._workspaceEdit = workspaceEdit;
                 if (workspaceEdit.documentChanges) {
-                    workspaceEdit.documentChanges.forEach(function (textDocumentEdit) {
-                        var textEditChange = new TextEditChangeImpl(textDocumentEdit.edits);
-                        _this._textEditChanges[textDocumentEdit.textDocument.uri] = textEditChange;
+                    workspaceEdit.documentChanges.forEach(function (change) {
+                        if (TextDocumentEdit.is(change)) {
+                            var textEditChange = new TextEditChangeImpl(change.edits);
+                            _this._textEditChanges[change.textDocument.uri] = textEditChange;
+                        }
                     });
                 }
                 else if (workspaceEdit.changes) {
@@ -566,7 +656,7 @@ define('vs/language/css/workerManager',["require", "exports"], function (require
                     };
                 }
                 if (!this._workspaceEdit.documentChanges) {
-                    throw new Error('Workspace edit is not configured for versioned document changes.');
+                    throw new Error('Workspace edit is not configured for document changes.');
                 }
                 var textDocument = key;
                 var result = this._textEditChanges[textDocument.uri];
@@ -599,6 +689,23 @@ define('vs/language/css/workerManager',["require", "exports"], function (require
                     this._textEditChanges[key] = result;
                 }
                 return result;
+            }
+        };
+        WorkspaceChange.prototype.createFile = function (uri, options) {
+            this.checkDocumentChanges();
+            this._workspaceEdit.documentChanges.push(CreateFile.create(uri, options));
+        };
+        WorkspaceChange.prototype.renameFile = function (oldUri, newUri, options) {
+            this.checkDocumentChanges();
+            this._workspaceEdit.documentChanges.push(RenameFile.create(oldUri, newUri, options));
+        };
+        WorkspaceChange.prototype.deleteFile = function (uri, options) {
+            this.checkDocumentChanges();
+            this._workspaceEdit.documentChanges.push(DeleteFile.create(uri, options));
+        };
+        WorkspaceChange.prototype.checkDocumentChanges = function () {
+            if (!this._workspaceEdit || !this._workspaceEdit.documentChanges) {
+                throw new Error('Workspace edit is not configured for document changes.');
             }
         };
         return WorkspaceChange;
@@ -647,7 +754,7 @@ define('vs/language/css/workerManager',["require", "exports"], function (require
          */
         function is(value) {
             var candidate = value;
-            return Is.defined(candidate) && Is.string(candidate.uri) && Is.number(candidate.version);
+            return Is.defined(candidate) && Is.string(candidate.uri) && (candidate.version === null || Is.number(candidate.version));
         }
         VersionedTextDocumentIdentifier.is = is;
     })(VersionedTextDocumentIdentifier = exports.VersionedTextDocumentIdentifier || (exports.VersionedTextDocumentIdentifier = {}));
@@ -828,7 +935,7 @@ define('vs/language/css/workerManager',["require", "exports"], function (require
          */
         function is(value) {
             var candidate = value;
-            return Is.objectLiteral(candidate) && (MarkupContent.is(candidate.contents) ||
+            return !!candidate && Is.objectLiteral(candidate) && (MarkupContent.is(candidate.contents) ||
                 MarkedString.is(candidate.contents) ||
                 Is.typedArray(candidate.contents, MarkedString.is)) && (value.range === void 0 || Range.is(value.range));
         }
@@ -1013,8 +1120,9 @@ define('vs/language/css/workerManager',["require", "exports"], function (require
         function is(value) {
             var candidate = value;
             return candidate &&
-                Is.string(candidate.name) && Is.string(candidate.detail) && Is.number(candidate.kind) &&
+                Is.string(candidate.name) && Is.number(candidate.kind) &&
                 Range.is(candidate.range) && Range.is(candidate.selectionRange) &&
+                (candidate.detail === void 0 || Is.string(candidate.detail)) &&
                 (candidate.deprecated === void 0 || Is.boolean(candidate.deprecated)) &&
                 (candidate.children === void 0 || Array.isArray(candidate.children));
         }
@@ -1253,7 +1361,7 @@ define('vs/language/css/workerManager',["require", "exports"], function (require
                     text = text.substring(0, startOffset) + e.newText + text.substring(endOffset, text.length);
                 }
                 else {
-                    throw new Error('Ovelapping edit');
+                    throw new Error('Overlapping edit');
                 }
                 lastModifiedOffset = startOffset;
             }
@@ -1470,6 +1578,7 @@ define('vs/language/css/languageFeatures',["require", "exports", "vscode-languag
     'use strict';
     Object.defineProperty(exports, "__esModule", { value: true });
     var Uri = monaco.Uri;
+    var Range = monaco.Range;
     // --- diagnostics --- ---
     var DiagnosticsAdapter = /** @class */ (function () {
         function DiagnosticsAdapter(_languageId, _worker, defaults) {
@@ -1535,7 +1644,7 @@ define('vs/language/css/languageFeatures',["require", "exports", "vscode-languag
                 if (model.getModeId() === languageId) {
                     monaco.editor.setModelMarkers(model, languageId, markers);
                 }
-            }).done(undefined, function (err) {
+            }).then(undefined, function (err) {
                 console.error(err);
             });
         };
@@ -1628,23 +1737,25 @@ define('vs/language/css/languageFeatures',["require", "exports", "vscode-languag
             enumerable: true,
             configurable: true
         });
-        CompletionAdapter.prototype.provideCompletionItems = function (model, position, token) {
-            var wordInfo = model.getWordUntilPosition(position);
+        CompletionAdapter.prototype.provideCompletionItems = function (model, position, context, token) {
             var resource = model.uri;
-            return wireCancellationToken(token, this._worker(resource).then(function (worker) {
+            return this._worker(resource).then(function (worker) {
                 return worker.doComplete(resource.toString(), fromPosition(position));
             }).then(function (info) {
                 if (!info) {
                     return;
                 }
+                var wordInfo = model.getWordUntilPosition(position);
+                var wordRange = new Range(position.lineNumber, wordInfo.startColumn, position.lineNumber, wordInfo.endColumn);
                 var items = info.items.map(function (entry) {
                     var item = {
                         label: entry.label,
-                        insertText: entry.insertText,
+                        insertText: entry.insertText || entry.label,
                         sortText: entry.sortText,
                         filterText: entry.filterText,
                         documentation: entry.documentation,
                         detail: entry.detail,
+                        range: wordRange,
                         kind: toCompletionItemKind(entry.kind),
                     };
                     if (entry.textEdit) {
@@ -1655,15 +1766,15 @@ define('vs/language/css/languageFeatures',["require", "exports", "vscode-languag
                         item.additionalTextEdits = entry.additionalTextEdits.map(toTextEdit);
                     }
                     if (entry.insertTextFormat === ls.InsertTextFormat.Snippet) {
-                        item.insertText = { value: item.insertText };
+                        item.insertTextRules = monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet;
                     }
                     return item;
                 });
                 return {
                     isIncomplete: info.isIncomplete,
-                    items: items
+                    suggestions: items
                 };
-            }));
+            });
         };
         return CompletionAdapter;
     }());
@@ -1705,7 +1816,7 @@ define('vs/language/css/languageFeatures',["require", "exports", "vscode-languag
         }
         HoverAdapter.prototype.provideHover = function (model, position, token) {
             var resource = model.uri;
-            return wireCancellationToken(token, this._worker(resource).then(function (worker) {
+            return this._worker(resource).then(function (worker) {
                 return worker.doHover(resource.toString(), fromPosition(position));
             }).then(function (info) {
                 if (!info) {
@@ -1715,7 +1826,7 @@ define('vs/language/css/languageFeatures',["require", "exports", "vscode-languag
                     range: toRange(info.range),
                     contents: toMarkedStringArray(info.contents)
                 };
-            }));
+            });
         };
         return HoverAdapter;
     }());
@@ -1735,7 +1846,7 @@ define('vs/language/css/languageFeatures',["require", "exports", "vscode-languag
         }
         DocumentHighlightAdapter.prototype.provideDocumentHighlights = function (model, position, token) {
             var resource = model.uri;
-            return wireCancellationToken(token, this._worker(resource).then(function (worker) {
+            return this._worker(resource).then(function (worker) {
                 return worker.findDocumentHighlights(resource.toString(), fromPosition(position));
             }).then(function (entries) {
                 if (!entries) {
@@ -1747,7 +1858,7 @@ define('vs/language/css/languageFeatures',["require", "exports", "vscode-languag
                         kind: toDocumentHighlightKind(entry.kind)
                     };
                 });
-            }));
+            });
         };
         return DocumentHighlightAdapter;
     }());
@@ -1765,14 +1876,14 @@ define('vs/language/css/languageFeatures',["require", "exports", "vscode-languag
         }
         DefinitionAdapter.prototype.provideDefinition = function (model, position, token) {
             var resource = model.uri;
-            return wireCancellationToken(token, this._worker(resource).then(function (worker) {
+            return this._worker(resource).then(function (worker) {
                 return worker.findDefinition(resource.toString(), fromPosition(position));
             }).then(function (definition) {
                 if (!definition) {
                     return;
                 }
                 return [toLocation(definition)];
-            }));
+            });
         };
         return DefinitionAdapter;
     }());
@@ -1784,14 +1895,14 @@ define('vs/language/css/languageFeatures',["require", "exports", "vscode-languag
         }
         ReferenceAdapter.prototype.provideReferences = function (model, position, context, token) {
             var resource = model.uri;
-            return wireCancellationToken(token, this._worker(resource).then(function (worker) {
+            return this._worker(resource).then(function (worker) {
                 return worker.findReferences(resource.toString(), fromPosition(position));
             }).then(function (entries) {
                 if (!entries) {
                     return;
                 }
                 return entries.map(toLocation);
-            }));
+            });
         };
         return ReferenceAdapter;
     }());
@@ -1823,11 +1934,11 @@ define('vs/language/css/languageFeatures',["require", "exports", "vscode-languag
         }
         RenameAdapter.prototype.provideRenameEdits = function (model, position, newName, token) {
             var resource = model.uri;
-            return wireCancellationToken(token, this._worker(resource).then(function (worker) {
+            return this._worker(resource).then(function (worker) {
                 return worker.doRename(resource.toString(), fromPosition(position), newName);
             }).then(function (edit) {
                 return toWorkspaceEdit(edit);
-            }));
+            });
         };
         return RenameAdapter;
     }());
@@ -1863,7 +1974,7 @@ define('vs/language/css/languageFeatures',["require", "exports", "vscode-languag
         }
         DocumentSymbolAdapter.prototype.provideDocumentSymbols = function (model, token) {
             var resource = model.uri;
-            return wireCancellationToken(token, this._worker(resource).then(function (worker) { return worker.findDocumentSymbols(resource.toString()); }).then(function (items) {
+            return this._worker(resource).then(function (worker) { return worker.findDocumentSymbols(resource.toString()); }).then(function (items) {
                 if (!items) {
                     return;
                 }
@@ -1875,7 +1986,7 @@ define('vs/language/css/languageFeatures',["require", "exports", "vscode-languag
                     range: toRange(item.location.range),
                     selectionRange: toRange(item.location.range)
                 }); });
-            }));
+            });
         };
         return DocumentSymbolAdapter;
     }());
@@ -1886,7 +1997,7 @@ define('vs/language/css/languageFeatures',["require", "exports", "vscode-languag
         }
         DocumentColorAdapter.prototype.provideDocumentColors = function (model, token) {
             var resource = model.uri;
-            return wireCancellationToken(token, this._worker(resource).then(function (worker) { return worker.findDocumentColors(resource.toString()); }).then(function (infos) {
+            return this._worker(resource).then(function (worker) { return worker.findDocumentColors(resource.toString()); }).then(function (infos) {
                 if (!infos) {
                     return;
                 }
@@ -1894,11 +2005,11 @@ define('vs/language/css/languageFeatures',["require", "exports", "vscode-languag
                     color: item.color,
                     range: toRange(item.range)
                 }); });
-            }));
+            });
         };
         DocumentColorAdapter.prototype.provideColorPresentations = function (model, info, token) {
             var resource = model.uri;
-            return wireCancellationToken(token, this._worker(resource).then(function (worker) { return worker.getColorPresentations(resource.toString(), info.color, fromRange(info.range)); }).then(function (presentations) {
+            return this._worker(resource).then(function (worker) { return worker.getColorPresentations(resource.toString(), info.color, fromRange(info.range)); }).then(function (presentations) {
                 if (!presentations) {
                     return;
                 }
@@ -1914,7 +2025,7 @@ define('vs/language/css/languageFeatures',["require", "exports", "vscode-languag
                     }
                     return item;
                 });
-            }));
+            });
         };
         return DocumentColorAdapter;
     }());
@@ -1925,7 +2036,7 @@ define('vs/language/css/languageFeatures',["require", "exports", "vscode-languag
         }
         FoldingRangeAdapter.prototype.provideFoldingRanges = function (model, context, token) {
             var resource = model.uri;
-            return wireCancellationToken(token, this._worker(resource).then(function (worker) { return worker.provideFoldingRanges(resource.toString(), context); }).then(function (ranges) {
+            return this._worker(resource).then(function (worker) { return worker.provideFoldingRanges(resource.toString(), context); }).then(function (ranges) {
                 if (!ranges) {
                     return;
                 }
@@ -1939,7 +2050,7 @@ define('vs/language/css/languageFeatures',["require", "exports", "vscode-languag
                     }
                     return result;
                 });
-            }));
+            });
         };
         return FoldingRangeAdapter;
     }());
@@ -1951,13 +2062,6 @@ define('vs/language/css/languageFeatures',["require", "exports", "vscode-languag
             case ls.FoldingRangeKind.Region: return monaco.languages.FoldingRangeKind.Region;
         }
         return void 0;
-    }
-    /**
-     * Hook a cancellation token to a WinJS Promise
-     */
-    function wireCancellationToken(token, promise) {
-        token.onCancellationRequested(function () { return promise.cancel(); });
-        return promise;
     }
 });
 

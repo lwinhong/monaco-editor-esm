@@ -9,8 +9,8 @@
           v-for="item in topBarItems"
           :key="item.key"
           :title="item.title"
-          v-show="(currentView != 'entity' && item.key==='add')? false : true"
-           @click="topBarItemClick(item)"
+          v-show="eventViewVisible"
+          @click="topBarItemClick(item)"
         >
           <a href="javascript:void(0)" class="rightFloat">
             {{item.text? item.text:''}}
@@ -86,15 +86,20 @@ export default {
       if (item) {
         if (item.key === "search") {
           this.searchVisible = !this.searchVisible;
-          if (this.searchVisible) {
-            //this.$refs.seach.setFocus();
-          }
         } else if (item.key === "refresh") {
           if (this.entityViewVisible) {
             this.$refs.entityView.buildTree();
+          } else if (this.eventViewVisible) {
+            this.$refs.eventView.refresh();
           }
-        } else this.$emit("closeClick");
-      } else this.$emit("closeClick");
+        } else if (item.key === "add") {
+          if (this.eventViewVisible) {
+            this.$refs.eventView.add();
+          }
+        } else {
+          this.$emit("closeClick");
+        }
+      }
     },
     onSearch(value) {
       if (this.entityViewVisible) this.$refs.entityView.onSearch(value);

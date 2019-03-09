@@ -66,7 +66,7 @@ const triggerValidate = (editorKey, beforeValidate, afterValidate) => {
 
             isValidating = true
             validationAll(editorKey)
-            
+
             if (afterValidate && typeof afterValidate === 'function')
                 afterValidate()
             editorObj.vuiHandler.afterValidationAll(isDevEditorMode()
@@ -276,7 +276,7 @@ const validationAll = (editorKey, saveCallBack) => {
         }
 
     } catch (error) {
-        console.error(error)
+        console.error("验证用户输入异常:" + error)
     } finally {
         isValidating = false
         updateFootbarMsg()

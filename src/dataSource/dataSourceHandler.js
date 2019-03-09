@@ -1,20 +1,28 @@
-﻿/************************************** 数据文件路径定义 ************************************/
+﻿//let util = require('util');
+
+/************************************** 数据文件路径定义 ************************************/
+
 const dsDir = './resource/datasource'
-const global = `${dsDir}/global`
-const local = `${dsDir}/local/${divFlag}`
+const commomPaths = {
+    get global() { return `${dsDir}/global` },
+    get local() { return `${dsDir}/local/${divFlag}` }
+}
 
-/******* 项目级别的数据 *******/
-const themeVarJsonPath = `${global}/ThemeVar.json`
-const vlanguageJsonPath = `${global}/VLanguage.json`
-const vuiTagJsonPath = `${global}/VuiTag.json`
-const scriptResourcePath = `${global}/ScriptResources.json`
+const paths = {
+    /******* 项目级别的数据 *******/
+    get themeVarJsonPath() { return `${commomPaths.global}/ThemeVar.json` },
+    get vlanguageJsonPath() { return `${commomPaths.global}/VLanguage.json` },
+    get vuiTagJsonPath() { return `${commomPaths.global}/VuiTag.json` },
+    get scriptResourcePath() { return `${commomPaths.global}/ScriptResources.json` },
 
-/******* 构件和窗体的数据 *******/
-const entitiesJsonPath = `${local}/Entities.json`
-const resourceJsonPath = `${local}/Resource.json`
-const viewStatePath = `${local}/ViewState.json`
-const existWindowControlCodePath = `${local}/ExistWindowControlCode.json`
-const vuiPropValueOptionsJsonPath = `${local}/VuiPropValueOptions.json`
+    /******* 构件和窗体的数据 *******/
+    get entitiesJsonPath() { return `${commomPaths.local}/Entities.json` },
+    get resourceJsonPath() { return `${commomPaths.local}/Resource.json` },
+    get viewStatePath() { return `${commomPaths.local}/ViewState.json` },
+    get existWindowControlCodePath() { return `${commomPaths.local}/ExistWindowControlCode.json` },
+    get vuiPropValueOptionsJsonPath() { return `${commomPaths.local}/VuiPropValueOptions.json` }
+}
+
 /*************************************** 数据文件路径定义 END ***********************************/
 
 var themeVarData
@@ -25,7 +33,7 @@ var scriptResourceData
 
 var entitiesData
 var resourceData
-//var viewStateData
+var viewStateData
 var existWindowControlCodeData
 
 /**
@@ -36,97 +44,114 @@ var existWindowControlCodeData
 const loadJsonData = (path, callback) => {
     $.getJSON(path, '', data => {
         if (callback)
-            callback(data);
+            callback(data)
+    })
+}
+
+function loadJsonDataAsync(path) {
+    return new Promise(function (resolve, reject) {
+        $.getJSON(path, '',
+            data => {
+                resolve(data)
+            }
+        )
     })
 }
 
 /**
  * 初始化全局数据（）
  */
-const initGlobalDs = () => {
-    loadJsonData(themeVarJsonPath, data => themeVarData = data)
-    loadJsonData(vlanguageJsonPath, data => vlanguageData = data)
-    loadJsonData(vuiPropValueOptionsJsonPath, data => vuiPropOptionData = data)
-    loadJsonData(vuiTagJsonPath, data => vuiTagData = data)
-    loadJsonData(scriptResourcePath, data => scriptResourceData = data)
+const initGlobalDs = async () => {
+    themeVarData = await loadJsonDataAsync(paths.themeVarJsonPath)
+    vlanguageData = await loadJsonDataAsync(paths.vlanguageJsonPath)
+    vuiPropOptionData = await loadJsonDataAsync(paths.vuiPropValueOptionsJsonPath)
+    vuiTagData = await loadJsonDataAsync(paths.vuiTagJsonPath)
+    scriptResourceData = await loadJsonDataAsync(paths.scriptResourcePath)
 }
 
 /**
  * 初始化局部数据(实体，资源)
  */
-const initlocalDs = () => {
-    loadJsonData(entitiesJsonPath, data => entitiesData = data)
-    loadJsonData(resourceJsonPath, data => resourceData = data)
-    //loadJsonData(viewStatePath, data => viewStateData = data)
-    loadJsonData(existWindowControlCodePath, data => {
-        existWindowControlCodeData = data
-        divCode = data.divCode
-    })
+const initlocalDs = async () => {
+    entitiesData = await loadJsonDataAsync(paths.entitiesJsonPath)
+    resourceData = await loadJsonDataAsync(paths.resourceJsonPath)
+    viewStateData = await loadJsonDataAsync(paths.viewStatePath)
+    existWindowControlCodeData = await loadJsonDataAsync(paths.existWindowControlCodePath)
+    divCode = existWindowControlCodeData.divCode
 }
 
 /**
  * 初始化全部数据源
  */
-const initDs = () => {
-    initGlobalDs();
-    initlocalDs();
+const initDs = async (divFlag) => {
+    await initGlobalDs()
+    await initlocalDs()
 }
 
 /************************************ 数据源获取 *************************************/
-const getEntities = callback => {
-    getDataSourceCommon(entitiesData, entitiesJsonPath, callback)
+const getEntities = () => {
+    // if (!entitiesData)
+    //     entitiesData = await loadJsonDataAsync(paths.entitiesJsonPath)
+    return entitiesData
 }
 
-const getVlanguage = callback => {
-    getDataSourceCommon(vlanguageData, vlanguageJsonPath, callback)
+const getVlanguage = () => {
+    // if (!vlanguageData)
+    //     vlanguageData = await loadJsonDataAsync(paths.vlanguageJsonPath)
     return vlanguageData
 }
 
-const getViewState = callback => {
-    getDataSourceCommon(null, viewStatePath, callback)
+const getViewState = () => {
+    return viewStateData
 }
 
-const getVuiTag = callback => {
-    getDataSourceCommon(vuiTagData, vuiTagJsonPath, callback)
+const getVuiTag = () => {
+    // if (!vuiTagData)
+    //     vuiTagData = await loadJsonDataAsync(paths.vuiTagJsonPath)
     return vuiTagData
 }
 
-const getVuiPropValueOptions = callback => {
-    getDataSourceCommon(vuiPropOptionData, vuiPropValueOptionsJsonPath, callback)
+const getVuiPropValueOptions = () => {
+    // if (!vuiPropOptionData)
+    //     vuiPropOptionData = await loadJsonDataAsync(paths.vuiPropValueOptionsJsonPath)
     return vuiPropOptionData
 }
 
-const getThemeVars = callback => {
-    getDataSourceCommon(themeVarData, themeVarJsonPath, callback)
+const getThemeVars = () => {
+    // if (!themeVarData)
+    //     themeVarData = await loadJsonDataAsync(paths.themeVarJsonPath)
+    return themeVarData
 }
 
-const getResources = callback => {
-    getDataSourceCommon(resourceData, resourceJsonPath, callback)
+const getResources = () => {
+    // if (!resourceData)
+    //     resourceData = await loadJsonDataAsync(paths.resourceJsonPath)
+    return resourceData
 }
 
-const getExistWindowControlCodes = callback => {
-    getDataSourceCommon(existWindowControlCodeData, existWindowControlCodePath, callback)
+const getScriptResource = () => {
+    // if (!scriptResourceData)
+    //     scriptResourceData = await loadJsonDataAsync(paths.scriptResourcePath)
+    return scriptResourceData
+}
+
+const getExistWindowControlCodes = () => {
+    // if (!existWindowControlCodeData)
+    //     existWindowControlCodeData = await loadJsonDataAsync(paths.existWindowControlCodePath)
     if (existWindowControlCodeData)
         divCode = existWindowControlCodeData.divCode
     return existWindowControlCodeData
 }
 
-const getDataSourceCommon = (data, path, callback) => {
-    if (!data)
-        loadJsonData(path, callback)
-    else
-        if (callback)
-            callback(data)
-}
 
 ///////////////////////////////////////
 
 const getDataSource = () => {
     return {
-        getVlanguage, getEntities, getViewState, getVuiTag, getVuiPropValueOptions, getThemeVars, getResources, getExistWindowControlCodes
+        getVlanguage, getEntities, getViewState, getVuiTag, getVuiPropValueOptions, getThemeVars, getResources, getExistWindowControlCodes, getScriptResource
     }
 }
 
 export default {
-    loadJsonData, initDs, initGlobalDs, initlocalDs, getDataSource
+    initDs, initGlobalDs, initlocalDs, getDataSource
 }
