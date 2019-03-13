@@ -68,6 +68,9 @@ export default {
     },
     minimap() {
       this.editor.updateOptions({ minimap: { enabled: this.minimap } });
+    },
+    wordWrap() {
+      this.editor.updateOptions({ wordWrap: this.wordWrap });
     }
   },
   methods: {

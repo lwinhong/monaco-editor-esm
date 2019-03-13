@@ -15,6 +15,8 @@ export const cmdData = {
     editChart: "EditChart",
     showChartButton: "ShowChartButton",
     cacheChangedValue: "CacheChangedValue",
-    reloadEvent: "ReloadEvent"
+    reloadEvent: "ReloadEvent",
 
+    dataLoaded: "dataLoaded",
+    wordWrap: "wordWrap"
 }

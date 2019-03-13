@@ -157,9 +157,15 @@ const initEditor = (editorObj, tabData) => {
         cssHandler()
     }
     //鼠标按下
-    editor.onMouseDown(function (e) {
+    editor.onMouseDown(e => {
         if (parentVue) //隐藏浮动的错误信息
             parentVue.$refs.messageFlow.tryToHide()
+    })
+    editor.onKeyDown(e => {
+        //alt + z (自动换行)
+        if (e.code === 'KeyZ' && e.altKey === true) {
+            executeCommand(cmdData.wordWrap)
+        }
     })
     //光标位置
     editor.onDidChangeCursorPosition(function (e) {
@@ -321,6 +327,9 @@ const executeCommand = (cmd, value) => {
         case "loadEvent":
             window.global.executeCmdToWinform(cmdData.reloadEvent, getAllValue())
             break
+        case cmdData.wordWrap:
+            parentVue.wordWrap = !parentVue.wordWrap
+            break;
     }
 }
 

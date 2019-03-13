@@ -9,12 +9,9 @@
     "dist"
   ],
   "dependencies": {
-    "chokidar": "^2.1.2",
     "fast-xml-parser": "^3.12.13",
-    "graceful-fs": "^4.1.15",
-    "highlight.js": "^9.13.1",
     "htmlparser2": "^3.10.1",
-    "iview": "^3.2.2",
+    "iview": "^3.3.0",
     "jquery": "^3.3.1",
     "vue-smooth-dnd": "^0.2.8"
   },

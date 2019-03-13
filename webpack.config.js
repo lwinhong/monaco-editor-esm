@@ -185,6 +185,9 @@ module.exports = env => {
             {
                 from:'./node_modules/iview/dist/styles',
                 to: 'resource/styles'
+            },{
+                from:'./node_modules/jquery/dist/jquery.min.js',
+                to: 'resource'
             }]),
             new VueLoaderPlugin(),
         ],

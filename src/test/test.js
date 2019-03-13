@@ -32,4 +32,5 @@ var handler = new htmlparser.DomHandler(function (error, dom) {
 var parser = new htmlparser.Parser(handler);
 parser.write(a);
 parser.done();
+var aa = handler.dom
 

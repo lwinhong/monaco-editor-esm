@@ -1,5 +1,19 @@
 <template>
-  <div id="eventView">
+  <master-page>
+    <div slot="header">
+      <section class="panelHd">
+        <h3>事件</h3>
+        <span>
+          <icon type="ios-refresh" size="25"></icon>
+          <icon type="ios-close" size="25"></icon>
+        </span>
+      </section>
+      <section :class="search">
+        <i-button size="small" icon="md-add" class="btn-add" title="添加事件" @click="add">添加事件</i-button>
+        <i-button size="small" icon="ios-search" class="btn-search" @click="searching"></i-button>
+        <i-input search placeholder="搜索" size="small" autofocus class="vInputs"></i-input>
+      </section>
+    </div>
     <div class="cardView" v-for="(data, index) in eventData" :key="data.EventCode+index">
       <div class="cardView-hd">
         <h6 class="title">
@@ -38,22 +52,23 @@
               size="small"
               v-model="data.EventCode"
               :readonly="data.EventType === 'Auto'"
+              :autofocus="data.autofocus||false"
             ></i-input>
           </form-item>
           <form-item label="处理方法">
-            <i-input size="small" v-model="data.MethodCode" readonly>
+            <i-input size="small" v-model="data.MethodCode" readonly class="vInputs">
               <icon slot="append" type="md-open"></icon>
             </i-input>
           </form-item>
           <form-item label="参数映射">
-            <i-input size="small" :value="data.ParamMapping?'已设置':''" readonly>
+            <i-input size="small" :value="data.ParamMapping?'已设置':''" readonly class="vInputs">
               <icon slot="append" type="md-open"></icon>
             </i-input>
           </form-item>
         </i-form>
       </div>
     </div>
-  </div>
+  </master-page>
 </template>
 <script>
 import {
@@ -65,16 +80,19 @@ import {
   updateEventDev,
   updateEventOld
 } from "./eventHandler";
+import MasterPage from "../rightView-master-page.vue";
 
 export default {
   name: "eventView",
+  components: { MasterPage },
   created() {
     initEventBus(this);
   },
   data() {
     return {
       eventData: [],
-      eventName: ""
+      eventName: "",
+      search: "panelTools"
     };
   },
   mounted() {
@@ -106,6 +124,9 @@ export default {
     },
     updateEventOld(value) {
       updateEventOld(this.eventData, value);
+    },
+    searching: function() {
+      this.search = "panelTools s-searching";
     }
   }
 };

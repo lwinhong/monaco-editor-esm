@@ -2,7 +2,7 @@ import Vue from 'vue'
 import iView from 'iview'
 // import 'iview/dist/styles/iview.css'
 Vue.use(iView)
-import App from "./app2.vue"
+import App from "./app.vue"
 import global from './app/global'
 
 Vue.prototype.global = global

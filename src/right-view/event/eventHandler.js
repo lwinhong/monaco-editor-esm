@@ -14,6 +14,7 @@ export const initEventBus = (vue) => {
     eventBus.$on("executeCmd", (cmdId, value) => {
         switch (cmdId) {
             case "load":
+            case cmdData.dataLoaded:
                 vue.load(value);
                 break;
             case "updateEventDev":
@@ -41,11 +42,15 @@ export const addEvent = (eventDataSource) => {
         EventType: eventType.User,
         ParamMapping: "",
         ParamCount: 0,
-        MethodCode: ""
+        MethodCode: "",
+        autofocus: true
     })
 }
 
-
+/**
+ * 新建一个事件名称
+ * @param {当前全部事件数据} eventDataSource 
+ */
 const newEventName = (eventDataSource) => {
     var index = 1
     while (true) {
@@ -63,6 +68,10 @@ const newEventName = (eventDataSource) => {
     }
 }
 
+/**
+ * 新建一个事件编码
+ * @param {当前全部事件数据} eventDataSource 
+ */
 const newEventCode = (eventDataSource) => {
     var index = 1
     while (true) {
@@ -80,11 +89,15 @@ const newEventCode = (eventDataSource) => {
     }
 }
 
-
+/**
+ * 加载事件列表
+ * @param {当前事件数据集合对象} eventDataSource 
+ * @param {要加载数据} value 
+ */
 export const loadEvent = (eventDataSource, value) => {
 
-    // debugger
-    // value = JSON.parse(`{"Events":"<ArrayOfEventEntity><EventEntity><EventCode>OnClick</EventCode><EventName>OnClick</EventName><MethodCode>GetUseManualData</MethodCode><EventType>Auto</EventType><ParamMapping><MappingInfo><Key>key1</Key><Input>TypeId</Input></MappingInfo></ParamMapping><KeyValueString>{'key1': 'TypeId'}</KeyValueString></EventEntity><EventEntity><EventCode>OnClick</EventCode><EventName>OnClick</EventName><MethodCode>GetUseManualData</MethodCode><EventType>Auto</EventType><ParamMapping><MappingInfo><Key>key1</Key><Input>TypeId</Input></MappingInfo></ParamMapping><KeyValueString>{'key1': 'TypeId'}</KeyValueString></EventEntity></ArrayOfEventEntity>"}`)
+    //debugger
+    //value = JSON.parse(`{"Events":"<ArrayOfEventEntity><EventEntity><EventCode>OnClick</EventCode><EventName>OnClick</EventName><MethodCode>GetUseManualData</MethodCode><EventType>Auto</EventType><ParamMapping><MappingInfo><Key>key1</Key><Input>TypeId</Input></MappingInfo></ParamMapping><KeyValueString>{'key1': 'TypeId'}</KeyValueString></EventEntity><EventEntity><EventCode>OnClick</EventCode><EventName>OnClick</EventName><MethodCode>GetUseManualData</MethodCode><EventType>Auto</EventType><ParamMapping><MappingInfo><Key>key1</Key><Input>TypeId</Input></MappingInfo></ParamMapping><KeyValueString>{'key1': 'TypeId'}</KeyValueString></EventEntity></ArrayOfEventEntity>"}`)
 
     eventDataSource.splice(0, eventDataSource.length)
     if (!value || !value.Events)
@@ -164,6 +177,7 @@ export const updateEventDev = (eventDataSource, value) => {
         }
     }
 }
+
 const eventIsExist = (eventDataSource, eventCode) => {
     for (const e of eventDataSource) {
         if (e.EventCode === eventCode)
@@ -171,7 +185,7 @@ const eventIsExist = (eventDataSource, eventCode) => {
     }
     return null
 }
+
 export const updateEventOld = (eventDataSource, value) => {
     debugger
 }
-

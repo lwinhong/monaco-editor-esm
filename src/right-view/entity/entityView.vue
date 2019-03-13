@@ -1,5 +1,13 @@
 <template>
-  <div>
+  <master-page>
+    <div slot="header">
+      <section class="panelHd">
+        <h3>实体</h3>
+        <span>
+          <icon type="ios-close" size="25"></icon>
+        </span>
+      </section>
+    </div>
     <!-- <Tree :data="entityTree"></Tree> -->
     <Collapse simple>
       <Panel v-for="en in entityTree" :key="en.key">
@@ -32,20 +40,23 @@
         </ul>
       </Panel>
     </Collapse>
-  </div>
+  </master-page>
 </template>
 <script>
 import EntityItem from "./entityItem.vue";
 import { eventBus } from "../../app/event-bus";
+import MasterPage from "../rightView-master-page.vue";
+import { cmdData } from "../../app/command";
 
 export default {
   name: "entityView",
-  components: { EntityItem },
+  components: { EntityItem, MasterPage },
   created() {
     eventBus.$on("executeCmd", (cmdId, value) => {
-      if ("updateData" === cmdId || cmdId === "dataLoaded") this.buildTree();
+      if ("updateData" === cmdId || cmdId == cmdData.dataLoaded)
+        this.buildTree();
     });
-  }, 
+  },
   data() {
     return {
       entityTree: [],
@@ -84,17 +95,17 @@ export default {
     buildTree() {
       const tree = this.entityTree;
       tree.splice(0, tree.length);
+
       try {
         const ds = window.global.dataSourceHandler.getDataSource();
-        ds.getEntities(data => {
-          if (!data) return;
-          $.each(data, function(i, data) {
-            var cols = new Array();
-            $.each(data.columns, function(j, colData) {
-              cols.push({ key: j, name: colData });
-            });
-            tree.push({ key: i, title: data.name, fields: cols });
+        var data = ds.getEntities();
+        if (!data) return;
+        $.each(data, function(i, data) {
+          var cols = new Array();
+          $.each(data.columns, function(j, colData) {
+            cols.push({ key: j, name: colData });
           });
+          tree.push({ key: i, title: data.name, fields: cols });
         });
       } catch (error) {
         console.error(error);
@@ -102,7 +113,7 @@ export default {
     }
   },
   mounted() {
-    this.buildTree();
+    //this.buildTree();
   }
 };
 </script>

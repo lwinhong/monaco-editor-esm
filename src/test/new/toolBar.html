@@ -13,67 +13,111 @@
 
 <body>
     <div id="app">
-
         <div class="g-layout">
             <!--全局顶栏-->
             <header class="g-header">
-                我是代码/设计切换头
+                <div class="pageBox">
+                    我是窗体名称
+                </div>
+                <radio-group type="button" v-model="view" class="viewTab">
+                    <radio label="代码"></radio>
+                    <radio label="设计"></radio>
+                </radio-group>
+                <div class="fr-actions">
+                    <i-button type="primary" size="small">保存并关闭</i-button>
+                </div>
             </header>
             <!--配置主体-->
             <main class="g-body">
                 <!--左栏-->
-                <aside class="g-leftBar">
-                    <div class="m-configBar">
-                        <!--子边栏-->
-                        <aside class="bar-hd">
+                <aside class="g-sidebar fl">
+                    <div class="m-toolBox">
+                         <!--子边栏-->
+                        <aside class="box-sd">
                             <ul class="switch">
-                                <li class="fn-btn">
+                                <li class="fn-btn s-active">
                                     <tooltip content="事件" placement="left">
-                                        <icon custom="" size="20"></icon>
+                                        <icon custom="vicon ico-event" size="20"></icon>
                                     </tooltip>
                                 </li>
                                 <li class="fn-btn">
-                                    <tooltip content="格式化" placement="left">
-                                        <icon type="ios-play" size="20"></icon>
+                                    <tooltip content="数据" placement="left">
+                                        <icon custom="vicon ico-data" size="18"></icon>
                                     </tooltip>
                                 </li>
                                 <li class="sep"></li>
                                 <li class="fn-btn">
-                                    <tooltip content="格式化" placement="left">
-                                        <icon type="ios-play" size="20"></icon>
+                                    <tooltip content="预览" placement="left">
+                                        <icon custom="vicon ico-preview" size="18"></icon>
+                                    </tooltip>
+                                </li>
+                                <li class="sep"></li>
+                                <li class="fn-btn">
+                                    <tooltip content="层级树" placement="left">
+                                        <icon custom="vicon ico-preview" size="18"></icon>
                                     </tooltip>
                                 </li>
                             </ul>
                             <ul class="others">
                                 <li class="fn-btn">
-                                    <dropdown>
-                                        <icon type="ios-play" size="20"></icon>
-                                         <dropdown-menu slot="list">
-                                             <dropdown-item>菜单</dropdown-item>
-                                             <dropdown-item>菜单</dropdown-item>
-                                             <dropdown-item>菜单</dropdown-item>
-                                             <dropdown-item>菜单</dropdown-item>
-                                             <dropdown-item>菜单</dropdown-item>
-                                         </dropdown-menu>
-                                    </dropdown>
-                                </li>
-                                <li class="fn-btn">
-                                    <tooltip content="格式化" placement="left">
-                                        <icon type="ios-play" size="20"></icon>
-                                    </tooltip>
+                                    <icon custom="vicon ico-setting" size="18"></icon>
                                 </li>
                             </ul>
                         </aside>
                         <!--边栏展开信息-->
-                        <div class="bar-bd">
-                            
+                        <div class="box-bd">
+                            <header>
+                                <section class="panelHd">
+                                    <h3>工具箱</h3>
+                                    <span>
+                                        <icon type="ios-close" size="25"></icon>
+                                    </span>
+                                </section>
+                                <section class="panelTools">
+                                    <i-select size="small" class="vInputs">
+                                        <i-option></i-option>
+                                    </i-select>   
+                                    <i-button size="small" icon="ios-search" class="btn-search" @click="searching"></i-button>
+                                </section>
+                            </header>
+                            <main class="panelBd">
+                                <dl>
+                                    <dt>分组标题</dt>
+                                    <dd>我是控件啊</dd>
+                                    <dd>我是控件啊</dd>
+                                    <dd>我是控件啊</dd>
+                                    <dd>我是控件啊</dd>
+                                    <dd>我是控件啊</dd>
+                                </dl>
+                                <dl>
+                                    <dt>分组标题</dt>
+                                    <dd>我是控件啊</dd>
+                                    <dd>我是控件啊</dd>
+                                    <dd>我是控件啊</dd>
+                                    <dd>我是控件啊</dd>
+                                    <dd>我是控件啊</dd>
+                                </dl>
+                                <dl>
+                                    <dt>分组标题</dt>
+                                    <dd>我是控件啊</dd>
+                                    <dd>我是控件啊</dd>
+                                    <dd>我是控件啊</dd>
+                                    <dd>我是控件啊</dd>
+                                    <dd>我是控件啊</dd>
+                                </dl>
+                            </main>
                         </div>
+                        
                     </div>
                 </aside>
                  <!--舞台-->
                 <div class="g-cont">
+                    <div class="m-designView s-phone hide">
+                        <iframe src="https://m.baidu.com" class="viewBox"></iframe>
+                        <div class="dragBar">
+                        </div>
+                    </div>
                     <div class="m-codeView">
-                        我是代码区域
                         <!--状态栏{-->
                         <div class="m-statusBar" >
                             <section class="hd">
@@ -93,7 +137,7 @@
                                     <a class="fn-btn"><icon custom="vicon ico-codetpl" size="16"></icon></a>
                                 </tooltip>
                                 <dropdown placement="top">
-                                    <a class="fn-btn"><icon custom="vicon ico-insert" size="14"></icon></a>
+                                    <a class="fn-btn"><icon custom="vicon ico-insert" size="16"></icon></a>
                                     <dropdown-menu slot="list">
                                         <dropdown-item>插入构件资源</dropdown-item>
                                         <dropdown-item>拔出</dropdown-item>
@@ -121,59 +165,84 @@
                     </div>
                 </div>
                  <!--右栏-->
-                <aside class="g-rightBar">
-                    <div class="m-configBar">
+                <aside class="g-sidebar fr">
+                    <div class="m-propBox">
                         <!--子边栏-->
-                        <aside class="bar-hd">
+                        <aside class="box-sd">
                             <ul class="switch">
-                                <li class="fn-btn">
+                                <li class="fn-btn s-active">
                                     <tooltip content="事件" placement="left">
-                                        <icon custom="vicon ico-event" size="21"></icon>
+                                        <icon custom="vicon ico-event" size="20"></icon>
                                     </tooltip>
                                 </li>
                                 <li class="fn-btn">
                                     <tooltip content="数据" placement="left">
-                                        <icon custom="vicon ico-data" size="16"></icon>
+                                        <icon custom="vicon ico-data" size="18"></icon>
                                     </tooltip>
                                 </li>
                                 <li class="sep"></li>
                                 <li class="fn-btn">
+                                    <tooltip content="层级树" placement="left">
+                                        <icon custom="vicon ico-layer" size="18"></icon>
+                                    </tooltip>
+                                </li>                                
+                                <li class="sep"></li>
+
+                                <li class="fn-btn">
                                     <tooltip content="预览" placement="left">
-                                        <icon custom="vicon ico-preview" size="20"></icon>
+                                        <icon custom="vicon ico-preview" size="18"></icon>
                                     </tooltip>
                                 </li>
                             </ul>
                             <ul class="others">
                                 <li class="fn-btn">
+                                    <tooltip content="设置" placement="left">
+                                        <icon custom="vicon ico-setting" size="18"></icon>
+                                    </tooltip>
+                                </li>
+                                <li class="fn-btn">
                                     <dropdown>
-                                        <icon custom="vicon ico-setting" size="20"></icon>
+                                        
+                                        <icon custom="vicon ico-help" size="18"></icon>
                                          <dropdown-menu slot="list">
-                                             <dropdown-item>菜单</dropdown-item>
-                                             <dropdown-item>菜单</dropdown-item>
-                                             <dropdown-item>菜单</dropdown-item>
-                                             <dropdown-item>菜单</dropdown-item>
-                                             <dropdown-item>菜单</dropdown-item>
+                                             <div class="m-help">
+                                                <p>通过对以下功能的介绍学习，可以帮助您快速完成窗体的配置</p>
+                                                 <dl>
+                                                     <dt>界面配置</dt>
+                                                     <dd><a href="#">新手引导</a></dd>
+                                                     <dd><a href="#">事件处理</a></dd>
+                                                     <dd><a href="#">数据绑定</a></dd>
+                                                     <dd><a href="#">条件&循环</a></dd>
+                                                 </dl>
+                                                 <dl>
+                                                     <dt>开发手册</dt>
+                                                     <dd><a href="#">html+css学习</a></dd>
+                                                     <dd><a href="#">Vue使用手册</a></dd>
+                                                     <dd><a href="#">VUI组件使用手册</a></dd>
+                                                 </dl>
+                                             </div>
                                          </dropdown-menu>
                                     </dropdown>
                                 </li>
                             </ul>
                         </aside>
                         <!--边栏展开信息-->
-                        <div class="bar-bd">
+                        <div class="box-bd">
                             <header>
-                                <section class="itemTitle">
+                                <section class="panelHd">
                                     <h3>事件</h3>
                                     <span>
-                                        <icon type="ios-close" size="12"></icon>
-                                        <icon type="ios-close" size="12"></icon>
+                                        <icon type="ios-close" size="25"></icon>
                                     </span>
                                 </section>
-                                <section :class="itemSearch">
-                                    <i-button icon="md-add" size="small"  class="btn">添加事件</i-button>
-                                    <i-input search placeholder="搜索" size="small" class="input"  @on-focus="focus"  @on-search="search" @on-blur="blured"></i-input>
+                                <section :class="search">
+                                    <i-button size="small" icon="md-add" class="btn-add" title="添加事件">添加事件</i-button>
+                                    <i-button size="small" icon="ios-search" class="btn-search" @click="searching"></i-button>
+                                    <i-input search placeholder="搜索" size="small" autofocus class="vInputs" ></i-input>
                                 </section>
                             </header>
-                            <div style="height:100%;overflow:auto">
+                            <!--事件配置-->
+                            <main class="panelBd">  
                                 <div class="cardView">
                                     <div class="cardView-hd">
                                         <h6 class="title">
@@ -194,21 +263,22 @@
                                     <div class="cardView-bd">
                                         <i-form :label-width="60">
                                             <form-item label="事件编码">
-                                                <i-input size="small"></i-input>
+                                                <i-input size="small" class="vInputs"></i-input>
                                             </form-item>
                                             <form-item label="处理方法">
-                                                <i-input size="small" readonly>
+                                                <i-input size="small" readonly class="vInputs">
                                                     <icon slot="append" type="md-open"></icon>
                                                 </i-input>
                                             </form-item>
                                             <form-item label="参数映射">
-                                                <i-input size="small" readonly>
+                                                <i-input size="small" readonly class="vInputs">
                                                     <icon slot="append" type="md-open"></icon>
                                                 </i-input>
                                             </form-item>
                                         </i-form>
                                     </div>
                                 </div>
+                                
                                 <div class="cardView">
                                     <div class="cardView-hd">
                                         <h6 class="title">
@@ -232,27 +302,26 @@
                                                 <a @click="copied" title="复制编码"><icon type="md-copy" size="16"></icon></a>
                                             </form-item>
                                             <form-item label="处理方法">
-                                                <i-input size="small" readonly>
+                                                <i-input size="small" readonly class="vInputs">
                                                     <icon slot="append" type="md-open"></icon>
                                                 </i-input>
                                             </form-item>
                                             <form-item label="参数映射">
-                                                <i-input size="small" readonly>
+                                                <i-input size="small" readonly class="vInputs">
                                                     <icon slot="append" type="md-open"></icon>
                                                 </i-input>
                                             </form-item>
                                         </i-form>
                                     </div>
                                 </div> 
-                                
-                            </div>
+                            </main>
                         </div>
                     </div>
                 </aside>
             </main>
             <!--全局状态栏-->
-            <footer class="g-footer" style="display:none;">
-                我是底部状态栏:备用
+            <footer class="g-footer hide">
+                我是底部状态栏:备用  
             </footer>
         </div>
     </div>
@@ -262,40 +331,21 @@
         "data": {
             visible1:false,
             visible2:false,
-            itemSearch: 'itemTools',
-            aa:0
+            view:'代码',
+            search:'panelTools'
         },
         "methods":{
-            close1:function(){
+            close1: function () {
                 this.visible1 = false;
             },
-            close2:function(){
+            close2: function () {
                 this.visible2 = false;
             },
-            copied:function(){
+            copied: function () {
                 this.$Message.success('已复制');
             },
-            focus:function(){
-                this.itemSearch = 'itemTools s-searching';
-            },
-            search:function(){
-                var _this = this;
-                if(this.aa == 0){
-                    this.aa=1;
-                }else if (this.aa == 1) {
-                    this.aa = 2;
-                    setTimeout(function(){
-                        _this.aa = 0
-                    });
-                }
-                
-                 
-                
-            },
-            blured:function(){
-                if(this.aa!=2){
-                    this.itemSearch = 'itemTools';
-                }
+            searching: function () {
+                this.search = 'panelTools s-searching';
             }
         }
     });
