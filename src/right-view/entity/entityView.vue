@@ -7,6 +7,9 @@
           <icon type="ios-close" size="25"></icon>
         </span>
       </section>
+      <section class="panelTools s-searching">
+        <i-input search placeholder="搜索" size="small" autofocus class="vInputs"></i-input>
+      </section>
     </div>
     <!-- <Tree :data="entityTree"></Tree> -->
     <Collapse simple>
@@ -85,7 +88,7 @@ export default {
     onSearch(value) {},
     insert(value) {
       //eventBus.$emit("executeCmd", "insertValue", value);
-      window.global.executeCmdInternal("insertValue", value);
+      window.v3global.executeCmd("insertValue", value);
     },
     drag(ev, item) {
       ev.effectAllowed = "move";
@@ -97,7 +100,7 @@ export default {
       tree.splice(0, tree.length);
 
       try {
-        const ds = window.global.dataSourceHandler.getDataSource();
+        const ds = window.v3global.dataSourceHandler.getDataSource();
         var data = ds.getEntities();
         if (!data) return;
         $.each(data, function(i, data) {

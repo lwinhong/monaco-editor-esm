@@ -78,7 +78,7 @@ const addDefaultTab = (tabs, editorValueJosn) => {
 const addDevTab = (tabs, editorValueJosn) => {
     addTab(tabs, devEditorKeys.template, "template", "html", editorValueJosn.Template || "")
     addTab(tabs, devEditorKeys.script, "script", "javascript", editorValueJosn.Script || "")
-    if (editorValueJosn.Style)
+    //if (editorValueJosn.Style)
         addTab(tabs, devEditorKeys.style, "style", "css", editorValueJosn.Style || "")
     addTab(tabs, devEditorKeys.themeLess, "theme.less", "less", editorValueJosn.ThemeLess || "")
     addTab(tabs, devEditorKeys.varLess, "var.less", "less", editorValueJosn.VarLess || "")
@@ -169,7 +169,8 @@ const initEditor = (editorObj, tabData) => {
     })
     //光标位置
     editor.onDidChangeCursorPosition(function (e) {
-        eventBus.$emit('updateCursorPosition', e.position)
+        //eventBus.$emit('updateCursorPosition', e.position)
+        parentVue.v3global.executeCmd("updateCursorPosition", e.position)
     })
     //内容改变
     editor.onDidChangeModelContent(function (e) {
@@ -188,8 +189,8 @@ const onDidChangeModelContent = (e, editor, model, editorKey) => {
     //验证输入
     validateHandler.doValidate(editorKey, null, () => {
         debounce(function () {
-            window.global.executeCmdToWinform(cmdData.cacheChangedValue, getAllValue())//将改变的数据发送winform端
-            window.global.executeCmdInternal(cmdData.editorChanged, { code: model.getValue(), editorKey })
+            window.v3global.executeCmdToWinform(cmdData.cacheChangedValue, getAllValue())//将改变的数据发送winform端
+            window.v3global.executeCmd(cmdData.editorChanged, { code: model.getValue(), editorKey })
         }, 1)();
     })
 }
@@ -325,7 +326,7 @@ const executeCommand = (cmd, value) => {
             parentVue.theme = value
             break
         case "loadEvent":
-            window.global.executeCmdToWinform(cmdData.reloadEvent, getAllValue())
+            window.v3global.executeCmdToWinform(cmdData.reloadEvent, getAllValue())
             break
         case cmdData.wordWrap:
             parentVue.wordWrap = !parentVue.wordWrap

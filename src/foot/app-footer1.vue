@@ -1,7 +1,13 @@
 <template>
   <div class="m-statusBar">
     <section class="hd">
-      <tooltip v-for="(item,index) in reftItems" :key="item+index" :placement="item.placement">
+      <tooltip
+        v-for="(item,index) in reftItems"
+        :key="item.key+index"
+        :placement="item.placement"
+        :id="'app-footer-'+item.key"
+        :class="{'notClick':isCssEditor&&item.key=='format'}"
+      >
         <a class="fn-btn" @click="itemClick(item.cmd, item.key)">
           <icon :custom="item.icon" size="16"></icon>
         </a>
@@ -11,22 +17,22 @@
       </tooltip>
       <i class="sep"></i>
 
-      <dropdown placement="top" v-show="isShowDevTemplate">
+      <dropdown placement="top" v-show="isShowDevTemplate" @on-click="selectResource">
         <a class="fn-btn">
           <icon custom="vicon ico-codetpl" size="16"></icon>
         </a>
         <dropdown-menu slot="list">
-          <dropdown-item>生成模板</dropdown-item>
-          <dropdown-item>应用模板</dropdown-item>
+          <dropdown-item name="generateTemplate">生成模板</dropdown-item>
+          <dropdown-item name="applyTemplate">应用模板</dropdown-item>
         </dropdown-menu>
       </dropdown>
-      <dropdown placement="top">
+      <dropdown placement="top" @on-click="selectResource">
         <a class="fn-btn">
           <icon custom="vicon ico-insert" size="16"></icon>
         </a>
         <dropdown-menu slot="list">
-          <dropdown-item>插入构件资源</dropdown-item>
-          <dropdown-item v-show="isShowShareReource">插入文件资源</dropdown-item>
+          <dropdown-item name="resource">插入构件资源</dropdown-item>
+          <dropdown-item v-show="isShowShareReource" name="share">插入文件资源</dropdown-item>
         </dropdown-menu>
       </dropdown>
     </section>
@@ -36,6 +42,7 @@
         placement="top"
         v-for="(msg,index) in messageFlowData"
         :key="msg+index"
+        v-show="errorMsgVisible"
       >
         <a class="prompt" :class="msg.class" @click="itemClick(msg.cmd, msg.key)">
           <icon :type="msg.icon" size="14"></icon>
@@ -49,20 +56,29 @@
 </template>
 <script>
 import { eventBus } from "../app/event-bus";
+import { cmdData } from "../app/command";
 
 export default {
   name: "AppFooter",
   created() {
-    //这个2事件是否要改造为统一的那个？
-    eventBus.$on("updateCursorPosition", position => {
-      if (position) {
-        this.selectionRow = position.lineNumber;
-        this.selectionCol = position.column;
+    eventBus.$on("executeCmd", (cmd, value) => {
+      switch (cmd) {
+        case cmdData.editorIndexChanged:
+          this.editorKey = value;
+          break;
+        case cmdData.updateCursorPosition:
+          if (value) {
+            this.selectionRow = value.lineNumber;
+            this.selectionCol = value.column;
+          }
+          break;
+        case cmdData.updateMessageCount:
+          if (value) {
+            this.errorMsgCount = value.errorMsgCount;
+            this.suggestMsgCount = value.suggestMsgCount;
+          }
+          break;
       }
-    });
-    eventBus.$on("updateMessageCount", obj => {
-      this.errorMsgCount = obj.errorMsgCount;
-      this.suggestMsgCount = obj.suggestMsgCount;
     });
   },
   data() {
@@ -71,7 +87,7 @@ export default {
       selectionCol: 0,
       errorMsgCount: 0,
       suggestMsgCount: 0,
-
+      editorKey: "",
       messageFlowData: [
         {
           key: "suggest",
@@ -83,7 +99,7 @@ export default {
           key: "error",
           class: "s-error",
           icon: "ios-close-circle-outline",
-          cmd: "error"
+          cmd: "showMessageFlow"
         }
       ],
       reftItems: [
@@ -126,12 +142,50 @@ export default {
     },
     isShowDevTemplate() {
       return isDevEditorMode();
+    },
+    isCssEditor() {
+      return (
+        this.editorKey == "css" ||
+        this.editorKey == "moduleCss" ||
+        this.editorKey == "style"
+      );
+      // :class="{'notClick':isCssEditor&&item.key=='format'}"
     }
   },
   methods: {
     itemClick(cmd, value) {
-      window.global.executeCmdInternal(cmd, value);
+      v3global.executeCmd(cmd, value);
+    },
+    selectResource(name) {
+      var result;
+      switch (name) {
+        case "share":
+        case "resource":
+          var cmd =
+            name == "resource"
+              ? cmdData.openSourceSelector
+              : cmdData.openDevShareSelector;
+          result = v3global.executeCmdToWinformReturn(cmd);
+          if (result && result.ok) {
+            v3global.executeCmd(cmdData.insertValue, result.value);
+          }
+          return;
+        case "generateTemplate":
+          v3global.executeCmdToWinform(cmdData.generateTemplate);
+          break;
+        case "applyTemplate":
+          result = v3global.executeCmdToWinformReturn(cmdData.applyTemplate);
+          if (result && result.ok) {
+          }
+          break;
+      }
     }
   }
 };
 </script>
+<style>
+.notClick {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+</style>

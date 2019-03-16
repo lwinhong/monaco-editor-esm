@@ -1,6 +1,7 @@
 import util from "./util"
 import { eventBus } from "./event-bus"
 import ds from "../dataSource/dataSourceHandler"
+import { cmdData } from "./command";
 
 const getQuery = () => {
     const qs = util.getQueryString()
@@ -33,11 +34,11 @@ const init = async (vueObj) => {
  * @param {value} value 
  */
 function executeCmdToWinform(cmdId, value) {
-    executeCmdToWinformasync(cmdId, value)
+    executeCmdToWinformAsync(cmdId, value)
 }
 
 async function executeCmdToWinformReturn(cmdId, value) {
-    var result = await executeCmdToWinformasync(cmdId, value, true)
+    var result = await executeCmdToWinformAsync(cmdId, value, true)
     return result
 }
 
@@ -46,10 +47,10 @@ async function executeCmdToWinformReturn(cmdId, value) {
  * @param {cmd} cmdId 
  * @param {value} value 
  */
-function executeCmdToWinformasync(cmdId, value, isNeedCallBack) {
+function executeCmdToWinformAsync(cmdId, value, isNeedCallBack) {
     if (divFlag != "testform" && vmonacoEditor) {
 
-        const last = JSON.stringify(value);
+        const last = JSON.stringify(value)
         console.log("2Winform:" + last)
 
         if (isNeedCallBack) {
@@ -72,7 +73,7 @@ function executeCmdToWinformasync(cmdId, value, isNeedCallBack) {
  * @param {值} value 
  */
 function executeCmdFromWinform(cmdId, value) {
-    eventBus.$emit("executeCmd", cmdId, value)
+    eventBus.$emit(cmdData.executeCmd, cmdId, value)
 }
 
 /**
@@ -80,7 +81,7 @@ function executeCmdFromWinform(cmdId, value) {
  * @param {cmd} cmdId 
  * @param {值} value 
  */
-function executeCmdInternal(cmdId, value) {
+function executeCmd(cmdId, value) {
     executeCmdFromWinform(cmdId, value)
 }
 
@@ -88,7 +89,7 @@ export default {
     executeCmdToWinform,
     executeCmdFromWinform,
     executeCmdToWinformReturn,
-    executeCmdInternal,
+    executeCmd,
     init,
     appVue: () => appVue,
     dataSourceHandler: ds,

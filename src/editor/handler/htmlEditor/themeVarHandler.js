@@ -46,7 +46,7 @@ const appendVarItems = (items, editorData, devEditorKeys) => {
  * @param {智能提示集合} items 
  */
 const applendDevResrouceItems = items => {
-    const props = window.global.dataSourceHandler.getDataSource().getVuiPropValueOptions()
+    const props = window.v3global.dataSourceHandler.getDataSource().getVuiPropValueOptions()
     if (!props)
         return
 
@@ -65,7 +65,7 @@ const applendDevResrouceItems = items => {
  * @param {智能提示集合} items 
  */
 const appendComponentThemeVars = items => {
-    const data = window.global.dataSourceHandler.getDataSource().getThemeVars()
+    const data = window.v3global.dataSourceHandler.getDataSource().getThemeVars()
     if (!data) return
 
     for (const themeVar of data) {

@@ -153,7 +153,7 @@ export const saveEvent = (eventDataSource) => {
 
 export const refresh = () => {
     if (isDevEditorMode()) {
-        window.global.executeCmdInternal("loadEvent")
+        window.v3global.executeCmd("loadEvent")
     } else {
 
     }

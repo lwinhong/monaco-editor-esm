@@ -1,12 +1,11 @@
 import Vue from 'vue'
 import iView from 'iview'
-// import 'iview/dist/styles/iview.css'
-Vue.use(iView)
 import App from "./app.vue"
 import global from './app/global'
 
-Vue.prototype.global = global
-window.global = global
+Vue.use(iView)
+Vue.prototype.v3global = global
+window.v3global = global
 
 export const app = new Vue({
     el: "#main",

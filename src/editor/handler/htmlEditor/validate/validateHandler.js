@@ -1,8 +1,8 @@
 import eslintHandler from '../../eslint/eslintHandler'
 import debounce from 'lodash/debounce'
-import { eventBus } from '../../../../app/event-bus'
 import { htmlValidate, eslintValidate } from './htmlValidate'
 import { validateCssHandler } from './cssLessValidate'
+import { cmdData } from '../../../../app/command';
 
 var isValidating //标识是否正在验证
 var inputTimeoutTimer //计时器
@@ -225,7 +225,7 @@ const clearMessageFlowData = (editorKey, dataType) => {
  */
 const updateFootbarMsg = () => {
     var obj = { errorMsgCount: errorData.length, suggestMsgCount: suggestData.length }
-    eventBus.$emit('updateMessageCount', obj)
+    window.v3global.executeCmd(cmdData.updateMessageCount, obj)
 }
 
 /**
@@ -267,11 +267,11 @@ const validationAll = (editorKey, saveCallBack) => {
             validateCss()
         }
         else {
-            if ($.inArray(editorKey, htmlViladateEditors) !== -1)
+            if ($.inArray(editorKey, htmlViladateEditors) != -1)
                 validateHtml()
-            else if ($.inArray(editorKey, scriptValidateEditors) !== -1)
+            else if ($.inArray(editorKey, scriptValidateEditors) != -1)
                 validateJavaScript(editorKey)
-            else if ($.inArray(editorKey, cssValidateEditors) !== -1)
+            else if ($.inArray(editorKey, cssValidateEditors) != -1)
                 validateCss(editorKey)
         }
 

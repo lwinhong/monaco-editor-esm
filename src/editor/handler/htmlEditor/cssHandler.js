@@ -3,7 +3,7 @@
  */
 const getUrlResourcesComps = () => {
     const urls = []
-    const ds = window.global.dataSourceHandler.getDataSource()
+    const ds = window.v3global.dataSourceHandler.getDataSource()
 
     const options = ds.getVuiPropValueOptions()
     if (!options)

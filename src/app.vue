@@ -1,6 +1,7 @@
 <template>
   <div class="app fill">
     <Spin size="large" fix v-if="isMaskShow"></Spin>
+    <app-preview></app-preview>
     <div class="g-layout">
       <main class="g-body">
         <!--舞台-->
@@ -12,9 +13,7 @@
           </div>
         </div>
         <!--右栏-->
-        <aside class="g-sidebar fr">
-          <app-right-side></app-right-side>
-        </aside>
+        <app-right-side></app-right-side>
       </main>
       <!--全局状态栏-->
       <footer class="g-footer hide">我是底部状态栏:备用</footer>
@@ -27,6 +26,7 @@ import AppEditor from "./editor/app-editor.vue";
 import AppFooter from "./foot/app-footer1.vue";
 import AppRightSide from "./right-view/app-right-side.vue";
 import AppRightBar from "./right-view/app-rightBar.vue";
+import AppPreview from "./preview/app-preview.vue";
 // import { Container, Draggable } from "vue-smooth-dnd";
 
 export default {
@@ -36,7 +36,8 @@ export default {
     AppEditor,
     AppFooter,
     AppRightSide,
-    AppRightBar
+    AppRightBar,
+    AppPreview
     // Container,
     // Draggable
   },
@@ -76,7 +77,7 @@ export default {
 };
 </script>
 <style scoped>
-.fillMask {
+/* .fillMask {
   height: 100%;
   width: 100%;
   margin: 0;
@@ -100,7 +101,7 @@ export default {
   color: #555;
   vertical-align: middle;
   padding-left: 16px;
-}
+} */
 </style>
 <style>
 .ivu-layout-footer {

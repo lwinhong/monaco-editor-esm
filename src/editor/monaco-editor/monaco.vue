@@ -6,6 +6,7 @@ import debounce from "lodash/debounce";
 import monacoLoader from "./monaco-loader";
 
 export default {
+  name:"monaco-editor",
   props: {
     width: { type: [String, Number], default: "100%" },
     height: { type: [String, Number], default: "100%" },

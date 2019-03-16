@@ -54,7 +54,7 @@ export default {
       const tree = this.listDataSource;
       tree.splice(0, tree.length);
       try {
-        const datas = window.global.dataSourceHandler
+        const datas = window.v3global.dataSourceHandler
           .getDataSource()
           .getVlanguage();
         if (!datas) return;

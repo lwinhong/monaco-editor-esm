@@ -87,7 +87,7 @@ function openChartSetting(position) {
     var oldValue = chartSettingsValue
     showChartSettingwidget(false)
 
-    var result = window.global.executeCmdToWinformReturn(cmdData.editChart, oldValue.value)
+    var result = window.v3global.executeCmdToWinformReturn(cmdData.editChart, oldValue.value)
     if (result) {
         var jsonData = JSON.parse(result)
         if (jsonData.ok) {

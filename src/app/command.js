@@ -16,7 +16,19 @@ export const cmdData = {
     showChartButton: "ShowChartButton",
     cacheChangedValue: "CacheChangedValue",
     reloadEvent: "ReloadEvent",
+    openSourceSelector: "OpenSourceSelector",//选择构件资源
+    openDevShareSelector: "OpenDevShareSelector",//选择share资源
+    generateTemplate: "GenerateTemplate",//生成模板
+    applyTemplate: "ApplyTemplate",//应用模板
 
+    /**以下为编辑器内部交互命令 */
+    executeCmd: "executeCmd",
     dataLoaded: "dataLoaded",
-    wordWrap: "wordWrap"
+    wordWrap: "wordWrap",
+    showPreviewForm: "showPreviewForm",
+    setPreview: "setPreview",
+    editorIndexChanged: "editorIndexChanged",
+    updateCursorPosition: "updateCursorPosition",
+    updateMessageCount: "updateMessageCount",
+    insertValue:"insertValue"
 }

@@ -102,10 +102,10 @@ export default {
   },
   methods: {
     rightBarItemClick(item) {
-      //window.global.executeCmdFromWinform("theme","vs-dark");
+      //window.v3global.executeCmdFromWinform("theme","vs-dark");
       if (item) {
         if (item.key && item.key === "preview") {
-          window.global.executeCmdToWinform(item.key);
+          window.v3global.executeCmdToWinform(item.key);
         } else {
           this.$emit("itemClick", item);
         }

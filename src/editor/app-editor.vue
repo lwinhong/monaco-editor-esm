@@ -47,7 +47,7 @@ export default {
     SaveButton,
     Monaco
   },
-  created: function() {
+  created() {
     this.$Message.config({
       top: 38,
       duration: 1
@@ -136,6 +136,7 @@ export default {
     tabSelectedIndex(newValue, oldValue) {
       editorHandler.setMonacoEditorFocusDelay(newValue, 100);
       currentEditor = editorHandler.editorData[newValue].editor;
+      this.v3global.executeCmd(editorHandler.cmdData.editorIndexChanged, newValue);
     },
     theme() {
       monaco.editor.setTheme(this.theme);

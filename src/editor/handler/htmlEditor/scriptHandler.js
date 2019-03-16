@@ -1,7 +1,7 @@
 
 const buildItems = () => {
 
-    const sources = window.global.dataSourceHandler.getDataSource().getVuiPropValueOptions();
+    const sources = window.v3global.dataSourceHandler.getDataSource().getVuiPropValueOptions();
     if (!sources || !sources.scriptResource)
         return
 

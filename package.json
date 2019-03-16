@@ -9,6 +9,7 @@
     "dist"
   ],
   "dependencies": {
+    "clipboard-polyfill": "^2.7.0",
     "fast-xml-parser": "^3.12.13",
     "htmlparser2": "^3.10.1",
     "iview": "^3.3.0",

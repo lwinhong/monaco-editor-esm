@@ -79,19 +79,19 @@ String.format = function (str) {
 };
 
 // ReSharper disable once NativeTypePrototypeExtending
-String.prototype.format = function() {
+String.prototype.format = function () {
     var str = this;
     var args = arguments, re = new RegExp("%([1-" + args.length + "])", "g");
     return String(str).replace(
         re,
-        function($1, $2) {
+        function ($1, $2) {
             return args[$2];
         }
     );
 };
 
 // ReSharper disable once NativeTypePrototypeExtending
-String.prototype.equalIgnoreCase = function(str) {
+String.prototype.equalIgnoreCase = function (str) {
     if (str && (this.toLowerCase() === str.toLowerCase()))
         return true;
     return false;
@@ -102,7 +102,7 @@ String.prototype.equalIgnoreCase = function(str) {
  * @returns {} 
  */
 // ReSharper disable once NativeTypePrototypeExtending
-Array.prototype.distinct = function() {
+Array.prototype.distinct = function () {
     var a = [], b = [], c = [], d;
     var object = this;
     for (var prop in object) {
@@ -128,7 +128,7 @@ Array.prototype.distinct = function() {
  * @returns {} 
  */
 // ReSharper disable once NativeTypePrototypeExtending
-Array.prototype.distinct1 = function() {
+Array.prototype.distinct1 = function () {
     var a = [], b = [];
     var object = this;
     for (var prop in object) {
