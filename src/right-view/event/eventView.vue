@@ -1,5 +1,5 @@
 <template>
-  <master-page>
+  <master-page class="p-event">
     <div slot="header">
       <section class="panelHd">
         <h3>事件</h3>

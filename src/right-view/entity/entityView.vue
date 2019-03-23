@@ -1,5 +1,5 @@
 <template>
-  <master-page>
+  <master-page class="p-data">
     <div slot="header">
       <section class="panelHd">
         <h3>实体</h3>
@@ -7,38 +7,57 @@
           <icon type="ios-close" size="25"></icon>
         </span>
       </section>
-      <section class="panelTools s-searching">
+      <section :class="search">
+        <i-button size="small" icon="md-add" type="primary" class="btn-add" title="添加新实体">添加新实体</i-button>
+        <i-button size="small" icon="ios-search" class="btn-search" @click="searching"></i-button>
         <i-input search placeholder="搜索" size="small" autofocus class="vInputs"></i-input>
       </section>
     </div>
     <!-- <Tree :data="entityTree"></Tree> -->
     <Collapse simple>
-      <Panel v-for="en in entityTree" :key="en.key">
-        <span class="title">{{en.key}}</span>
-        <span class="title-subTitle">({{en.title}})</span>
-        <Icon
-          type="md-return-left"
-          style="float:right;padding-top:6px;transform:none;cursor:pointer;"
-          :size="15"
-          :title="`插入${en.key}`"
-          @click.prevent="insert(en.key)"
-        />
-        <ul v-if="en.fields && en.fields.length > 0" slot="content">
+      <Panel v-for="(en,i) in entityTree" :key="en.key+i" :name="en.key+i">
+        <div class="node">
+          <span class="node-tit">
+            {{en.key}}
+            <em>{{en.title}}</em>
+          </span>
+          <span class="node-op">
+            <icon
+              custom="vicon ico-insert"
+              size="14"
+              @click.prevent="insert(entityWrapper(en.key))"
+              :title="`插入${entityWrapper(en.key)}`"
+            ></icon>
+          </span>
+        </div>
+        <ul slot="content" v-if="en.fields && en.fields.length > 0">
           <li
             v-for="field in en.fields"
             :key="en.key + field.key"
-            @dblclick="insert(`${en.key}.current.${field.key}`)"
             :draggable="true"
             @dragstart="drag($event,field)"
+            @dblclick="insert(entityWrapper(en.key,field.key))"
           >
-            <entity-item
-              :code="en.key+field.key"
-              :text="field.key"
-              :sub-text="field.title"
-              :selectedItemKey="currentItemKey"
-              @click="currentItemKey = en.key+field.key"
-              @insert-item="insert"
-            ></entity-item>
+            <div class="node">
+              <span class="node-tit">
+                {{field.key}}
+                <em>{{field.title}}</em>
+              </span>
+              <span class="node-op">
+                <icon
+                  custom="vicon ico-insertAll"
+                  size="14"
+                  @click="insert(entityWrapper(en.key,field.key))"
+                  :title="`插入${entityWrapper(en.key,field.key)}`"
+                ></icon>&nbsp;
+                <icon
+                  custom="vicon ico-insert"
+                  size="14"
+                  @click="insert(field.key)"
+                  :title="`插入${field.key}`"
+                ></icon>
+              </span>
+            </div>
           </li>
         </ul>
       </Panel>
@@ -63,7 +82,8 @@ export default {
   data() {
     return {
       entityTree: [],
-      currentItemKey: ""
+      currentItemKey: "",
+      search: "panelTools"
     };
   },
   methods: {
@@ -86,14 +106,29 @@ export default {
       this.currentItemKey = key;
     },
     onSearch(value) {},
+    searching: function() {
+      this.search = "panelTools s-searching";
+    },
     insert(value) {
-      //eventBus.$emit("executeCmd", "insertValue", value);
       window.v3global.executeCmd("insertValue", value);
     },
     drag(ev, item) {
       ev.effectAllowed = "move";
       ev.dataTransfer.setData("Text", item.key);
       ev.dataTransfer.setDragImage(ev.target, 0, 0);
+    },
+    entityWrapper(entityName, fieldName) {
+      if (isDevEditorMode()) {
+        if (fieldName) {
+          return `${entityName}.current.${fieldName}`;
+        }
+        return `${entityName}.current`;
+      } else {
+        if (fieldName) {
+          return `${entityName}.${fieldName}`;
+        }
+        return entityName;
+      }
     },
     buildTree() {
       const tree = this.entityTree;
@@ -120,52 +155,6 @@ export default {
   }
 };
 </script>
-<style scoped>
-ul {
-  list-style-type: none;
-
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-}
-
-li {
-  margin: 0;
-  /* padding-left: 40px;
-  padding-right: 10px; */
-  line-height: 25px;
-  height: 25px;
-  color: #666;
-}
-.itemSelectedStyle {
-  background-color: rgb(228, 241, 251);
-}
-</style>
-<style>
-.ivu-collapse {
-  border: 0px !important;
-}
-.ivu-collapse-content {
-  padding: 0px !important;
-}
-.ivu-collapse > .ivu-collapse-item {
-  border-top: 0px;
-}
-.ivu-collapse > .ivu-collapse-item > .ivu-collapse-header {
-  height: 25px;
-  line-height: 25px;
-}
-.ivu-collapse > .ivu-collapse-item > .ivu-collapse-header > i {
-  margin-right: 9px;
-}
-.ivu-collapse > .ivu-collapse-item > .ivu-collapse-header:hover {
-  background-color: rgb(228, 241, 251);
-}
-.ivu-collapse-content > .ivu-collapse-content-box {
-  padding-bottom: 0px;
-}
-</style>
 
 
 

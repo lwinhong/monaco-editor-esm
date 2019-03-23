@@ -78,7 +78,7 @@ const addDefaultTab = (tabs, editorValueJosn) => {
 const addDevTab = (tabs, editorValueJosn) => {
     addTab(tabs, devEditorKeys.template, "template", "html", editorValueJosn.Template || "")
     addTab(tabs, devEditorKeys.script, "script", "javascript", editorValueJosn.Script || "")
-    //if (editorValueJosn.Style)
+    if (editorValueJosn.Style)
         addTab(tabs, devEditorKeys.style, "style", "css", editorValueJosn.Style || "")
     addTab(tabs, devEditorKeys.themeLess, "theme.less", "less", editorValueJosn.ThemeLess || "")
     addTab(tabs, devEditorKeys.varLess, "var.less", "less", editorValueJosn.VarLess || "")
