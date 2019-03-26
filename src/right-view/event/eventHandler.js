@@ -35,16 +35,18 @@ export const initEventBus = (vue) => {
  * 新增一个事件
  * @param {数据源} eventDataSource 
  */
-export const addEvent = (eventDataSource) => {
-    eventDataSource.push({
+export const addEvent = (eventDataSource, flag) => {
+    let item = {
         EventName: newEventName(eventDataSource),
         EventCode: newEventCode(eventDataSource),
         EventType: eventType.User,
         ParamMapping: "",
         ParamCount: 0,
         MethodCode: "",
-        autofocus: true
-    })
+        EventFlag: flag
+    }
+    eventDataSource.push(item)
+    return item
 }
 
 /**

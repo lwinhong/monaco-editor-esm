@@ -1,7 +1,7 @@
 import debounce from 'lodash/debounce'
 import vuiHandler from './htmlEditor/vuiHandler'
 import validateHandler from './htmlEditor/validate/validateHandler'
-import { vuiIntelliSense, vuiHelp, emmetHTML, eventBus, themeVarHandler, scriptHandler, cssHandler, cmdData } from './htmlEditor'
+import { vuiIntelliSense, vuiHelp, emmetHTML, eventBus, themeVarHandler, scriptHandler, cssHandler, cmdData, debounceWrapper } from './htmlEditor'
 
 const devEditorKeys = { template: 'template', script: 'script', style: 'style', themeLess: 'themeLess', varLess: 'varLess' }
 const defaultEditorKeys = { html: 'html', javascript: 'javascript', css: 'css', moduleCss: 'moduleCss', moduleJavascript: 'moduleJavascript' }
@@ -172,27 +172,34 @@ const initEditor = (editorObj, tabData) => {
         //eventBus.$emit('updateCursorPosition', e.position)
         parentVue.v3global.executeCmd("updateCursorPosition", e.position)
     })
-    //内容改变
+
+    //内容改变,触发弹出智能提示建议
+    const doTriggerSuggest = debounceWrapper(triggerSuggest, 300)
+    //内容改变,触发语法校验
+    const triggerValidate = debounceWrapper(onDidChangeModelContent, 667)
     editor.onDidChangeModelContent(function (e) {
-        onDidChangeModelContent(e, editor, model, editorKey)
+        isAnyValueChanged = true
+        doTriggerSuggest(e)
+        triggerValidate(model, editorKey)
     })
 
     addMenuAction(editor, tabData)
 }
 
-const onDidChangeModelContent = (e, editor, model, editorKey) => {
-    isAnyValueChanged = true
+const triggerSuggest = args => {
+    if (args[0].changes[0].text == ' ')
+        executeCommand('triggerSuggest')//弹出建议提示
+}
 
-    if (e.changes[0].text === ' ')
-        debounce(() => { executeCommand('triggerSuggest', editor) }, 200)()//弹出建议提示
-
+const onDidChangeModelContent = (args) => {
+    let model = args[0]
+    let editorKey = args[1]
     //验证输入
-    validateHandler.doValidate(editorKey, null, () => {
-        debounce(function () {
-            window.v3global.executeCmdToWinform(cmdData.cacheChangedValue, getAllValue())//将改变的数据发送winform端
-            window.v3global.executeCmd(cmdData.editorChanged, { code: model.getValue(), editorKey })
-        }, 1)();
-    })
+    validateHandler.doValidate(editorKey)
+    setTimeout(() => {
+        window.v3global.executeCmdToWinform(cmdData.cacheChangedValue, getAllValue())//将改变的数据发送winform端
+        window.v3global.executeCmd(cmdData.editorChanged, { code: model.getValue(), editorKey })
+    }, 0);
 }
 
 /**
@@ -253,13 +260,8 @@ const editorLayout = () => {
  * 异步设置编辑器重新布局
  * @param {超时时间} timeout 
  */
-const editorLayoutDelay = (timeout) => {
-    if (!timeout || !isNaN(timeout))
-        timeout = 200
-    debounce(editorLayout, timeout)()
-}
-
-window.onresize = editorLayout
+const editorLayoutDelay = debounceWrapper(editorLayout, 100)
+window.onresize = debounceWrapper(editorLayout, 100)
 
 /**
  * 获取当前选中编辑器的数据

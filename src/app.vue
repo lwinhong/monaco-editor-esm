@@ -1,6 +1,6 @@
 <template>
   <div class="app fill">
-    <Spin size="large" fix v-if="isMaskShow"></Spin>
+    <!-- <Spin size="large" fix v-if="isMaskShow"></Spin> -->
     <app-preview></app-preview>
     <div class="g-layout">
       <main class="g-body">

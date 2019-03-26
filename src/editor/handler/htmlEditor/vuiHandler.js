@@ -1,5 +1,4 @@
 import editorUtil from './editorUtil'
-import debounce from 'lodash/debounce'
 import chartHandler from './vuiChartHandler'
 import hoverHandler from './vuiHoverHandler'
 
@@ -64,7 +63,7 @@ function autoCompleteHandler(model, position) {
     var megerTotens = new Array()
     $.each(tokens, function (index, obj) {
         megerTotens = megerTotens.concat(obj)
-    });
+    })
 
     var token1 = megerTotens[megerTotens.length - 1]
     //如果不是html 就不用做处理
@@ -220,7 +219,7 @@ function createVuiPropCompletions(tag, widgetCode, props) {
         if (attr === "widget-code")
             return
 
-        var insertText;
+        var insertText
         if (propData.insertText !== "") {
             insertText = propData.insertText
         } else {
@@ -341,7 +340,7 @@ function createPropValueCompletions(tagName, htmlText, insertSupplement, widgetC
             if (functions) {
                 $.each(functions, function (index, data) {
                     options.push(`call('${data}')`)
-                });
+                })
             }
         }
     }
@@ -399,15 +398,15 @@ function createPropValueCompletions(tagName, htmlText, insertSupplement, widgetC
  * @param {editor model} model 
  */
 function afterValidationAll(model) {
-    debounce(() => {
+    setTimeout(() => {
         try {
-            var html = model.getValue();
+            const html = model.getValue();
             editorUtil.getExistWidgetCodes(true, false, html)
             editorUtil.getExistEventCodes(true, html)
         } catch (error) {
             console.error("html验证之后，加载widgetCodes或者eventCodes异常：" + error)
         }
-    }, 1)()
+    }, 0)
 }
 
 /************************** */

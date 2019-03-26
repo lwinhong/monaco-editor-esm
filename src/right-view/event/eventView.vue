@@ -65,8 +65,8 @@
               size="small"
               v-model="data.EventCode"
               :readonly="data.EventType === 'Auto'"
-              :autofocus="data.autofocus||false"
               icon="md-copy"
+              :ref="data.EventCode+(data.EventFlag||'')"
               @on-click="codeCopied(data.EventCode)"
             ></i-input>
           </form-item>
@@ -146,7 +146,10 @@ export default {
     },
     add() {
       this.searchText = "";
-      addEvent(this.eventData);
+      
+      var item = addEvent(this.eventData,"123");
+      debugger
+      this.$refs[item.EventCode+"123"].focus();
     },
     refresh() {
       refresh();

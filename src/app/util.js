@@ -1,3 +1,5 @@
+import debounce from 'lodash/debounce'
+
 /**
  * 获取url的参数
  * @returns {} 
@@ -7,17 +9,34 @@ function getQueryString() {
         args = {}, // 保存参数数据的对象
         items = qs.length ? qs.split("&") : [], // 取得每一个参数项,
         item,
-        len = items.length;
+        len = items.length
 
     for (var i = 0; i < len; i++) {
-        item = items[i].split("=");
+        item = items[i].split("=")
         var name = decodeURIComponent(item[0]),
-            value = decodeURIComponent(item[1]);
+            value = decodeURIComponent(item[1])
         if (name) {
-            args[name] = value;
+            args[name] = value
         }
     }
-    return args;
+    return args
+}
+
+/**
+ * 防抖封装
+ * @param {要回调的行数} fn 
+ * @param {超时} debounceTime 
+ */
+export function debounceWrapper(fn, debounceTime = 300) {
+    let debounceObj
+    let args
+    return function () {
+        args = arguments
+        if (!debounceObj)
+            debounceObj = debounce(() => fn(args), debounceTime)
+        debounceObj()
+        return debounceObj
+    }
 }
 
 /********************************************** js 和 html 注释去除相关处理***************************************************/
@@ -58,34 +77,34 @@ function removeJsComments(script) {
 String.prototype.trimStr = function (char, type) {
     if (char) {
         if (type === 'left') {
-            return this.replace(new RegExp('^\\' + char + '+', 'g'), '');
+            return this.replace(new RegExp('^\\' + char + '+', 'g'), '')
         } else if (type === 'right') {
-            return this.replace(new RegExp('\\' + char + '+$', 'g'), '');
+            return this.replace(new RegExp('\\' + char + '+$', 'g'), '')
         }
-        return this.replace(new RegExp('^\\' + char + '+|\\' + char + '+$', 'g'), '');
+        return this.replace(new RegExp('^\\' + char + '+|\\' + char + '+$', 'g'), '')
     }
-    return this.replace(/^\s+|\s+$/g, '');
+    return this.replace(/^\s+|\s+$/g, '')
 };
 
 //字符串扩展
 String.format = function (str) {
-    var args = arguments, re = new RegExp("%([1-" + args.length + "])", "g");
+    var args = arguments, re = new RegExp("%([1-" + args.length + "])", "g")
     return String(str).replace(
         re,
         function ($1, $2) {
-            return args[$2];
+            return args[$2]
         }
     );
 };
 
 // ReSharper disable once NativeTypePrototypeExtending
 String.prototype.format = function () {
-    var str = this;
-    var args = arguments, re = new RegExp("%([1-" + args.length + "])", "g");
+    var str = this
+    var args = arguments, re = new RegExp("%([1-" + args.length + "])", "g")
     return String(str).replace(
         re,
         function ($1, $2) {
-            return args[$2];
+            return args[$2]
         }
     );
 };
@@ -93,8 +112,8 @@ String.prototype.format = function () {
 // ReSharper disable once NativeTypePrototypeExtending
 String.prototype.equalIgnoreCase = function (str) {
     if (str && (this.toLowerCase() === str.toLowerCase()))
-        return true;
-    return false;
+        return true
+    return false
 };
 
 /**
@@ -103,24 +122,24 @@ String.prototype.equalIgnoreCase = function (str) {
  */
 // ReSharper disable once NativeTypePrototypeExtending
 Array.prototype.distinct = function () {
-    var a = [], b = [], c = [], d;
-    var object = this;
+    var a = [], b = [], c = [], d
+    var object = this
     for (var prop in object) {
         if (object.hasOwnProperty(prop)) {
             d = object[prop];
             if (d === a[prop]) {
-                continue;
+                continue
             } //防止循环到prototype
             if (b[d] !== 1) {
-                a.push(d);
-                b[d] = 1;
+                a.push(d)
+                b[d] = 1
             } else {
-                c.push(d);
-                d[d] = 1;
+                c.push(d)
+                d[d] = 1
             }
         }
     }
-    return c.distinct1();
+    return c.distinct1()
 };
 
 /**
@@ -129,19 +148,19 @@ Array.prototype.distinct = function () {
  */
 // ReSharper disable once NativeTypePrototypeExtending
 Array.prototype.distinct1 = function () {
-    var a = [], b = [];
-    var object = this;
+    var a = [], b = []
+    var object = this
     for (var prop in object) {
         if (object.hasOwnProperty(prop)) {
             var d = object[prop];
             if (d === a[prop]) continue; //防止循环到prototype
             if (b[d] !== 1) {
-                a.push(d);
-                b[d] = 1;
+                a.push(d)
+                b[d] = 1
             }
         }
     }
-    return a;
+    return a
 };
 /********************************************** prototype end ***************************************************/
 

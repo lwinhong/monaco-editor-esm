@@ -45,8 +45,20 @@ const validateInit = (parentVue, editorObjs) => {
  * @param {编辑器key} editorKey 
  */
 const doValidate = (editorKey, beforeValidate, afterValidate) => {
-    if (!isValidating)
-        triggerValidate(editorKey, beforeValidate, afterValidate)
+    // if (!isValidating)
+    //     triggerValidate(editorKey, beforeValidate, afterValidate)
+    
+    if (beforeValidate && typeof beforeValidate === 'function')
+        beforeValidate()
+
+    isValidating = true
+    validationAll(editorKey)
+
+    if (afterValidate && typeof afterValidate === 'function')
+        afterValidate()
+    editorObj.vuiHandler.afterValidationAll(isDevEditorMode()
+        ? editorData[devEditorKeys.template].model
+        : editorData[defaultEditorKeys.html].model)
 }
 
 /**

@@ -1,5 +1,6 @@
 import debounce from 'lodash/debounce'
 import editorUtil from './editorUtil'
+import { debounceWrapper } from '../../../app/util'
 import { cmdData } from '../../../app/command'
 
 const canShowOpenChartWidgetKey = "canShowOpenChartWidget"
@@ -36,7 +37,7 @@ function initOpenChartCommand(editor, model) {
     editorTemplate = editor
     modelTemplate = model
 
-    var ocs = $("#openChartSettings")
+    const ocs = $("#openChartSettings")
     ocs.bind("click", openChartCmd)
 
     //按 esc键退出 ‘打开图表’ 按钮
@@ -49,25 +50,26 @@ function initOpenChartCommand(editor, model) {
     //添加 打开 '打开图标编辑器' widget命令
     // openChartSettingsWidgetCommand = editor.addCommand(0, () => showChartSettingwidget(true, mouseEventTemplate), '!suggestWidgetVisible');
 
-    editor.onDidChangeCursorSelection(cur => {
-        lastPosition = cur.selection.getPosition()
+    const onDidChangeCursorSelection = debounceWrapper(args => {
+        let e = args[0]
+        try {
+            lastPosition = e.selection.getPosition()
+            isNeedShowCharttingWidget(model, lastPosition)
+        }
+        catch (error) {
+            console.log("图表：光标改变，判断是否需要显示图表weiget异常->" + error)
+        }
+    }, 200)
 
-        debounce(() => {
-            try {
-                isNeedShowCharttingWidget(model, lastPosition)
-            }
-            catch (error) {
-                console.log("图表：光标改变，判断是否需要显示图表weiget异常->" + error)
-            }
-        }, 1)();
-    })
-
-    editor.onMouseDown(function (e) {
-        //mouseEventTemplate = e
+    const onMouseDown = debounceWrapper(args => {
+        let e = args[0]
+     
         if (e.target.detail != "editor.contrib.quickOpenEditorWidget" && e.event.leftButton)
-            debounce(() =>
-                showChartSettingButton(model, e.target.position, e), 100)()
-    })
+            showChartSettingButton(model, e.target.position, e)
+    }, 100)
+
+    editor.onDidChangeCursorSelection(onDidChangeCursorSelection)
+    editor.onMouseDown(onMouseDown)
 }
 
 /**

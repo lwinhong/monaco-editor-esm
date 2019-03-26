@@ -1,4 +1,5 @@
 import eslintHandler from '../../eslint/eslintHandler'
+import util from '../../../../app/util'
 
 /********************** eslint 验证 ****************** */
 const getLintValue = (model, devEditorKeys, editorKey) => {
@@ -195,6 +196,16 @@ const updateDecorations = (newDecorations, oldDecorations, editor) => {
 
 /********************** wigetCode 验证 END ****************** */
 
+/********************** 不能有script节点 验证 END ****************** */
+
+const checkCanNotExistTag = (model, editor, editorKey, devEditorKeys) => {
+    if (devEditorKeys && (devEditorKeys.template === editorKey)) {
+
+    }
+}
+
+/********************** 不能有script节点 验证 END ****************** */
+
 function addErrorInfo(message, range, module, source) {
     errorData.push({
         severity: monaco.MarkerSeverity.Error,
@@ -214,9 +225,10 @@ export const htmlValidate = (model, editor, editorKey, editorObj) => {
 
     //dev模式，验证eslint
     if (isDevEditorMode()) {
-        var eslintMsgs = eslintValidate(model, editor, editorKey, editorObj.devEditorKeys)
+        const eslintMsgs = eslintValidate(model, editor, editorKey, editorObj.devEditorKeys)
         if (eslintMsgs && eslintMsgs.length > 0)
             msgs = msgs.concat(eslintMsgs)
+
     }
 
     // 验证wigetcode
