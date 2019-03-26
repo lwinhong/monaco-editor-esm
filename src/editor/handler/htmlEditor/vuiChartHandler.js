@@ -1,4 +1,3 @@
-import debounce from 'lodash/debounce'
 import editorUtil from './editorUtil'
 import { debounceWrapper } from '../../../app/util'
 import { cmdData } from '../../../app/command'
