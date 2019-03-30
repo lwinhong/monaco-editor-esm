@@ -1,0 +1,48 @@
+:root {
+    --primary-color: #2d8cf0;
+	--title-color:#2c333c;
+    --text-color:#505966;
+    --subsidiary-color: #8d9aa7;
+    --scroll-color: rgba(0, 0, 0, .2);
+    --link-color: var(--primary-color);
+
+    --border-color: #e4e4eb ;
+    --border-split-color: #e5e5e5;
+
+    --theme-bg: #f8f8f8;
+    --appFade-bg: #e4e4e4;
+    --header-bg: var(--theme-bg);
+    --footer-bg: var(--theme-bg);
+    --statusBar-bg:var(--theme-bg);
+
+	
+	--tool-color: #666;
+	--miniSide-bg: var(--theme-bg);
+	--tool-hover-color: var(--tool-color);
+    --tool-hover-bg: #dee1e6;
+    --tool-active-color: var(--primary-color);
+    --tool-active-bg:var(--tool-hover-bg);
+    --tool-inkbar-color:transparent;
+
+    --miniSide-width: 40px;
+    --panel-hd-color:var(--text-color);
+    --panel-hd-bg: var(--theme-bg);
+    --panel-bg: #fff;
+    --panel-hd-height: 32px;
+    --panel-padding: 12px;
+    --header-height: 40px;
+    --scroll-width: 6px;
+	
+	--cardView-split-color:#f8f8f8;
+    --cardView-hover-bg:#fafafa;
+
+	--input-color:var(--title-color);
+    --input-bg:#fff;
+    --input-border-color:var(--border-color);
+    --input-append-color:var(--text-color);
+    --input-append-bg:var(--theme-bg);
+
+    --btn-color:var(--input-color);
+    --btn-bg:var(--input-bg);
+    --btn-border-color:var(--border-color);
+}

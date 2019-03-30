@@ -33,7 +33,10 @@ export function debounceWrapper(fn, debounceTime = 300) {
     return function () {
         args = arguments
         if (!debounceObj)
-            debounceObj = debounce(() => fn(args), debounceTime)
+            debounceObj = debounce(() => {
+                fn(args)
+                args = null
+            }, debounceTime)
         debounceObj()
         return debounceObj
     }

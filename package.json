@@ -9,12 +9,14 @@
     "dist"
   ],
   "dependencies": {
+    "@angular/compiler": "^7.2.11",
     "clipboard-polyfill": "^2.7.0",
     "fast-xml-parser": "^3.12.16",
     "htmlparser2": "^3.10.1",
     "iview": "^3.3.3",
     "jquery": "^3.3.1",
-    "vue-smooth-dnd": "^0.4.2"
+    "vue-smooth-dnd": "^0.4.2",
+    "vuex": "^3.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
@@ -40,7 +42,7 @@
     "ignore-loader": "^0.1.2",
     "iview-loader": "^1.2.2",
     "material-design-icons": "^3.0.1",
-    "monaco-editor": "^0.16.0",
+    "monaco-editor": "^0.16.2",
     "monaco-editor-webpack-plugin": "^1.7.0",
     "npm-run-all": "^4.1.2",
     "pako": "^1.0.6",

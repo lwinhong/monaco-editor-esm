@@ -174,10 +174,10 @@ module.exports = env => {
                 from: './src/resource',
                 to: 'resource',
             },
-            {
-                from: './src/monaco-editor/vs',
-                to: 'resource/monaco-editor/vs',
-            },
+            // {
+            //     from: './src/monaco-editor/vs',
+            //     to: 'resource/monaco-editor/vs',
+            // },
             // {
             //     from: './node_modules/monaco-editor/dev/vs',
             //     to: 'resource/monaco-editor/vs',
