@@ -337,6 +337,12 @@ const executeCommand = (cmd, value) => {
         case cmdData.wordWrap:
             parentVue.wordWrap = !parentVue.wordWrap
             break;
+        case cmdData.setPosition:
+        console.log(JSON.stringify(value))
+            editorData[devEditorKeys.template].editor.setSelection(new monaco.Range(value.lineNumber,value.column, value.lineNumber,value.column+10))
+            editorData[devEditorKeys.template].editor.revealPosition(value)
+            setMonacoEditorFocus(devEditorKeys.template)
+            break;
     }
 }
 

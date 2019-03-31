@@ -14,7 +14,7 @@ export default {
     parse(code) {
         const ast = angularCompiler.parseTemplate(code, 'astexplorer.html', options)
         // debugger
-        // fixSpan(ast, code)
+        fixSpan(ast, code)
         return ast
     },
 

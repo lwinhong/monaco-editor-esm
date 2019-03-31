@@ -36,8 +36,8 @@ export default {
   },
   methods: {
     onSelectChange(selectedNodes, selectedNode) {
-      var e = selectedNode.element;
-      //e.startSourceSpan.start.col/line/offset
+      
+        outlineHandlerObj.onOuntlineItemChanged(selectedNode)
     }
   }
 };

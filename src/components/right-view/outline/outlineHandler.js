@@ -12,8 +12,8 @@ class outlineHandler {
         function re(elements, datasource) {
             if (elements && elements.length > 0) {
                 for (const element of elements) {
-                    let treeNode = { title: element.name, expand: true ,element};
-                    
+                    let treeNode = { title: element.name, expand: true, element };
+
                     if (element.children && element.children.length > 0) {
                         var ds = []
                         re(element.children, ds)
@@ -39,6 +39,13 @@ class outlineHandler {
             }
         })
     };
+
+    onOuntlineItemChanged(item) {
+        var e = item.element;
+        var start = e.startSourceSpan.start;
+        //.col/line/offset
+        this.parentVue.v3global.executeCmd(cmdData.setPosition, { column: start.col+2, lineNumber: start.line })
+    }
 }
 
 export default outlineHandler 
