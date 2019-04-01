@@ -108,6 +108,7 @@ export default {
         tab,
         tabs[0].key === tab.key
       );
+      
     },
     save() {
       return editorHandler.save();

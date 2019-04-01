@@ -69,7 +69,7 @@ export default {
   mounted() {
     setTimeout(() => {
       this.isMaskShow = false;
-    }, 1000);
+    }, 2000);
   }
 };
 </script>

@@ -354,8 +354,9 @@ const setPosition = (value) => {
     let editorKey = isDevEditorMode() ? devEditorKeys.template : defaultEditorKeys.html
     let editor = editorData[editorKey].editor
 
-    editor.setPosition(new monaco.Position(value.startLineNumber, value.startColumn))
-    editor.revealPosition(new monaco.Position(value.startLineNumber, value.startColumn))
+    let startPosition = editor.getModel().getPositionAt(value.start + 1)
+    editor.setPosition(startPosition)
+    editor.revealPositionInCenter(startPosition)
     setMonacoEditorFocus(editorKey)
 }
 

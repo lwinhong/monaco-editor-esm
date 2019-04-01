@@ -6,8 +6,14 @@
   </Modal>
 </template>
 <script>
+import { mapState, mapActions, mapGetters } from "vuex";
+import wizard from "./componentWizard";
+var wizardHandler;
 export default {
   name: "componentWizard",
+  created() {
+    wizardHandler = new wizard(this);
+  },
   mounted() {},
   //   props: {
   //     visible: { type: Boolean, default: true }
@@ -22,6 +28,13 @@ export default {
           render: (h, params) => {
             return h(
               "Select",
+              {
+                on: {
+                  onChange: event => {
+                    this.entities[params.index].dataSource = event;
+                  }
+                }
+              },
               this.entities.map(item => {
                 return [
                   h(
@@ -41,38 +54,61 @@ export default {
         },
         {
           title: "容器",
-          key: "container"
+          key: "container",
+          render: (h, params) => {
+            return h(
+              "Select",
+              {
+                on: {
+                  onChange: event => {
+                    this.containers[params.index].container = event;
+                  }
+                }
+              },
+              this.containers.map(item => {
+                return [
+                  h(
+                    "Option",
+                    {
+                      props: {
+                        value: item.tag,
+                        key: item.tagName
+                      }
+                    },
+                    `${item.tag} (${item.tagName})`
+                  )
+                ];
+              })
+            );
+          }
         }
       ],
       dsTableData: [{ dataSource: "", container: "" }],
-      entities: []
+      entities: [],
+      containers: []
     };
   },
   methods: {
-    ok() {},
+    ...mapGetters("codeEditorStore", ["getHtmlEditorNodesSameLevel"]),
+    ok() {
+      debugger;
+    },
     showWizard() {
-      const ds = window.v3global.dataSourceHandler.getDataSource();
-      var dsData = ds.getEntities();
-      if (!dsData) return;
-      let _this = this;
-      this.entities.splice(0, this.entities.length);
+      let wizardHandler = new wizard(this);
+      wizardHandler.getContainer(
+        this.getHtmlEditorNodesSameLevel(),
+        this.containers
+      );
 
-      $.each(dsData, function(i, data) {
-        _this.entities.push({
-          code: i,
-          name: data.name,
-          columns: data.columns
-        });
-      });
-
+      wizardHandler.getEntities(this.entities);
       this.visible = true;
     }
   },
   watch: {
     visible(n, o) {
       if (n) {
-        //this.dsTableData.splice(0, this.dsTableData.length);
-        //this.entities.splice(0, this.entities.length);
+        this.dsTableData.splice(0, this.dsTableData.length);
+        this.entities.splice(0, this.entities.length);
       }
     }
   }

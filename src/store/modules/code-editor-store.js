@@ -21,6 +21,14 @@ const codeEditorStore = {
             state.vuiData = value
         }
     },
+    getters: {
+        getHtmlEditorNodesSameLevel(state) {
+            let nodes = state.htmlEditorNodes;
+            let sameLevel = []
+            setToSameLevelRecursion([nodes], sameLevel)
+            return sameLevel
+        }
+    },
     actions: {
         setHtmlEditorNodesAction({ commit, state, rootState }, value) {
             commit('setHtmlEditorNodes', value)
@@ -28,6 +36,16 @@ const codeEditorStore = {
         setVuiDataAction({ commit, state, rootState }, value) {
             commit('setVuiData', value)
         }
+    }
+}
+
+function setToSameLevelRecursion(elements, list) {
+    if (!elements)
+        return
+
+    for (const element of elements) {
+        list.push(element)
+        setToSameLevelRecursion(element.children, list)
     }
 }
 

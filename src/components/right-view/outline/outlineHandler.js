@@ -5,11 +5,14 @@ function buildOutlineRecursion(elements, datasource) {
     if (elements && elements.length > 0) {
         for (const element of elements) {
             if (element.tag) {
+                var subTitle = getNodeName(element)
+                element.tagName = subTitle
                 let treeNode = {
                     title: element.tag,
-                    subTitle: getNodeName(element),
+                    subTitle,
                     expand: true,
-                    element
+                    element,
+
                 };
 
                 if (element.children && element.children.length > 0) {
@@ -37,8 +40,9 @@ export default class outlineHandler {
     }
 
     buildOutline(treeDataSource, nodes) {
-        if (nodes)
+        if (nodes) {
             buildOutlineRecursion([nodes], treeDataSource)
+        }
     }
 
     initEventBus() {
@@ -52,12 +56,10 @@ export default class outlineHandler {
     }
 
     onOuntlineItemChanged(item) {
-        let e = item.element;
-        let start = e.startSourceSpan.start;
-        let end = e.endSourceSpan.end
-        let range = new monaco.Range(start.line + 1, start.col + 2, end.line + 1, end.col + 1)
-        this.parentVue.v3global.executeCmd(cmdData.setPosition, range)
+        let start = item.element.start;
+        let end = item.element.end
+        //let range = new monaco.Range(start.line + 1, start.col + 2, end.line + 1, end.col + 1)
+        this.parentVue.v3global.executeCmd(cmdData.setPosition, { start, end })
 
-        //var range=  new monaco.Range( start.line,start.col, end.line,end.col)
     }
 }

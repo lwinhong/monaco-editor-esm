@@ -39,7 +39,13 @@ export default {
         {
           style: {
             display: "inline-block",
-            width: "100%"
+            width: "100%",
+            cursor: "default"
+          },
+          on: {
+            click: () => {
+              this.onSelectChange(node, data);
+            }
           }
         },
         [
@@ -82,3 +88,4 @@ export default {
   }
 };
 </script>
+

@@ -104,8 +104,8 @@ export default {
   },
   data() {
     return {
-      currentView: "event",
-      activeItemKey: "event",
+      currentView: "outline",
+      activeItemKey: "outline",
       switchItems: [
         {
           key: "event",
