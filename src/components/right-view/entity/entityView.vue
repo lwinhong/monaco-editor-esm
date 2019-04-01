@@ -104,7 +104,7 @@ export default {
       this.search = "panelTools s-searching";
     },
     insert(value) {
-      window.v3global.executeCmd("insertValue", value);
+      this.v3global.executeCmd("insertValue", value);
     },
     drag(ev, item) {
       ev.effectAllowed = "move";

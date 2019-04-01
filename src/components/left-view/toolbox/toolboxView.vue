@@ -10,7 +10,13 @@
     <div class="m-widgets">
       <dl v-for="(group,i) of toolboxItems" :key="group.groupTitle+i">
         <dt>{{group.groupTitle}}</dt>
-        <dd v-for="(vui,i) of group.groupItems" :key="vui.code+i">
+        <dd
+          v-for="(vui,i) of group.groupItems"
+          :key="vui.code+i"
+          :draggable="true"
+          @dragstart="drag($event,vui)"
+          @dblclick="insert(vui)"
+        >
           <icon custom="vicon ico-layer" size="14"></icon>
           {{`${vui.code}(${vui.name})`}}
         </dd>
@@ -20,42 +26,54 @@
 </template>
 <script>
 import MasterPage from "../../view/view-master-page.vue";
-
+import { mapState } from "vuex";
 export default {
   name: "ToolboxView",
   components: { MasterPage },
   data() {
     return {
-      search: "panelTools",
-      toolboxItems: []
+      search: "panelTools"
     };
   },
-  methods: {
-    searching() {
-      this.search = "panelTools s-searching";
-    },
-    loadToolbox() {
-        this.toolboxItems.splice(0,this.toolboxItems.length)
-      var vuis = this.v3global.dataSourceHandler.getDataSource().getVuiTag();
+  computed: {
+    ...mapState("codeEditorStore", ["vuiData"]),
+    toolboxItems() {
+      let toolboxItems = [];
       let i = 0;
       let groupItems;
       let groupTitle = "分组";
       let group;
+      let vuis = this.vuiData;
       for (const vui in vuis) {
         if (vuis.hasOwnProperty(vui)) {
           const vuiObj = vuis[vui];
           if (i % 10 == 0) {
             groupItems = [];
             group = { groupTitle, groupItems };
-            this.toolboxItems.push(group);
+            toolboxItems.push(group);
           }
           groupItems.push({
             code: vui,
-            name: vuiObj.label
+            name: vuiObj.label,
+            vuiObj
           });
         }
         i++;
       }
+      return toolboxItems;
+    }
+  },
+  methods: {
+    searching() {
+      this.search = "panelTools s-searching";
+    },
+    drag(ev, vui) {
+      ev.effectAllowed = "move";
+      ev.dataTransfer.setData("Text", vui.vuiObj.autoCompleteSource);
+      ev.dataTransfer.setDragImage(ev.target, 0, 0);
+    },
+    insert(vui) {
+      this.v3global.executeCmd("insertValueAsSnippet", vui.vuiObj.autoCompleteSource);
     }
   }
 };

@@ -31,6 +31,7 @@ const suggest = [
     "no-useless-escape",
     "vue/attributes-order",
     "vue/order-in-components",
-    "vue/camelcase"
+    "vue/camelcase",
+    "vue/key-spacing"
 ]
 export default { ignoreRules, suggest }

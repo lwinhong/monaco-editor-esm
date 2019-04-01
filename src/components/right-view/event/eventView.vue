@@ -1,8 +1,6 @@
 <template>
   <master-page class="p-event" @closeClick="$emit('closeClick')">
     <template slot="header-title">事件</template>
-    <icon type="ios-refresh" size="25" slot="header-trigger"></icon>
-
     <section :class="search" slot="header-content">
       <i-button size="small" icon="md-add" class="btn-add" title="添加事件" @click="add" type="primary">添加事件</i-button>
       <i-button size="small" icon="ios-search" class="btn-search" @click="searching" ></i-button>

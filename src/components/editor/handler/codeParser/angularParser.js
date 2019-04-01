@@ -1,7 +1,6 @@
 const angularCompiler = require('@angular/compiler')
 const options = {
     preserveWhitespaces: false,
-
 }
 export default {
     locationProps: new Set([

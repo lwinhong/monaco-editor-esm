@@ -1,7 +1,7 @@
 <template>
   <master-page class="p-event" @closeClick="$emit('closeClick')">
     <template slot="header-title">层级树</template>
-    <Tree :data="htmlEditorOutline" @on-select-change="onSelectChange"></Tree>
+    <Tree :data="htmlEditorOutline" :render="renderContent" @on-select-change="onSelectChange"></Tree>
   </master-page>
 </template>
 <script>
@@ -26,18 +26,58 @@ export default {
   },
   computed: {
     htmlEditorOutline() {
-      let data = this.outlineData;
+      let data = []; // this.outlineData;
       outlineHandlerObj.buildOutline(data, this.htmlEditorNodes);
       return data;
     },
-    ...mapState("codeEditorStore", {
-      htmlEditorNodes: state => state.htmlEditorNodes
-    })
+    ...mapState("codeEditorStore", ["htmlEditorNodes"])
   },
   methods: {
+    renderContent(h, { root, node, data }) {
+      return h(
+        "span",
+        {
+          style: {
+            display: "inline-block",
+            width: "100%"
+          }
+        },
+        [
+          h("span", [
+            h("Icon", {
+              props: {
+                type: "ios-paper-outline"
+              },
+              style: {
+                marginRight: "8px"
+              }
+            }),
+            h("span", [
+              h(
+                "span",
+                {
+                  style: {
+                    marginRight: "8px"
+                  }
+                },
+                data.title
+              ),
+              h(
+                "span",
+                {
+                  style: {
+                    color: "gray"
+                  }
+                },
+                data.subTitle ? `[${data.subTitle}]` : ""
+              )
+            ])
+          ])
+        ]
+      );
+    },
     onSelectChange(selectedNodes, selectedNode) {
-      
-        outlineHandlerObj.onOuntlineItemChanged(selectedNode)
+      outlineHandlerObj.onOuntlineItemChanged(selectedNode);
     }
   }
 };

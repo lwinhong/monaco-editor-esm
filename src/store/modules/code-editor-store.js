@@ -2,7 +2,8 @@ const codeEditorStore = {
     namespaced: true,
     state: {
         htmlEditorNodes: null,
-        theme: "default"
+        theme: "default",
+        vuiData: null
     },
     getters: {
         getTheme(state, rootState) {
@@ -15,11 +16,17 @@ const codeEditorStore = {
         },
         setTheme(state, value) {
             state.theme = value == "default" ? "vs" : "vs-dark"
+        },
+        setVuiData(state, value) {
+            state.vuiData = value
         }
     },
     actions: {
-        setHtmlEditorNodesAction({ commit, state, rootState }, outlineObj) {
-            commit('setHtmlEditorNodes', outlineObj)
+        setHtmlEditorNodesAction({ commit, state, rootState }, value) {
+            commit('setHtmlEditorNodes', value)
+        },
+        setVuiDataAction({ commit, state, rootState }, value) {
+            commit('setVuiData', value)
         }
     }
 }

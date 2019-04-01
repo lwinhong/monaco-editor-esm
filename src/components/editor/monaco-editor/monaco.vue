@@ -105,7 +105,6 @@ export default {
       this.editor.focus();
     },
     drop(ev) {
-
       const point = this.editor.getTargetAtClientPoint(ev.clientX, ev.clientY);
       const value = ev.dataTransfer.getData("Text");
       this.$emit("dropDone", this.editor, value, point.range);

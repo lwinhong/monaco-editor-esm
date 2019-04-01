@@ -39,22 +39,10 @@ var existWindowControlCodeData
 /**
  * 获取json数据
  * @param {json路径} path 
- * @param {回调返回数据} callback 
  */
-const loadJsonData = (path, callback) => {
-    $.getJSON(path, '', data => {
-        if (callback)
-            callback(data)
-    })
-}
-
 function loadJsonDataAsync(path) {
     return new Promise(function (resolve, reject) {
-        $.getJSON(path, '',
-            data => {
-                resolve(data)
-            }
-        )
+        $.getJSON(path, '', data => resolve(data))
     })
 }
 
@@ -83,7 +71,7 @@ const initlocalDs = async () => {
 /**
  * 初始化全部数据源
  */
-const initDs = async (divFlag) => {
+const initDs = async (divFlag, appVue) => {
     await initGlobalDs()
     await initlocalDs()
 }

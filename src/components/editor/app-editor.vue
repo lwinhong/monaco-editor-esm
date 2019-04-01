@@ -1,5 +1,6 @@
 <template>
   <div class="fill" id="code-editor-root">
+    <button @click="$refs.componentWizard.showWizard()">点击</button>
     <app-chart-widget
       :visible="appChartWidgetVisible"
       :top="chartWidgetTop"
@@ -28,6 +29,8 @@
       @localMessage="localMessage"
       @insertVlanguage="insertVlanguage"
     ></app-message-flow>
+    <component-wizard ref="componentWizard"></component-wizard>
+    
   </div>
 </template>
 <script>
@@ -38,6 +41,7 @@ import SaveButton from "./save-button.vue";
 import Monaco from "./monaco-editor/monaco.vue";
 import { eventBus } from "../../app/event-bus";
 import { mapState, mapActions, mapGetters } from "vuex";
+import ComponentWizard from "./wizard/componentWizard.vue";
 
 const tabs = [];
 var currentEditor = null;
@@ -48,7 +52,8 @@ export default {
     AppChartWidget,
     AppMessageFlow,
     SaveButton,
-    Monaco
+    Monaco,
+    ComponentWizard
   },
   created() {
     this.$Message.config({
@@ -79,9 +84,7 @@ export default {
     flowMessageWidthTrigger() {
       return flowMessageWidth;
     },
-    ...mapState("codeEditorStore", {
-      theme: state => state.theme
-    })
+    ...mapState("codeEditorStore", ["theme"])
   },
   data() {
     return {
@@ -135,7 +138,7 @@ export default {
           editor.setSelection(row.position);
         }
         this.tabSelectedIndex = row.moduleKey;
-        editorHandler.setMonacoEditorFocus(row.moduleKey);
+        //editorHandler.setMonacoEditorFocus(row.moduleKey);
       }
     },
     insertVlanguage(vlang) {
@@ -145,7 +148,8 @@ export default {
       editorHandler.editorLayoutDelay();
     },
     dropDone(editor, value, range) {
-      editorHandler.insertValueToEditor(editor, value, range);
+      //editorHandler.insertValueToEditor(editor, value, range);
+      editorHandler.insertValueAsSnippet(editor, value, true);
     },
     ...mapActions("codeEditorStore", ["setHtmlEditorNodesAction"])
   },

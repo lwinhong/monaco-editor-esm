@@ -51,11 +51,14 @@ export default {
       return formType == "Mobile";
     },
     viewErea() {
-      return { "m-designView": this.isMobileForm, 'fill': !this.isMobileForm };
+      return { "m-designView": this.isMobileForm, fill: !this.isMobileForm };
     }
   },
   watch: {
-    visible() {
+    visible(newValue, oldValue) {
+      if (!newValue) {
+        this.$Loading.finish();
+      }
       this.src = this.defaultSrc;
       document.getElementById("preview_iframe").src = this.defaultSrc;
       console.log(this.visible + ": " + this.src);

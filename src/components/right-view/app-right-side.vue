@@ -1,5 +1,5 @@
 <template>
-  <sideBarMasterPage ref="right-side-bar">
+  <sideBarMasterPage ref="right-side-bar" :isMiniMode="isMiniMode">
     <!--激活状态 使用 s-active -->
     <template v-for="(item,i) in switchItems" slot="switch">
       <li
@@ -77,9 +77,9 @@
       </li>
     </template>
     <!-- 视图区域 -->
-    <entity-view ref="entityView" v-show="entityViewVisible"></entity-view>
-    <event-view ref="eventView" v-show="eventViewVisible"></event-view>
-    <outline-view></outline-view>
+    <entity-view ref="entityView" v-show="entityViewVisible" @closeClick="closeClick"></entity-view>
+    <event-view ref="eventView" v-show="eventViewVisible" @closeClick="closeClick"></event-view>
+    <outline-view @closeClick="closeClick"></outline-view>
   </sideBarMasterPage>
 </template>
 <script>
@@ -89,6 +89,7 @@ import outlineView from "./outline/outlineView.vue";
 import { cmdData } from "../../app/command";
 import sideBarMasterPage from "../view/side-bar-master-page.vue";
 import themeHandler from "../theme/themeHandler";
+import { mapActions } from "vuex";
 
 export default {
   name: "AppRightSide",
@@ -142,14 +143,22 @@ export default {
         }
       ],
       otherItems: [],
-      themes: []
+      themes: [],
+      isMiniMode: false
     };
   },
   methods: {
+    closeClick() {
+      this.isMiniMode = true;
+    },
     switchItemClick(item) {
       if (item.canActive) {
-        this.activeItemKey = item.key;
-        this.currentView = item.key;
+        if (this.currentView == item.key) {
+          this.isMiniMode = !this.isMiniMode;
+          return;
+        }
+        this.isMiniMode = false;
+        this.setState(item.key);
       }
       if (item.key == "preview") {
         this.v3global.executeCmd(item.cmd);
@@ -157,18 +166,29 @@ export default {
     },
     changeTheme(key) {
       themeHandler.changeThemeCss(key);
-      //this.$store.state.theme = key;
-      this.$store.dispatch("setThemeAction", key);
-    }
+      this.setThemeAction(key);
+    },
+    setState(key) {
+      this.activeItemKey = key;
+      this.currentView = key;
+    },
+    ...mapActions(["setThemeAction"])
   },
   computed: {
     entityViewVisible() {
-      return this.currentView === "entity";
+      return this.currentView == "entity";
     },
     eventViewVisible() {
-      return this.currentView === "event";
+      return this.currentView == "event";
     },
-    outlineVisible: () => this.currentView === "outline"
+    outlineVisible() {
+      return this.currentView == "outline";
+    }
+  },
+  watch: {
+    isMiniMode(newValue, oldValue) {
+      if (newValue) this.setState(null);
+    }
   }
 };
 </script>

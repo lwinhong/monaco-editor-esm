@@ -1,7 +1,7 @@
 import vuiHandler from './htmlEditor/vuiHandler'
 import validateHandler from './htmlEditor/validate/validateHandler'
 import { vuiIntelliSense, vuiHelp, emmetHTML, themeVarHandler, scriptHandler, cssHandler, cmdData, debounceWrapper } from './htmlEditor'
-import angularParser from "../handler/angular/angularParser"
+import vueParser from "../handler/codeParser/vueParser"
 
 const devEditorKeys = { template: 'template', script: 'script', style: 'style', themeLess: 'themeLess', varLess: 'varLess' }
 const defaultEditorKeys = { html: 'html', javascript: 'javascript', css: 'css', moduleCss: 'moduleCss', moduleJavascript: 'moduleJavascript' }
@@ -201,7 +201,7 @@ const onDidChangeModelContent = (args) => {
         window.v3global.executeCmd(cmdData.editorChanged, { code: template, editorKey })
     }, 0);
 
-    let nodes = angularParser.parse(template)
+    let nodes = vueParser.parse(template)
     parentVue.setHtmlEditorNodesAction(nodes)
 }
 
@@ -296,7 +296,8 @@ const monacoEditorCmd = {
     commentLine: "editor.action.commentLine",
     triggerSuggest: "editor.action.triggerSuggest",
     find: "actions.find",
-    quickCommand: 'editor.action.quickCommand'
+    quickCommand: 'editor.action.quickCommand',
+    insertLineAfter: 'editor.action.insertLineAfter'
 }
 
 /**
@@ -328,22 +329,34 @@ const executeCommand = (cmd, value) => {
         case "setEditorFocus":
             setMonacoEditorFocus(parentVue.tabSelectedIndex)
             break
-        case "insertValue":
+        case cmd.insertValue:
             insertValueToEditor(null, value, null)
+            break
+        case cmdData.insertValueAsSnippet:
+            insertValueAsSnippet(null, value, true)
             break
         case "loadEvent":
             window.v3global.executeCmdToWinform(cmdData.reloadEvent, getAllValue())
             break
         case cmdData.wordWrap:
             parentVue.wordWrap = !parentVue.wordWrap
-            break;
+            break
         case cmdData.setPosition:
-        console.log(JSON.stringify(value))
-            editorData[devEditorKeys.template].editor.setSelection(new monaco.Range(value.lineNumber,value.column, value.lineNumber,value.column+10))
-            editorData[devEditorKeys.template].editor.revealPosition(value)
-            setMonacoEditorFocus(devEditorKeys.template)
-            break;
+            setPosition(value)
+            break
+        case cmdData.reLayoutEditor:
+            editorLayout()
+            break
     }
+}
+
+const setPosition = (value) => {
+    let editorKey = isDevEditorMode() ? devEditorKeys.template : defaultEditorKeys.html
+    let editor = editorData[editorKey].editor
+
+    editor.setPosition(new monaco.Position(value.startLineNumber, value.startColumn))
+    editor.revealPosition(new monaco.Position(value.startLineNumber, value.startColumn))
+    setMonacoEditorFocus(editorKey)
 }
 
 /**
@@ -392,6 +405,20 @@ const insertValueToEditor = (editor, value, range, setFocus) => {
             range: range,
             text: value
         }])
+        if (setFocus)
+            setMonacoEditorFocus(parentVue.tabSelectedIndex)
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+const insertValueAsSnippet = (editor, value, setFocus) => {
+    try {
+        if (!editor)
+            editor = getSelectedEditorData().editor
+        if (editor)
+            editor.getContribution("snippetController2").insert(value)
+
         if (setFocus)
             setMonacoEditorFocus(parentVue.tabSelectedIndex)
     } catch (error) {
@@ -449,6 +476,7 @@ export default {
     executeCommand,
     getSelectedEditorData,
     insertValueToEditor,
+    insertValueAsSnippet,
     afterMonacoEditorCreated,
     cmdData,
     save,

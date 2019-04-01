@@ -30,6 +30,8 @@ export const cmdData = {
     editorIndexChanged: "editorIndexChanged",
     updateCursorPosition: "updateCursorPosition",
     updateMessageCount: "updateMessageCount",
-    insertValue:"insertValue",
-    setPosition:"setPosition"
+    insertValue: "insertValue",
+    insertValueAsSnippet: "insertValueAsSnippet",
+    setPosition: "setPosition",
+    reLayoutEditor: "reLayoutEditor"
 }
