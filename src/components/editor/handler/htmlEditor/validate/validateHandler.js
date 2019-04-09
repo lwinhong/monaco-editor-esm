@@ -17,14 +17,15 @@ var errorData
 var suggestData
 var editorData
 var editorObj
-
+var parentVue
 /**
  * 初始化验证信息
- * @param {编辑器vue示例} parentVue 
+ * @param {编辑器vue示例} pVue 
  * @param {所有编辑器示例对象} editorObjs 
  */
-const validateInit = (parentVue, editorObjs) => {
+const validateInit = (pVue, editorObjs) => {
     editorObj = editorObjs
+    parentVue = pVue
 
     devEditorKeys = editorObj.devEditorKeys
     defaultEditorKeys = editorObj.defaultEditorKeys
@@ -47,7 +48,7 @@ const validateInit = (parentVue, editorObjs) => {
 const doValidate = (editorKey, beforeValidate, afterValidate) => {
     // if (!isValidating)
     //     triggerValidate(editorKey, beforeValidate, afterValidate)
-    
+
     if (beforeValidate && typeof beforeValidate === 'function')
         beforeValidate()
 
@@ -237,7 +238,8 @@ const clearMessageFlowData = (editorKey, dataType) => {
  */
 const updateFootbarMsg = () => {
     var obj = { errorMsgCount: errorData.length, suggestMsgCount: suggestData.length }
-    window.v3global.executeCmd(cmdData.updateMessageCount, obj)
+    //window.v3global.executeCmd(cmdData.updateMessageCount, obj)
+    parentVue.setErrorMessageAction(obj)
 }
 
 /**

@@ -1,10 +1,7 @@
 import vuiHandler from './htmlEditor/vuiHandler'
 import validateHandler from './htmlEditor/validate/validateHandler'
-import { vuiIntelliSense, vuiHelp, emmetHTML, themeVarHandler, scriptHandler, cssHandler, cmdData, debounceWrapper } from './htmlEditor'
+import { vuiIntelliSense, vuiHelp, emmetHTML, themeVarHandler, scriptHandler, cssHandler, cmdData, debounceWrapper, devEditorKeys, defaultEditorKeys } from './htmlEditor'
 import vueParser from "../handler/codeParser/vueParser"
-
-const devEditorKeys = { template: 'template', script: 'script', style: 'style', themeLess: 'themeLess', varLess: 'varLess' }
-const defaultEditorKeys = { html: 'html', javascript: 'javascript', css: 'css', moduleCss: 'moduleCss', moduleJavascript: 'moduleJavascript' }
 
 const editorData = {}
 var parentVue
@@ -32,10 +29,13 @@ const doLoad = (value) => {
  */
 const addEditorTabPage = (tabs, editorValueJosn) => {
     console.log("loadTabs&MonacoEditor")
-    if (isDevEditorMode())
+    if (isDevEditorMode()) {
+        vueParser.parseComponentWithData(editorValueJosn)
         addDevTab(tabs, editorValueJosn)
-    else
+    }
+    else {
         addDefaultTab(tabs, editorValueJosn)
+    }
     return tabs
 }
 
@@ -78,8 +78,8 @@ const addDefaultTab = (tabs, editorValueJosn) => {
 const addDevTab = (tabs, editorValueJosn) => {
     addTab(tabs, devEditorKeys.template, "template", "html", editorValueJosn.Template || "")
     addTab(tabs, devEditorKeys.script, "script", "javascript", editorValueJosn.Script || "")
-    if (editorValueJosn.Style)
-        addTab(tabs, devEditorKeys.style, "style", "css", editorValueJosn.Style || "")
+    //if (editorValueJosn.Style)
+    addTab(tabs, devEditorKeys.style, "style", "css", editorValueJosn.Style || "")
     addTab(tabs, devEditorKeys.themeLess, "theme.less", "less", editorValueJosn.ThemeLess || "")
     addTab(tabs, devEditorKeys.varLess, "var.less", "less", editorValueJosn.VarLess || "")
 }
@@ -141,7 +141,7 @@ const initEditor = (editorObj, tabData) => {
     //template 或者 html编辑器：注册Emmet，vui智能提示相关
     if (editorKey === devEditorKeys.template || editorKey === defaultEditorKeys.html) {
         emmetHTML(editor)
-        vuiIntelliSense(editor, { editorData, devEditorKeys, defaultEditorKeys, editorKey, model })
+        vuiIntelliSense(editor, { editorData, devEditorKeys, defaultEditorKeys, editorKey, model, parentVue })
         vuiHelp(editor, model)
     }
     //注册theme页签相关
@@ -169,7 +169,8 @@ const initEditor = (editorObj, tabData) => {
     })
     //光标位置
     editor.onDidChangeCursorPosition(function (e) {
-        parentVue.v3global.executeCmd("updateCursorPosition", e.position)
+        //parentVue.v3global.executeCmd("updateCursorPosition", e.position)
+        parentVue.setCursorPostionAction(e.position)
     })
 
     //内容改变,触发弹出智能提示建议
@@ -350,6 +351,10 @@ const executeCommand = (cmd, value) => {
     }
 }
 
+/**
+ * 设置光标位置
+ * @param {position} value 
+ */
 const setPosition = (value) => {
     let editorKey = isDevEditorMode() ? devEditorKeys.template : defaultEditorKeys.html
     let editor = editorData[editorKey].editor

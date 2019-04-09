@@ -2,61 +2,240 @@
   "sss_2": {
     "name": "sss",
     "columns": {
-      "PID": "父记录字段",
-      "OrderNo": "排序字段",
-      "InnerCode": "层级码字段",
-      "IsLeaf": "叶子节点字段"
+      "PID": {
+        "name": "父记录字段",
+        "dataType": "char",
+        "defaultValue": "",
+        "remark": ""
+      },
+      "OrderNo": {
+        "name": "排序字段",
+        "dataType": "integer",
+        "defaultValue": "",
+        "remark": ""
+      },
+      "InnerCode": {
+        "name": "层级码字段",
+        "dataType": "char",
+        "defaultValue": "",
+        "remark": ""
+      },
+      "IsLeaf": {
+        "name": "叶子节点字段",
+        "dataType": "boolean",
+        "defaultValue": "",
+        "remark": ""
+      }
     }
   },
   "sss_4": {
     "name": "sss",
     "columns": {
-      "PID": "父记录字段",
-      "OrderNo": "排序字段",
-      "InnerCode": "层级码字段",
-      "IsLeaf": "叶子节点字段"
+      "PID": {
+        "name": "父记录字段",
+        "dataType": "char",
+        "defaultValue": "",
+        "remark": ""
+      },
+      "OrderNo": {
+        "name": "排序字段",
+        "dataType": "integer",
+        "defaultValue": "",
+        "remark": ""
+      },
+      "InnerCode": {
+        "name": "层级码字段",
+        "dataType": "char",
+        "defaultValue": "",
+        "remark": ""
+      },
+      "IsLeaf": {
+        "name": "叶子节点字段",
+        "dataType": "boolean",
+        "defaultValue": "",
+        "remark": ""
+      }
     }
   },
   "sss_5": {
     "name": "sss",
     "columns": {
-      "PID": "父记录字段",
-      "OrderNo": "排序字段",
-      "InnerCode": "层级码字段",
-      "IsLeaf": "叶子节点字段"
+      "PID": {
+        "name": "父记录字段",
+        "dataType": "char",
+        "defaultValue": "",
+        "remark": ""
+      },
+      "OrderNo": {
+        "name": "排序字段",
+        "dataType": "integer",
+        "defaultValue": "",
+        "remark": ""
+      },
+      "InnerCode": {
+        "name": "层级码字段",
+        "dataType": "char",
+        "defaultValue": "",
+        "remark": ""
+      },
+      "IsLeaf": {
+        "name": "叶子节点字段",
+        "dataType": "boolean",
+        "defaultValue": "",
+        "remark": ""
+      }
     }
   },
   "sss_3": {
     "name": "sss",
     "columns": {
-      "PID": "父记录字段",
-      "OrderNo": "排序字段",
-      "InnerCode": "层级码字段",
-      "a": "叶子节点字段",
-      "v": "",
-      "c": "",
-      "d": "",
-      "e": "",
-      "eeee": "",
-      "qqq": ""
+      "PID": {
+        "name": "父记录字段",
+        "dataType": "char",
+        "defaultValue": "",
+        "remark": ""
+      },
+      "OrderNo": {
+        "name": "排序字段",
+        "dataType": "integer",
+        "defaultValue": "",
+        "remark": ""
+      },
+      "InnerCode": {
+        "name": "层级码字段",
+        "dataType": "char",
+        "defaultValue": "",
+        "remark": ""
+      },
+      "a": {
+        "name": "叶子节点字段",
+        "dataType": "boolean",
+        "defaultValue": "",
+        "remark": ""
+      },
+      "v": {
+        "name": "",
+        "dataType": "char",
+        "defaultValue": "",
+        "remark": ""
+      },
+      "c": {
+        "name": "",
+        "dataType": "char",
+        "defaultValue": "",
+        "remark": ""
+      },
+      "d": {
+        "name": "",
+        "dataType": "char",
+        "defaultValue": "",
+        "remark": ""
+      },
+      "e": {
+        "name": "",
+        "dataType": "char",
+        "defaultValue": "",
+        "remark": ""
+      },
+      "eeee": {
+        "name": "",
+        "dataType": "char",
+        "defaultValue": "",
+        "remark": ""
+      },
+      "qqq": {
+        "name": "",
+        "dataType": "char",
+        "defaultValue": "",
+        "remark": ""
+      }
     }
   },
   "sss": {
     "name": "sss实体吧sss实体吧sss实体吧sss实体吧sss实体吧sss实体吧sss实体吧",
     "columns": {
-      "PID": "父记录字段",
-      "OrderNo": "排序字段",
-      "InnerCode": "层级码字段",
-      "IsLeaf": "叶子节点字段"
+      "PID": {
+        "name": "父记录字段",
+        "dataType": "char",
+        "defaultValue": "",
+        "remark": ""
+      },
+      "OrderNo": {
+        "name": "排序字段",
+        "dataType": "integer",
+        "defaultValue": "",
+        "remark": ""
+      },
+      "InnerCode": {
+        "name": "层级码字段",
+        "dataType": "char",
+        "defaultValue": "",
+        "remark": ""
+      },
+      "IsLeaf": {
+        "name": "叶子节点字段",
+        "dataType": "boolean",
+        "defaultValue": "",
+        "remark": ""
+      }
     }
   },
   "sss_1": {
     "name": "sssssssssssssssssssssssssss",
     "columns": {
-      "PID": "父记录字段",
-      "OrderNo": "排序字段",
-      "InnerCode": "层级码字段",
-      "IsLeaf": "叶子节点字段"
+      "PID": {
+        "name": "父记录字段",
+        "dataType": "char",
+        "defaultValue": "",
+        "remark": ""
+      },
+      "OrderNo": {
+        "name": "排序字段",
+        "dataType": "integer",
+        "defaultValue": "",
+        "remark": ""
+      },
+      "InnerCode": {
+        "name": "层级码字段",
+        "dataType": "char",
+        "defaultValue": "",
+        "remark": ""
+      },
+      "IsLeaf": {
+        "name": "叶子节点字段",
+        "dataType": "boolean",
+        "defaultValue": "",
+        "remark": ""
+      }
+    }
+  },
+  "xzd": {
+    "name": "zxd",
+    "columns": {
+      "PID": {
+        "name": "父记录字段",
+        "dataType": "char",
+        "defaultValue": "",
+        "remark": ""
+      },
+      "OrderNo": {
+        "name": "排序字段",
+        "dataType": "integer",
+        "defaultValue": "",
+        "remark": ""
+      },
+      "InnerCode": {
+        "name": "层级码字段",
+        "dataType": "char",
+        "defaultValue": "",
+        "remark": ""
+      },
+      "IsLeaf": {
+        "name": "叶子节点字段",
+        "dataType": "boolean",
+        "defaultValue": "",
+        "remark": ""
+      }
     }
   }
 }

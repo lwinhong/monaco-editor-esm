@@ -1,6 +1,35 @@
 <template>
   <Modal v-model="visible" mask :mask-closable="false" title="Vui 向导" :width="1000" @on-ok="ok">
     <div class="wz-content">
+      <Form>
+        <Row :gutter="16">
+          <i-col span="10">
+            <FormItem label="目标容器">
+              <Select v-model="formTmpData.container">
+                <Option value="root">root</Option>
+                <Option v-for="e in containers" :key="e.tag" :value="e.tag">{{e.tag}}</Option>
+              </Select>
+            </FormItem>
+          </i-col>
+          <i-col span="10">
+            <FormItem label="数据源">
+              <Select v-model="formTmpData.dataSource">
+                <Option
+                  v-for="e in entities"
+                  :key="e.code"
+                  :value="e.code"
+                >{{`${e.code}(${e.name})`}}</Option>
+              </Select>
+            </FormItem>
+          </i-col>
+          <i-col span="2">
+              <FormItem label="确定">
+              <Button type="primary" @click="add()">添加</Button>
+            </FormItem>
+          </i-col>
+        </Row>
+      
+      </Form>
       <Table :columns="dsTableColumns" :data="dsTableData" width="100%" height="200"></Table>
     </div>
   </Modal>
@@ -14,76 +43,24 @@ export default {
   created() {
     wizardHandler = new wizard(this);
   },
-  mounted() {},
-  //   props: {
-  //     visible: { type: Boolean, default: true }
-  //   },
   data() {
     return {
       visible: false,
       dsTableColumns: [
         {
           title: "数据源",
-          key: "dataSource",
-          render: (h, params) => {
-            return h(
-              "Select",
-              {
-                on: {
-                  onChange: event => {
-                    this.entities[params.index].dataSource = event;
-                  }
-                }
-              },
-              this.entities.map(item => {
-                return [
-                  h(
-                    "Option",
-                    {
-                      props: {
-                        value: item.name,
-                        key: item.code
-                      }
-                    },
-                    `${item.code} (${item.name})`
-                  )
-                ];
-              })
-            );
-          }
+          key: "dataSource"
         },
         {
           title: "容器",
-          key: "container",
-          render: (h, params) => {
-            return h(
-              "Select",
-              {
-                on: {
-                  onChange: event => {
-                    this.containers[params.index].container = event;
-                  }
-                }
-              },
-              this.containers.map(item => {
-                return [
-                  h(
-                    "Option",
-                    {
-                      props: {
-                        value: item.tag,
-                        key: item.tagName
-                      }
-                    },
-                    `${item.tag} (${item.tagName})`
-                  )
-                ];
-              })
-            );
-          }
+          key: "container"
         }
       ],
-      dsTableData: [{ dataSource: "", container: "" }],
+      dsTableData: [],
+      formTmpData: {
+        dataSource: "",
+        container: ""
+      },
       entities: [],
       containers: []
     };
@@ -92,6 +69,12 @@ export default {
     ...mapGetters("codeEditorStore", ["getHtmlEditorNodesSameLevel"]),
     ok() {
       debugger;
+    },
+    add() {
+      this.dsTableData.push({
+        dataSource: this.formTmpData.dataSource,
+        container: this.formTmpData.container
+      });
     },
     showWizard() {
       let wizardHandler = new wizard(this);
@@ -106,8 +89,8 @@ export default {
   },
   watch: {
     visible(n, o) {
-      if (n) {
-        this.dsTableData.splice(0, this.dsTableData.length);
+      if (!n) {
+        //this.dsTableData.splice(0, this.dsTableData.length);
         this.entities.splice(0, this.entities.length);
       }
     }

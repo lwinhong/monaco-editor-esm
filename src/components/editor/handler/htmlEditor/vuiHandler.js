@@ -1,6 +1,7 @@
 import editorUtil from './editorUtil'
 import chartHandler from './vuiChartHandler'
 import hoverHandler from './vuiHoverHandler'
+import chartHandler1 from './vuiChartHandler.1'
 
 const tagEnd = /<\/([\w-\s]+)>/
 const widgetCodeReg = /widget-code\s{0,}=\s{0,}["']\s{0,}([\w\S-\.]+)\s{0,}["']/i
@@ -31,8 +32,11 @@ export const vuiIntelliSense = (editor, editorsObj) => {
     })
 
     //如果是template编辑器的话，图表初始化
-    if (editorsObj.editorKey === editorsObj.devEditorKeys.template)
-        chartHandler.initOpenChartCommand(editor, editorsObj.model)
+    if (editorsObj.editorKey === editorsObj.devEditorKeys.template) {
+        //chartHandler.initOpenChartCommand(editor, editorsObj.model, editorsObj.parentVue)
+        var chartObj = new chartHandler1(editor, editorObj.model, editorObj.parentVue)
+        chartObj.initOpenChartCommand()
+    }
 }
 
 /*********** vui ******** */
@@ -370,7 +374,7 @@ function createPropValueCompletions(tagName, htmlText, insertSupplement, widgetC
                 kind: monaco.languages.CompletionItemKind.Keyword,
                 insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
                 documentation: option,
-                insertText: option 
+                insertText: option
             }
             props.push(propCommon)
         })

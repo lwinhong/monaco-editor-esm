@@ -7,7 +7,7 @@
       </i-select>
       <i-button size="small" icon="ios-search" class="btn-search" @click="searching"></i-button>
     </section>
-    <div class="m-widgets">
+    <div class="m-widgets" v-show="visibleTrigger">
       <dl v-for="(group,i) of toolboxItems" :key="group.groupTitle+i">
         <dt>{{group.groupTitle}}</dt>
         <dd
@@ -27,6 +27,8 @@
 <script>
 import MasterPage from "../../view/view-master-page.vue";
 import { mapState } from "vuex";
+import commandObj from "../../../app/command";
+
 export default {
   name: "ToolboxView",
   components: { MasterPage },
@@ -36,7 +38,7 @@ export default {
     };
   },
   computed: {
-    ...mapState("codeEditorStore", ["vuiData"]),
+    ...mapState("codeEditorStore", ["vuiData", "currentEditorKey"]),
     toolboxItems() {
       let toolboxItems = [];
       let i = 0;
@@ -61,6 +63,12 @@ export default {
         i++;
       }
       return toolboxItems;
+    },
+    visibleTrigger() {
+      return (
+        this.currentEditorKey == commandObj.devEditorKeys().template ||
+        this.currentEditorKey == commandObj.defaultEditorKeys().html
+      );
     }
   },
   methods: {
@@ -73,7 +81,10 @@ export default {
       ev.dataTransfer.setDragImage(ev.target, 0, 0);
     },
     insert(vui) {
-      this.v3global.executeCmd("insertValueAsSnippet", vui.vuiObj.autoCompleteSource);
+      this.v3global.executeCmd(
+        "insertValueAsSnippet",
+        vui.vuiObj.autoCompleteSource
+      );
     }
   }
 };

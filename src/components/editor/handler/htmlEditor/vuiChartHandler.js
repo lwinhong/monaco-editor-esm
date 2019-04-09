@@ -62,7 +62,7 @@ function initOpenChartCommand(editor, model) {
 
     const onMouseDown = debounceWrapper(args => {
         let e = args[0]
-     
+     debugger
         if (e.target.detail != "editor.contrib.quickOpenEditorWidget" && e.event.leftButton)
             showChartSettingButton(model, e.target.position, e)
     }, 100)

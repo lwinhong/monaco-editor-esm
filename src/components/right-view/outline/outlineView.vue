@@ -1,13 +1,19 @@
 <template>
   <master-page class="p-event" @closeClick="$emit('closeClick')">
     <template slot="header-title">层级树</template>
-    <Tree :data="htmlEditorOutline" :render="renderContent" @on-select-change="onSelectChange"></Tree>
+    <Tree
+      :data="htmlEditorOutline"
+      :render="renderContent"
+      @on-select-change="onSelectChange"
+      v-show="visibleTrigger"
+    ></Tree>
   </master-page>
 </template>
 <script>
 import MasterPage from "../../view/view-master-page.vue";
 import outlineHandler from "./outlineHandler";
 import { mapState } from "vuex";
+import commandObj from '../../../app/command'
 
 let outlineHandlerObj;
 export default {
@@ -25,12 +31,15 @@ export default {
     };
   },
   computed: {
+    ...mapState("codeEditorStore", ["htmlEditorNodes", "currentEditorKey"]),
     htmlEditorOutline() {
-      let data = []; // this.outlineData;
+      let data = []; 
       outlineHandlerObj.buildOutline(data, this.htmlEditorNodes);
       return data;
     },
-    ...mapState("codeEditorStore", ["htmlEditorNodes"])
+    visibleTrigger(){
+      return this.currentEditorKey ==commandObj.devEditorKeys().template || this.currentEditorKey==commandObj.defaultEditorKeys().html
+    }
   },
   methods: {
     renderContent(h, { root, node, data }) {

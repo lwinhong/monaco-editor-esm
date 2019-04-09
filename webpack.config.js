@@ -21,9 +21,6 @@ module.exports = env => {
             // libraryTarget: "var",
             // library: "vdk",
         },
-        // node: {
-        //     fs: "empty"
-        // },
         module: {
             rules: [
                 {

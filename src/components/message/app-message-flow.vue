@@ -24,7 +24,7 @@
 import Message from "../message/message.vue";
 // import VList from "./v-list.vue";
 import { eventBus } from "../../app/event-bus";
-import { cmdData } from '../../app/command';
+import { cmdData } from "../../app/command";
 
 const flowSrc = "../../resource/images/flow.png";
 const fixedSrc = "../../resource/images/fixed.png";
@@ -32,15 +32,6 @@ const fixedSrc = "../../resource/images/fixed.png";
 export default {
   name: "AppMessageFlow",
   components: { Message /*VList*/ },
-  created() {
-    eventBus.$on(cmdData.executeCmd, (cmd, value) => {
-      if (cmd == "showMessageFlow") {
-        //debugger;
-        this.setVisible(true);
-        this.toggleShow(value);
-      }
-    });
-  },
   props: {},
   data() {
     return {
@@ -85,7 +76,7 @@ export default {
     changeFlow() {
       this.flow = !this.flow;
     },
-    //参数隐藏当前组件
+    //尝试隐藏当前组件
     tryToHide() {
       if (this.flow && this.showMessageFlow) this.setVisible(false);
     },
@@ -98,6 +89,13 @@ export default {
     }
   },
   mounted() {
+    eventBus.$on(cmdData.executeCmd, (cmd, value) => {
+      if (cmd == cmdData.showMessageFlow) {
+        this.setVisible(true);
+        this.toggleShow(value);
+      }
+    });
+
     $(function() {
       var srcPosiY = 0,
         destPosiY = 0,

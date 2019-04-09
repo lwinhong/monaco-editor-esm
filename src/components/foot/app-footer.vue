@@ -46,7 +46,7 @@
       >
         <a class="prompt" :class="msg.class" @click="itemClick(msg.cmd, msg.key)">
           <icon :type="msg.icon" size="14"></icon>
-          {{msg.key==='error'?errorMsgCount:suggestMsgCount}}
+          {{msg.key==='error'?errorMessage.errorMsgCount:errorMessage.suggestMsgCount}}
         </a>
       </tooltip>
       <i class="sep"></i>
@@ -55,39 +55,15 @@
   </div>
 </template>
 <script>
-import { eventBus } from "../../app/event-bus";
 import { cmdData } from "../../app/command";
+import { mapState } from "vuex";
+import commandObj from "../../app/command";
 
 export default {
   name: "AppFooter",
-  created() {
-    eventBus.$on("executeCmd", (cmd, value) => {
-      switch (cmd) {
-        case cmdData.editorIndexChanged:
-          this.editorKey = value;
-          break;
-        case cmdData.updateCursorPosition:
-          if (value) {
-            this.selectionRow = value.lineNumber;
-            this.selectionCol = value.column;
-          }
-          break;
-        case cmdData.updateMessageCount:
-          if (value) {
-            this.errorMsgCount = value.errorMsgCount;
-            this.suggestMsgCount = value.suggestMsgCount;
-          }
-          break;
-      }
-    });
-  },
+
   data() {
     return {
-      selectionRow: 0,
-      selectionCol: 0,
-      errorMsgCount: 0,
-      suggestMsgCount: 0,
-      editorKey: "",
       messageFlowData: [
         {
           key: "suggest",
@@ -128,14 +104,25 @@ export default {
     };
   },
   computed: {
+    ...mapState("codeEditorStore", [
+      "errorMessage",
+      "currentEditorKey",
+      "cursorPostion"
+    ]),
     rowColMsg() {
-      return `行 ${this.selectionRow} ,列 ${this.selectionCol}`;
+      return `行 ${this.cursorPostion.lineNumber} ,列 ${
+        this.cursorPostion.column
+      }`;
     },
     errorMsg() {
-      return `${this.errorMsgCount}个错误,${this.suggestMsgCount}个警告`;
+      return `${this.errorMessage.errorMsgCount}个错误,${
+        this.errorMessage.suggestMsgCount
+      }个警告`;
     },
     errorMsgVisible() {
-      return this.errorMsgCount + this.suggestMsgCount > 0;
+      return (
+        this.errorMessage.errorMsgCount + this.errorMessage.suggestMsgCount > 0
+      );
     },
     isShowShareReource() {
       return isDevEditorMode() && formType == "Bootstrap";
@@ -145,16 +132,15 @@ export default {
     },
     isCssEditor() {
       return (
-        this.editorKey == "css" ||
-        this.editorKey == "moduleCss" ||
-        this.editorKey == "style"
+        this.currentEditorKey == commandObj.defaultEditorKeys.css ||
+        this.currentEditorKey == commandObj.defaultEditorKeys.moduleCss ||
+        this.currentEditorKey == commandObj.devEditorKeys.style
       );
-      // :class="{'notClick':isCssEditor&&item.key=='format'}"
     }
   },
   methods: {
     itemClick(cmd, value) {
-      v3global.executeCmd(cmd, value);
+      this.v3global.executeCmd(cmd, value);
     },
     selectResource(name) {
       var result;
@@ -167,14 +153,14 @@ export default {
               : cmdData.openDevShareSelector;
           result = v3global.executeCmdToWinformReturn(cmd);
           if (result && result.ok) {
-            v3global.executeCmd(cmdData.insertValue, result.value);
+            this.v3global.executeCmd(cmdData.insertValue, result.value);
           }
           return;
         case "generateTemplate":
-          v3global.executeCmdToWinform(cmdData.generateTemplate);
+          this.v3global.executeCmdToWinform(cmdData.generateTemplate);
           break;
         case "applyTemplate":
-          result = v3global.executeCmdToWinformReturn(cmdData.applyTemplate);
+          result = this.v3global.executeCmdToWinformReturn(cmdData.applyTemplate);
           if (result && result.ok) {
           }
           break;

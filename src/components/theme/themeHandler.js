@@ -31,7 +31,7 @@ function changeThemeCss(newKey) {
     }
 }
 function getThemes() {
-    return [{ key: "default", name: "默认(白)" }, { key: "dark", name: "黑" }]
+    return [{ key: "default", name: "白(默认)" }, { key: "dark", name: "黑" }]
 }
 
 export default { changeThemeCss, getThemes }

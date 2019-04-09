@@ -20,7 +20,7 @@ export default class componentWizard {
         let ds = window.v3global.dataSourceHandler.getDataSource()
         var dsData = ds.getEntities()
         if (!dsData) return;
-
+        debugger
         $.each(dsData, function (i, data) {
             entities.push({
                 code: i,

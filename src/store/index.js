@@ -1,11 +1,7 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 Vue.use(Vuex)
-import codeEditorStore from './modules/code-editor-store'
-
-const modules = {
-    codeEditorStore
-}
+import modules from './modules'
 
 const state = {
     theme: 'default'

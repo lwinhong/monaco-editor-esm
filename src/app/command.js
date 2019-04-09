@@ -33,5 +33,32 @@ export const cmdData = {
     insertValue: "insertValue",
     insertValueAsSnippet: "insertValueAsSnippet",
     setPosition: "setPosition",
-    reLayoutEditor: "reLayoutEditor"
+    reLayoutEditor: "reLayoutEditor",
+    showMessageFlow: "showMessageFlow"
 }
+
+export const devEditorKeys =
+{
+    template: 'template',
+    script: 'script',
+    style: 'style',
+    themeLess: 'themeLess',
+    varLess: 'varLess'
+}
+
+export const defaultEditorKeys =
+{
+    html: 'html',
+    javascript: 'javascript',
+    css: 'css',
+    moduleCss: 'moduleCss',
+    moduleJavascript: 'moduleJavascript'
+}
+
+class AllCommand {
+    static devEditorKeys() { return devEditorKeys }
+    static defaultEditorKeys() { return defaultEditorKeys }
+    static cmdData() { return cmdData }
+}
+
+export default AllCommand

@@ -1,6 +1,6 @@
 <template>
   <div class="fill" id="code-editor-root">
-    <button @click="$refs.componentWizard.showWizard()">点击</button>
+    <!-- <button @click="$refs.componentWizard.showWizard()">点击</button> -->
     <app-chart-widget
       :visible="appChartWidgetVisible"
       :top="chartWidgetTop"
@@ -30,7 +30,6 @@
       @insertVlanguage="insertVlanguage"
     ></app-message-flow>
     <component-wizard ref="componentWizard"></component-wizard>
-    
   </div>
 </template>
 <script>
@@ -60,15 +59,8 @@ export default {
       top: 38,
       duration: 1
     });
+
     eventBus.$on("executeCmd", (cmd, value) => {
-      switch (cmd) {
-        case "showMessageFlow": //显示错误列表
-          this.$refs.messageFlow.toggleShow(value);
-          break;
-        case "vlist":
-          this.$refs.messageFlow.toggleShow(cmd);
-          break;
-      }
       editorHandler.executeCommand(cmd, value);
     });
   },
@@ -76,9 +68,21 @@ export default {
     let me = this;
     editorHandler.Init(me);
     if (divFlag === "testform") {
-      editorHandler.addEditorTabPage(tabs, {});
+      let aa = `<div>
+	<vui-panel name="panel1" widget-code="JGDiv1_vuipanel1" widget-name="JGDiv1_vuipanel1">面板
+		<div slot="content" v-on:click="$emit('div_click1')">
+			<vui-card widget-code="JGDiv1_vuicard1" widget-name="JGDiv1_vuicard1" bordered></vui-card>
+		</div>
+		<input type="" v-on:click="$emit('ik',en.zi1,123)">
+		<vui-button widget-code="JGDiv2_vuibutton1" widget-name="JGDiv2_vuibutton1" v-on:click="$emit('JGDiv2_vuibutton1_click1')">按钮</vui-button>
+        <vui-chart chartSettings="{'PluginID':'FusionChart','PluginName':'Fusion图表','ChartID':'1003','chartName':'竖柱2D','chartType':'Column','is3D':'false','path':'fusionchart/FusionchartFactory','palette':'1','size':{'high':'400','width':'600'},'title':{'font':'黑体','fontSize':'18','fontColor':'#000000','alpha':'0','bgColor':null,'bold':'0','italic':'0','strikeout':'0','underline':'0','show':'true','horizontal':'center','vertical':'top','title':null},'subtitle':{'font':'黑体','fontSize':'12','fontColor':'#000000','alpha':'0','bgColor':null,'bold':'0','italic':'0','strikeout':'0','underline':'0','show':'true','horizontal':'center','vertical':'top','title':null},'inCanvas':{'font':'黑体','fontSize':'8','fontColor':'#696969','alpha':'100','bgColor':null,'bold':'0','italic':'0','strikeout':'0','underline':'0','top':'45','bottom':'50','left':'25','right':'25'},'outCanvas':{'font':'黑体','fontSize':'8','fontColor':'#000000','alpha':'100','bgColor':null,'bold':'0','italic':'0','strikeout':'0','underline':'0'},'xAxis':{'Title':null,'font':'黑体','fontSize':'12','fontColor':'#333333','labelDisplay':'WRAP','slantLabels':'0','bold':'0','italic':'0','strikeout':'0','underline':'0','boundaryGap':'true','scale':'false','LabelShow':'true','LineShow':'true','TickShow':'true','alignWithLabel':'true','nameGap':'25','nameLocation':'middle'},'yAxis':{'Title':null,'font':'黑体','fontSize':'12','fontColor':'#333333','labelDisplay':'WRAP','slantLabels':'0','bold':'0','italic':'0','strikeout':'0','underline':'0','boundaryGap':'false','scale':'false','LabelShow':'true','LineShow':'true','TickShow':'true','isGradientColor':'false','nameGap':'35','nameLocation':'middle'},'DataInfo':{'type':'Entity','name':'xzd','value':'xzd'},'DataColumns':{'value':['PID','OrderNo','InnerCode','IsLeaf']},'serie':{'isVar':'true','name':null,'value':'PID','values':{'value':'ss'},'show':'true','horizontal':'center','vertical':'bottom','orient':'horizontal','itemGap':'10','barMaxWidth':'50'},'x':{'isVar':'false','name':null,'value':null},'y':{'name':'排序字段','code':'OrderNo','stack':'false','showlabel':'false','position':'top'}}"></vui-chart>
+	</vui-panel> <vui-button widget-code="JGDiv2_vuibutton2" widget-name="JGDiv2_vuibutton2" v-on:click="$emit('JGDiv2_vuibutton2_click1')">按钮</vui-button>
+	<Input/>
+</div>`;
+      editorHandler.addEditorTabPage(tabs, { Template: aa,VueComponent:`<template>${aa}</template>` });
     }
     this.saveButtonVisible = editorShowType !== "FormDesigner";
+    this.setEditorKeyAction(this.getDefaultTabIndex());
   },
   computed: {
     flowMessageWidthTrigger() {
@@ -89,9 +93,7 @@ export default {
   data() {
     return {
       appChartWidgetVisible: false,
-      tabSelectedIndex: isDevEditorMode()
-        ? editorHandler.devEditorKeys.template
-        : editorHandler.defaultEditorKeys.html,
+      tabSelectedIndex: this.getDefaultTabIndex(),
       tabs: tabs,
       saveButtonVisible: true,
       editor: null,
@@ -102,13 +104,25 @@ export default {
     };
   },
   methods: {
+    ...mapGetters("codeEditorStore", ["getHtmlEditorNodesSameLevel"]),
+    ...mapActions("codeEditorStore", [
+      "setHtmlEditorNodesAction",
+      "setEditorKeyAction",
+      "setCursorPostionAction",
+      "setErrorMessageAction"
+    ]),
+
+    getDefaultTabIndex() {
+      return isDevEditorMode()
+        ? editorHandler.devEditorKeys.template
+        : editorHandler.defaultEditorKeys.html;
+    },
     onMonacoMounted(editor, tab) {
       editorHandler.afterMonacoEditorCreated(
         editor,
         tab,
         tabs[0].key === tab.key
       );
-      
     },
     save() {
       return editorHandler.save();
@@ -129,6 +143,7 @@ export default {
     },
     localMessage(row, index, type) {
       if (row) {
+        debugger;
         var editorData = editorHandler.editorData[row.moduleKey];
         var editor = editorData.editor;
         if (editor) {
@@ -139,7 +154,6 @@ export default {
           editor.setSelection(row.position);
         }
         this.tabSelectedIndex = row.moduleKey;
-        //editorHandler.setMonacoEditorFocus(row.moduleKey);
       }
     },
     insertVlanguage(vlang) {
@@ -149,19 +163,14 @@ export default {
       editorHandler.editorLayoutDelay();
     },
     dropDone(editor, value, range) {
-      //editorHandler.insertValueToEditor(editor, value, range);
       editorHandler.insertValueAsSnippet(editor, value, true);
-    },
-    ...mapActions("codeEditorStore", ["setHtmlEditorNodesAction"])
+    }
   },
   watch: {
     tabSelectedIndex(newValue, oldValue) {
       editorHandler.setMonacoEditorFocusDelay(newValue, 200);
       currentEditor = editorHandler.editorData[newValue].editor;
-      this.v3global.executeCmd(
-        editorHandler.cmdData.editorIndexChanged,
-        newValue
-      );
+      this.setEditorKeyAction(newValue);
     }
   }
 };

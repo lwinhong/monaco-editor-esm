@@ -81,21 +81,21 @@ export default {
     };
   },
   methods: {
-    setEntityTree(data) {
-      this.entityTree.splice(0, this.entityTree.length);
-      if (data) {
-        for (const element of data) {
-          const items = [];
-          if (element.items && element.items.length > 0) {
-            for (const item of element.items) {
-              items.push({ key: item.code, text: item.name });
-            }
-          }
-          const target = { key: element.code, text: element.name, item: items };
-          this.entityTree.push(target);
-        }
-      }
-    },
+    // setEntityTree(data) {
+    //   this.entityTree.splice(0, this.entityTree.length);
+    //   if (data) {
+    //     for (const element of data) {
+    //       const items = [];
+    //       if (element.items && element.items.length > 0) {
+    //         for (const item of element.items) {
+    //           items.push({ key: item.code, text: item.name });
+    //         }
+    //       }
+    //       const target = { key: element.code, text: element.name, item: items };
+    //       this.entityTree.push(target);
+    //     }
+    //   }
+    // },
     setCurrentItemKey(key) {
       this.currentItemKey = key;
     },
@@ -135,7 +135,7 @@ export default {
         $.each(data, function(i, data) {
           var cols = new Array();
           $.each(data.columns, function(j, colData) {
-            cols.push({ key: j, name: colData });
+            cols.push({ key: j, title: colData.name });
           });
           tree.push({ key: i, title: data.name, fields: cols });
         });

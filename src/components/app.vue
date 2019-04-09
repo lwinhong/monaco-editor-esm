@@ -1,5 +1,5 @@
 <template>
-  <div class="app fill">
+  <div class="app">
     <Spin size="large" fix v-if="isMaskShow"></Spin>
     <app-preview></app-preview>
     <div class="g-layout">
@@ -41,13 +41,7 @@ export default {
   data() {
     return {
       isCollapsed: true,
-      isMaskShow: true,
-      items: [
-        { key: 1, text: "1111" },
-        { key: 2, text: "2222" },
-        { key: 3, text: "3333" },
-        { key: 4, text: "4444" }
-      ]
+      isMaskShow: true
     };
   },
   methods: {

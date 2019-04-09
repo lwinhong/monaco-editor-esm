@@ -57,8 +57,9 @@
               v-else
               size="small"
               v-model="data.EventCode"
-              :readonly="data.EventType === 'Auto'"
               icon="md-copy"
+              :readonly="data.EventType === 'Auto'"
+              class="vInputs"
               :ref="data.EventCode+(data.EventFlag||'')"
               @on-click="codeCopied(data.EventCode)"
             ></i-input>
