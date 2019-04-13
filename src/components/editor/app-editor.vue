@@ -1,12 +1,12 @@
 <template>
-  <div class="fill" id="code-editor-root">
+  <div class="m-codeView" id="code-editor-root">
     <!-- <button @click="$refs.componentWizard.showWizard()">点击</button> -->
     <app-chart-widget
       :visible="appChartWidgetVisible"
       :top="chartWidgetTop"
       :left="chartWidgetLeft"
     ></app-chart-widget>
-    <div class="code-editor fill">
+    <div class="code-editor">
       <tabs v-model="tabSelectedIndex" animated>
         <tab-pane v-for="tab in tabs" :key="tab.key" :label="tab.text" :name="tab.key">
           <monaco
@@ -30,17 +30,27 @@
       @insertVlanguage="insertVlanguage"
     ></app-message-flow>
     <component-wizard ref="componentWizard"></component-wizard>
+    <!--状态栏{-->
+    <app-footer></app-footer>
   </div>
 </template>
 <script>
 import AppChartWidget from "../editor/app-chart-widget.vue";
 import editorHandler from "../editor/handler/editorHandler";
-import AppMessageFlow from "../message/app-message-flow.vue";
+import AppMessageFlow from "./message/app-message-flow.vue";
 import SaveButton from "./save-button.vue";
 import Monaco from "./monaco-editor/monaco.vue";
 import { eventBus } from "../../app/event-bus";
-import { mapState, mapActions, mapGetters } from "vuex";
 import ComponentWizard from "./wizard/componentWizard.vue";
+import AppFooter from "./foot/app-footer.vue";
+
+import { createNamespacedHelpers } from "vuex";
+const {
+  mapState,
+  mapActions,
+  mapGetters,
+  mapMutations
+} = createNamespacedHelpers("codeEditorStore");
 
 const tabs = [];
 var currentEditor = null;
@@ -52,7 +62,8 @@ export default {
     AppMessageFlow,
     SaveButton,
     Monaco,
-    ComponentWizard
+    ComponentWizard,
+    AppFooter
   },
   created() {
     this.$Message.config({
@@ -79,7 +90,10 @@ export default {
 	</vui-panel> <vui-button widget-code="JGDiv2_vuibutton2" widget-name="JGDiv2_vuibutton2" v-on:click="$emit('JGDiv2_vuibutton2_click1')">按钮</vui-button>
 	<Input/>
 </div>`;
-      editorHandler.addEditorTabPage(tabs, { Template: aa,VueComponent:`<template>${aa}</template>` });
+      editorHandler.addEditorTabPage(tabs, {
+        Template: aa,
+        VueComponent: `<template>${aa}</template>`
+      });
     }
     this.saveButtonVisible = editorShowType !== "FormDesigner";
     this.setEditorKeyAction(this.getDefaultTabIndex());
@@ -88,7 +102,7 @@ export default {
     flowMessageWidthTrigger() {
       return flowMessageWidth;
     },
-    ...mapState("codeEditorStore", ["theme"])
+    ...mapState(["theme", "wordWrap", "minimap"])
   },
   data() {
     return {
@@ -98,20 +112,22 @@ export default {
       saveButtonVisible: true,
       editor: null,
       chartWidgetTop: 24,
-      chartWidgetLeft: 24,
-      wordWrap: true,
-      minimap: false
+      chartWidgetLeft: 24
+      // wordWrap: true,
+      // minimap: false
     };
   },
   methods: {
-    ...mapGetters("codeEditorStore", ["getHtmlEditorNodesSameLevel"]),
-    ...mapActions("codeEditorStore", [
+    ...mapGetters(["getHtmlEditorNodesSameLevel", "getWidgetCodes"]),
+    ...mapActions([
       "setHtmlEditorNodesAction",
       "setEditorKeyAction",
-      "setCursorPostionAction",
-      "setErrorMessageAction"
+      "setCursorPositionAction",
+      "setErrorMessageAction",
+      "setCursorPositionOffsetAction",
+      "setWidgetCodesAction"
     ]),
-
+    ...mapMutations(["setMinimap"]),
     getDefaultTabIndex() {
       return isDevEditorMode()
         ? editorHandler.devEditorKeys.template
@@ -180,7 +196,7 @@ export default {
   height: 100%;
   width: 100%;
   margin: 0;
-  padding: 0;
+  padding: 0px 0px 28px 0px;
 }
 .code-editor .ivu-tabs-bar {
   margin-bottom: 0;

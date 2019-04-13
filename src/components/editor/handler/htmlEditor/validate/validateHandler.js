@@ -1,11 +1,8 @@
 import eslintHandler from '../../eslint/eslintHandler'
-import debounce from 'lodash/debounce'
-import { htmlValidate, eslintValidate } from './htmlValidate'
+import { htmlValidate, eslintValidate } from './htmlValidate.1'
 import { validateCssHandler } from './cssLessValidate'
-import { cmdData } from '../../../../../app/command';
+// import { cmdData } from '../../../../../app/command'
 
-var isValidating //标识是否正在验证
-var inputTimeoutTimer //计时器
 var devEditorKeys
 var defaultEditorKeys
 var cssValidateEditors
@@ -16,7 +13,7 @@ var flow
 var errorData
 var suggestData
 var editorData
-var editorObj
+var editorContext
 var parentVue
 /**
  * 初始化验证信息
@@ -24,11 +21,11 @@ var parentVue
  * @param {所有编辑器示例对象} editorObjs 
  */
 const validateInit = (pVue, editorObjs) => {
-    editorObj = editorObjs
+    editorContext = editorObjs
     parentVue = pVue
 
-    devEditorKeys = editorObj.devEditorKeys
-    defaultEditorKeys = editorObj.defaultEditorKeys
+    devEditorKeys = editorContext.devEditorKeys
+    defaultEditorKeys = editorContext.defaultEditorKeys
     cssValidateEditors = [defaultEditorKeys.css, defaultEditorKeys.moduleCss, devEditorKeys.style, devEditorKeys.themeLess, devEditorKeys.varLess]
     htmlViladateEditors = [devEditorKeys.template, defaultEditorKeys.html]
     scriptValidateEditors = [devEditorKeys.script, defaultEditorKeys.moduleJavascript, defaultEditorKeys.javascript]
@@ -36,7 +33,7 @@ const validateInit = (pVue, editorObjs) => {
     flow = parentVue.$refs.messageFlow
     errorData = flow.errorData
     suggestData = flow.suggestData
-    editorData = editorObj.editorData
+    editorData = editorContext.editorData
 
     eslintHandler.init(editorData)
 }
@@ -46,47 +43,16 @@ const validateInit = (pVue, editorObjs) => {
  * @param {编辑器key} editorKey 
  */
 const doValidate = (editorKey, beforeValidate, afterValidate) => {
-    // if (!isValidating)
-    //     triggerValidate(editorKey, beforeValidate, afterValidate)
-
     if (beforeValidate && typeof beforeValidate === 'function')
         beforeValidate()
 
-    isValidating = true
     validationAll(editorKey)
 
     if (afterValidate && typeof afterValidate === 'function')
         afterValidate()
-    editorObj.vuiHandler.afterValidationAll(isDevEditorMode()
+    editorContext.vuiHandler.afterValidationAll(isDevEditorMode()
         ? editorData[devEditorKeys.template].model
         : editorData[defaultEditorKeys.html].model)
-}
-
-/**
- * 触发数据校验
- * @param {编辑器key} editorKey 
- */
-const triggerValidate = (editorKey, beforeValidate, afterValidate) => {
-
-    //触发值改变之前，清除重置之前的计时器
-    if (inputTimeoutTimer)
-        window.clearInterval(inputTimeoutTimer)
-
-    inputTimeoutTimer = window.setTimeout(() => {
-        debounce(() => {
-            if (beforeValidate && typeof beforeValidate === 'function')
-                beforeValidate()
-
-            isValidating = true
-            validationAll(editorKey)
-
-            if (afterValidate && typeof afterValidate === 'function')
-                afterValidate()
-            editorObj.vuiHandler.afterValidationAll(isDevEditorMode()
-                ? editorData[devEditorKeys.template].model
-                : editorData[defaultEditorKeys.html].model)
-        }, 1)()
-    }, 999)
 }
 
 /**
@@ -110,7 +76,7 @@ const validateHtml = () => {
     const editorKey = isDevEditorMode() ? devEditorKeys.template : defaultEditorKeys.html
     const editorData = getEditorData(editorKey)
 
-    var msgs = htmlValidate(editorData.model, editorData.editor, editorKey, editorObj)
+    var msgs = htmlValidate(editorData.model, editorData.editor, editorKey, editorContext)
     if (msgs)
         setMessageFlowData(msgs, editorKey)
 }
@@ -154,7 +120,7 @@ const validateCss = (editorKey) => {
     var msgs
     if (isDevEditorMode()) {
         const vCss = (editorKey) => {
-            msgs = validateCssHandler(editorKey, editorData, editorObj.vuiHandler.editorUtil, creatErrorInfo)
+            msgs = validateCssHandler(editorKey, editorData, editorContext.vuiHandler.editorUtil, creatErrorInfo)
             if (msgs)
                 setMessageFlowData(msgs)
         }
@@ -292,7 +258,6 @@ const validationAll = (editorKey, saveCallBack) => {
     } catch (error) {
         console.error("验证用户输入异常:" + error)
     } finally {
-        isValidating = false
         updateFootbarMsg()
 
         if (saveCallBack && typeof saveCallBack === 'function')

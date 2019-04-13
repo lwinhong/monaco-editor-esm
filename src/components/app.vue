@@ -10,7 +10,7 @@
           <div class="m-codeView">
             <app-editor ref="editor"></app-editor>
             <!--状态栏{-->
-            <app-footer></app-footer>
+            <!-- <app-footer></app-footer> -->
           </div>
         </div>
         <!--右栏-->
@@ -23,7 +23,7 @@
 </template>
 <script>
 import AppEditor from "./editor/app-editor.vue";
-import AppFooter from "./foot/app-footer.vue";
+// import AppFooter from "./editor/foot/app-footer.vue";
 import AppRightSide from "./right-view/app-right-side.vue";
 import AppPreview from "./preview/app-preview.vue";
 import AppLeftSide from "./left-view/app-left-side.vue";
@@ -33,32 +33,18 @@ export default {
   name: "App",
   components: {
     AppEditor,
-    AppFooter,
+    // AppFooter,
     AppRightSide,
     AppPreview,
     AppLeftSide
   },
   data() {
     return {
-      isCollapsed: true,
       isMaskShow: true
     };
   },
   methods: {
-    collapsedSider() {
-      //this.$refs.sideRight.toggleCollapse();
-      //isCollapsed = false;
-    },
-    footItemClick(item) {
-      this.$refs.editor.footItemClick(item);
-    },
-    onSiderCollapse(e) {
-      this.$refs.editor.editorLayout();
-    },
-    onRightBarItemClick(item) {
-      this.$refs.rightView.changeRightView(item.key);
-      this.isCollapsed = false;
-    }
+
   },
   mounted() {
     setTimeout(() => {
@@ -67,21 +53,4 @@ export default {
   }
 };
 </script>
-<style>
-.ivu-layout-footer {
-  padding: 0px;
-}
-.ivu-layout {
-  height: 100%;
-}
-.ivu-layout-sider {
-  background-color: rgb(238, 238, 240);
-}
-.titleBackColor {
-  background-color: rgb(238, 238, 240) !important;
-}
-.setPointer {
-  cursor: pointer;
-}
-</style>
 

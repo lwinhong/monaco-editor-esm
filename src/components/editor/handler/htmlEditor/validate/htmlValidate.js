@@ -262,23 +262,6 @@ export const htmlValidate = (model, editor, editorKey, editorObj) => {
         const eslintMsgs = eslintValidate(model, editor, editorKey, editorObj.devEditorKeys)
         if (eslintMsgs && eslintMsgs.length > 0)
             msgs = msgs.concat(eslintMsgs)
-
-        // let script = model.getValue()
-        // let parser = new htmlparser.Parser({
-        //     onopentag: (tagName, attrs,a,b) => {
-        //         //this.analyzeDomNode(tagName, attrs);
-
-        //         if(tagName == "script"){
-        //             console.log("不能有script")
-
-        //         }
-        //     }
-        // }, { decodeEntities: true, lowerCaseTags: false });
-        // parser.write(script);
-        // parser.end();
-
-        //let rs = vueTempCompiler.parseComponent("<template>"+script+"</template>");
-
     }
 
     // 验证wigetcode

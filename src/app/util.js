@@ -123,7 +123,6 @@ String.prototype.equalIgnoreCase = function (str) {
  * 获取数组中重复的数据
  * @returns {} 
  */
-// ReSharper disable once NativeTypePrototypeExtending
 Array.prototype.distinct = function () {
     var a = [], b = [], c = [], d
     var object = this
@@ -149,7 +148,6 @@ Array.prototype.distinct = function () {
  *  去除数组的重复数据
  * @returns {} 
  */
-// ReSharper disable once NativeTypePrototypeExtending
 Array.prototype.distinct1 = function () {
     var a = [], b = []
     var object = this

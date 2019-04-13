@@ -14,7 +14,7 @@ var isAnyValueChanged = false
 const Init = (editorVue) => {
     parentVue = editorVue
     //eventBus.$on("executeCmd", executeCommand)//注册一个用来接受来自信息的事件
-    validateHandler.validateInit(parentVue, { editorData, devEditorKeys, defaultEditorKeys, vuiHandler })
+    validateHandler.validateInit(parentVue, { editorData, devEditorKeys, defaultEditorKeys, vuiHandler, parentVue })
 }
 
 const doLoad = (value) => {
@@ -117,6 +117,9 @@ const afterMonacoEditorCreated = (editor, tab, isSetFocus) => {
 
     if (tab.editorValue) {
         model.setValue(tab.editorValue)
+        if (editorKey == devEditorKeys.template || editorKey == defaultEditorKeys.html) {
+            templateParser(tab.editorValue)
+        }
         tab.editorValue = null
     }
 
@@ -170,7 +173,8 @@ const initEditor = (editorObj, tabData) => {
     //光标位置
     editor.onDidChangeCursorPosition(function (e) {
         //parentVue.v3global.executeCmd("updateCursorPosition", e.position)
-        parentVue.setCursorPostionAction(e.position)
+        parentVue.setCursorPositionAction(e.position)
+        parentVue.setCursorPositionOffsetAction(model.getOffsetAt(e.position))
     })
 
     //内容改变,触发弹出智能提示建议
@@ -195,17 +199,23 @@ const onDidChangeModelContent = (args) => {
     let model = args[0]
     let editorKey = args[1]
     let template = model.getValue()
+
+    templateParser(template)
+
     //验证输入
     validateHandler.doValidate(editorKey)
     setTimeout(() => {
         window.v3global.executeCmdToWinform(cmdData.cacheChangedValue, getAllValue())//将改变的数据发送winform端
         window.v3global.executeCmd(cmdData.editorChanged, { code: template, editorKey })
     }, 0);
-
-    let nodes = vueParser.parse(template)
-    parentVue.setHtmlEditorNodesAction(nodes)
 }
 
+const templateParser = (template) => {
+    if (template) {
+        let nodes = vueParser.parse(template)
+        parentVue.setHtmlEditorNodesAction(nodes)
+    }
+}
 
 /**
  * 添加一个编辑器右键上下文菜单
@@ -330,7 +340,7 @@ const executeCommand = (cmd, value) => {
         case "setEditorFocus":
             setMonacoEditorFocus(parentVue.tabSelectedIndex)
             break
-        case cmd.insertValue:
+        case cmdData.insertValue:
             insertValueToEditor(null, value, null)
             break
         case cmdData.insertValueAsSnippet:
@@ -339,9 +349,9 @@ const executeCommand = (cmd, value) => {
         case "loadEvent":
             window.v3global.executeCmdToWinform(cmdData.reloadEvent, getAllValue())
             break
-        case cmdData.wordWrap:
-            parentVue.wordWrap = !parentVue.wordWrap
-            break
+        // case cmdData.wordWrap:
+        //     parentVue.setWordWrap(!parentVue.wordWrap)
+        //     break
         case cmdData.setPosition:
             setPosition(value)
             break
@@ -487,5 +497,6 @@ export default {
     cmdData,
     save,
     saveAndClose,
-    saveViewState
+    saveViewState,
+    templateParser
 }

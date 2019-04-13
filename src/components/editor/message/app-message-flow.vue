@@ -5,7 +5,7 @@
       <img id="fixedOrFlowImg" :src="flowIconSrc" title="固定/浮动" @click="changeFlow">
       <img
         id="errorCloseImg"
-        src="../../resource/images/close.png"
+        src="../../../resource/images/close.png"
         title="关闭"
         @click="setVisible(false)"
       >
@@ -23,11 +23,11 @@
 <script>
 import Message from "../message/message.vue";
 // import VList from "./v-list.vue";
-import { eventBus } from "../../app/event-bus";
-import { cmdData } from "../../app/command";
+import { eventBus } from "../../../app/event-bus";
+import { cmdData } from "../../../app/command";
 
-const flowSrc = "../../resource/images/flow.png";
-const fixedSrc = "../../resource/images/fixed.png";
+const flowSrc = "../../../resource/images/flow.png";
+const fixedSrc = "../../../resource/images/fixed.png";
 
 export default {
   name: "AppMessageFlow",

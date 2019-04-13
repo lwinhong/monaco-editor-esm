@@ -1,19 +1,19 @@
 <template>
   <master-page class="p-event" @closeClick="$emit('closeClick')">
     <template slot="header-title">层级树</template>
-    <Tree
-      :data="htmlEditorOutline"
-      :render="renderContent"
-      @on-select-change="onSelectChange"
-      v-show="visibleTrigger"
-    ></Tree>
+    <Tree :data="htmlEditorOutline" :render="renderContent" v-show="visibleTrigger"></Tree>
+    <input type="hidden" v-model="setSelecedNodeTrigger">
   </master-page>
 </template>
 <script>
 import MasterPage from "../../view/view-master-page.vue";
 import outlineHandler from "./outlineHandler";
-import { mapState } from "vuex";
-import commandObj from '../../../app/command'
+import { createNamespacedHelpers } from "vuex";
+import commandObj from "../../../app/command";
+const {
+  mapState: mapEditorState,
+  mapGetters: mapEditorGetters
+} = createNamespacedHelpers("codeEditorStore");
 
 let outlineHandlerObj;
 export default {
@@ -22,23 +22,42 @@ export default {
   },
   created() {
     outlineHandlerObj = new outlineHandler(this);
-    outlineHandlerObj.initEventBus(this);
   },
   mounted() {},
   data() {
     return {
-      outlineData: []
+      outlineData: [],
+      selectedNodeKey: 0,
+      isSetPointByCurrent: false
     };
   },
   computed: {
-    ...mapState("codeEditorStore", ["htmlEditorNodes", "currentEditorKey"]),
+    ...mapEditorState([
+      "htmlEditorNodes",
+      "currentEditorKey",
+      "cursorPositionOffset"
+    ]),
+    ...mapEditorGetters(["getNearestNode"]),
     htmlEditorOutline() {
-      let data = []; 
+      let data = [];
+      //this.selectedNodeKey = 0;
       outlineHandlerObj.buildOutline(data, this.htmlEditorNodes);
+      outlineHandlerObj.setSelectNode(this.cursorPositionOffset);
       return data;
     },
-    visibleTrigger(){
-      return this.currentEditorKey ==commandObj.devEditorKeys().template || this.currentEditorKey==commandObj.defaultEditorKeys().html
+    setSelecedNodeTrigger() {
+      let position = this.cursorPositionOffset;
+      if (!this.isSetPointByCurrent) {
+        outlineHandlerObj.setSelectNode(position);
+      }
+      this.isSetPointByCurrent = false;
+      return this.cursorPositionOffset;
+    },
+    visibleTrigger() {
+      return (
+        this.currentEditorKey == commandObj.devEditorKeys().template ||
+        this.currentEditorKey == commandObj.defaultEditorKeys().html
+      );
     }
   },
   methods: {
@@ -49,7 +68,7 @@ export default {
           style: {
             display: "inline-block",
             width: "100%",
-            cursor: "default"
+            cursor: "pointer"
           },
           on: {
             click: () => {
@@ -58,43 +77,65 @@ export default {
           }
         },
         [
-          h("span", [
-            h("Icon", {
-              props: {
-                type: "ios-paper-outline"
-              },
+          h(
+            "span",
+            {
+              class: "mytreeNode",
               style: {
-                marginRight: "8px"
+                backgroundColor:
+                  this.selectedNodeKey == node.nodeKey ? "#d5e8fc" : ""
               }
-            }),
-            h("span", [
-              h(
-                "span",
-                {
-                  style: {
-                    marginRight: "8px"
-                  }
+            },
+            [
+              h("Icon", {
+                props: {
+                  type: "ios-paper-outline"
                 },
-                data.title
-              ),
-              h(
-                "span",
-                {
-                  style: {
-                    color: "gray"
-                  }
-                },
-                data.subTitle ? `[${data.subTitle}]` : ""
-              )
-            ])
-          ])
+                style: {
+                  marginRight: "8px"
+                }
+              }),
+              h("span", [
+                h(
+                  "span",
+                  {
+                    style: {
+                      marginRight: "8px"
+                    }
+                  },
+                  data.title
+                ),
+                h(
+                  "span",
+                  {
+                    style: {
+                      color: "gray"
+                    }
+                  },
+                  data.subTitle ? `[${data.subTitle}]` : ""
+                )
+              ])
+            ]
+          )
         ]
       );
     },
     onSelectChange(selectedNodes, selectedNode) {
+      this.isSetPointByCurrent = true;
+      this.selectedNodeKey = selectedNode.nodeKey;
       outlineHandlerObj.onOuntlineItemChanged(selectedNode);
     }
   }
 };
 </script>
+<style >
+.ivu-tree .mytreeNode {
+  border-radius: 3px;
+  transition: all 0.2s ease-in-out;
+}
+
+.ivu-tree .mytreeNode:hover {
+  background-color: #eaf4fe;
+}
+</style>
 

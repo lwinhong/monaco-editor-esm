@@ -1,7 +1,8 @@
-import { eventBus } from "../../../app/event-bus";
-import { cmdData } from "../../../app/command";
+// import { eventBus } from "../../../app/event-bus";
+import { cmdData } from "../../../app/command"
+import { debounceWrapper } from '../../../app/util'
 
-function buildOutlineRecursion(elements, datasource) {
+function buildOutlineRecursion(elements, datasource, cacheNodes) {
     if (elements && elements.length > 0) {
         for (const element of elements) {
             if (element.tag) {
@@ -12,19 +13,21 @@ function buildOutlineRecursion(elements, datasource) {
                     subTitle,
                     expand: true,
                     element,
-
-                };
+                }
+                cacheNodes.push(treeNode)
 
                 if (element.children && element.children.length > 0) {
                     var ds = []
-                    buildOutlineRecursion(element.children, ds)
+                    buildOutlineRecursion(element.children, ds, cacheNodes)
                     treeNode.children = ds
                 }
                 datasource.push(treeNode)
+
             }
         }
     }
 }
+
 function getNodeName(element) {
     let subName
     let attrsMap = element.attrsMap
@@ -34,32 +37,57 @@ function getNodeName(element) {
     return subName || ""
 }
 
+function getNearestNode(nodes, offset) {
+    if (!nodes || !offset || nodes.length == 0)
+        return null
+
+    let nearestNode
+    let os = 0
+    for (let index = 0; index < nodes.length; index++) {
+        const element = nodes[index]
+        const node = element.element
+        if (node.start <= offset && node.end >= offset) {
+            let tmp = node.end - node.start;
+            if (index == 0)
+                os = tmp
+            if (os >= tmp) {
+                os = tmp
+                nearestNode = element
+            }
+        }
+    }
+    return nearestNode
+}
+
 export default class outlineHandler {
     constructor(vue) {
         this.parentVue = vue
+        this.cacheNodes = []
     }
 
     buildOutline(treeDataSource, nodes) {
+        this.cacheNodes.splice(0, this.cacheNodes.length)
         if (nodes) {
-            buildOutlineRecursion([nodes], treeDataSource)
+            buildOutlineRecursion([nodes], treeDataSource, this.cacheNodes)
         }
     }
 
-    initEventBus() {
-        // eventBus.$on("executeCmd", (cmdId, value) => {
-        //     switch (cmdId) {
-        //         case cmdData.editorChanged:
-
-        //             break;
-        //     }
-        // })
+    setSelectNode(position) {
+        let _this = this
+        if (!this.setSelectNodeDebounceWrapper) {
+            this.setSelectNodeDebounceWrapper = debounceWrapper(args => {
+                let p = args[0]
+                let node = getNearestNode(_this.cacheNodes, p)
+                if (node)
+                    _this.parentVue.selectedNodeKey = node.nodeKey;
+            }, 500)
+        }
+        this.setSelectNodeDebounceWrapper(position)
     }
 
     onOuntlineItemChanged(item) {
         let start = item.element.start;
         let end = item.element.end
-        //let range = new monaco.Range(start.line + 1, start.col + 2, end.line + 1, end.col + 1)
         this.parentVue.v3global.executeCmd(cmdData.setPosition, { start, end })
-
     }
 }

@@ -55,13 +55,14 @@
   </div>
 </template>
 <script>
-import { cmdData } from "../../app/command";
-import { mapState } from "vuex";
-import commandObj from "../../app/command";
+import { cmdData } from "../../../app/command";
+import commandObj from "../../../app/command";
+
+import { createNamespacedHelpers } from "vuex";
+const { mapState, mapActions } = createNamespacedHelpers("codeEditorStore");
 
 export default {
   name: "AppFooter",
-
   data() {
     return {
       messageFlowData: [
@@ -104,14 +105,10 @@ export default {
     };
   },
   computed: {
-    ...mapState("codeEditorStore", [
-      "errorMessage",
-      "currentEditorKey",
-      "cursorPostion"
-    ]),
+    ...mapState(["errorMessage", "currentEditorKey", "cursorPosition"]),
     rowColMsg() {
-      return `行 ${this.cursorPostion.lineNumber} ,列 ${
-        this.cursorPostion.column
+      return `行 ${this.cursorPosition.lineNumber} ,列 ${
+        this.cursorPosition.column
       }`;
     },
     errorMsg() {
@@ -139,8 +136,13 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["setChangeWordWrapAction"]),
     itemClick(cmd, value) {
-      this.v3global.executeCmd(cmd, value);
+      if (cmd == "wordWrap") {
+        this.setChangeWordWrapAction();
+      } else {
+        this.v3global.executeCmd(cmd, value);
+      }
     },
     selectResource(name) {
       var result;
@@ -160,7 +162,9 @@ export default {
           this.v3global.executeCmdToWinform(cmdData.generateTemplate);
           break;
         case "applyTemplate":
-          result = this.v3global.executeCmdToWinformReturn(cmdData.applyTemplate);
+          result = this.v3global.executeCmdToWinformReturn(
+            cmdData.applyTemplate
+          );
           if (result && result.ok) {
           }
           break;

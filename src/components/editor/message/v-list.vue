@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-import { eventBus } from "../app/event-bus";
+import { eventBus } from "../../../app/event-bus";
 export default {
   name: "Vlist",
   created() {
