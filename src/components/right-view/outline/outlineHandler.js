@@ -86,7 +86,7 @@ export default class outlineHandler {
     }
 
     onOuntlineItemChanged(item) {
-        let start = item.element.start;
+        let start = item.element.start
         let end = item.element.end
         this.parentVue.v3global.executeCmd(cmdData.setPosition, { start, end })
     }

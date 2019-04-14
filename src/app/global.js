@@ -24,6 +24,7 @@ getQuery()
 var appVue
 const init = async (vueObj) => {
     appVue = vueObj
+
     await ds.initDs(divFlag, appVue)
     executeCmdFromWinform("dataLoaded")
     appVue.$store.dispatch('codeEditorStore/setVuiDataAction', ds.getDataSource().getVuiTag())

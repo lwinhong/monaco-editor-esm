@@ -4,17 +4,24 @@ Vue.use(Vuex)
 import modules from './modules'
 
 const state = {
-    theme: 'default'
+    theme: 'default',
+    executeCmd: null
 }
 
 const mutations = {
-    setTheme: (state, theme) => state.theme = theme
+    setTheme: (state, theme) => state.theme = theme,
+    setExecuteCmd: (state, value) => {
+        state.executeCmd = value
+    }
 }
 
 const actions = {
-    setThemeAction: ({ commit, state }, theme) => {
+    setThemeAction({ commit, state }, theme) {
         commit('setTheme', theme)
         commit('codeEditorStore/setTheme', theme)
+    },
+    executeCmd({ state }, cmd, value) {
+        state.executeCmd(cmd, value)
     }
 }
 

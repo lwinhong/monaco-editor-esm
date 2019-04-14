@@ -8,7 +8,7 @@
 <script>
 import MasterPage from "../../view/view-master-page.vue";
 import outlineHandler from "./outlineHandler";
-import { createNamespacedHelpers } from "vuex";
+import { mapActions, createNamespacedHelpers } from "vuex";
 import commandObj from "../../../app/command";
 const {
   mapState: mapEditorState,
