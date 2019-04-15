@@ -20,9 +20,10 @@ export const vuiIntelliSense = (editor, editorsObj) => {
         isTriggerByBrackets = e.changes[0].text === '<'
     })
 
-    monaco.languages.registerHoverProvider("html", {
-        provideHover: hoverHandler
-    })
+    // monaco.languages.registerHoverProvider("html", {
+    //     provideHover: hoverHandler
+    // })
+    new hoverHandler(editorsObj.parentVue)
 
     // triggerCharacters: [" ", "<", "=", "\""],
     monaco.languages.registerCompletionItemProvider("html", {

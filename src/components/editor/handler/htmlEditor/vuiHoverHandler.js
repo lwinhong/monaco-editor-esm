@@ -56,13 +56,14 @@ function getVuiPropHoverData(tag, prop) {
     return null
 }
 
-function hoverHandler(model, position) {
+
+function hoverHandler(model, position, parentValue) {
     const word = model.getWordAtPosition(position)
     if (!word)
         return null
 
     const tokensAtLine = editorUtil.getTokensAtLine(position.lineNumber, model).tokens1
-    if (!tokensAtLine) 
+    if (!tokensAtLine)
         return null
 
     var result = null
@@ -87,4 +88,10 @@ function hoverHandler(model, position) {
     return result
 }
 
-export default hoverHandler
+export default class vuiHoverHandler {
+    constructor(vue) {
+        monaco.languages.registerHoverProvider("html", {
+            provideHover: (model, position) => hoverHandler(model, position, vue)
+        })
+    }
+}
