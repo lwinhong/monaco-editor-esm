@@ -2,8 +2,15 @@
   <master-page class="p-event" @closeClick="$emit('closeClick')">
     <template slot="header-title">事件</template>
     <section :class="search" slot="header-content">
-      <i-button size="small" icon="md-add" class="btn-add" title="添加事件" @click="add" type="primary">添加事件</i-button>
-      <i-button size="small" icon="ios-search" class="btn-search" @click="searching" ></i-button>
+      <i-button
+        size="small"
+        icon="md-add"
+        class="btn-add"
+        title="添加事件"
+        @click="add"
+        type="primary"
+      >添加事件</i-button>
+      <i-button size="small" icon="ios-search" class="btn-search" @click="searching"></i-button>
       <i-input
         search
         clearable
@@ -77,6 +84,7 @@
         </i-form>
       </div>
     </div>
+    <input type="hidden" v-model="setSelectedEventTrigger">
   </master-page>
 </template>
 <script>
@@ -87,11 +95,18 @@ import {
   initEventBus,
   refresh,
   updateEventDev,
-  updateEventOld
+  updateEventOld,setSelectedEvent
 } from "./eventHandler";
 
 import MasterPage from "../../view/view-master-page.vue";
 import * as clipboard from "clipboard-polyfill";
+import { createNamespacedHelpers } from "vuex";
+const {
+  mapState,
+  // mapActions,
+  mapGetters
+  // mapMutations
+} = createNamespacedHelpers("codeEditorStore");
 
 export default {
   name: "eventView",
@@ -109,6 +124,12 @@ export default {
     };
   },
   computed: {
+    ...mapState(["currentNodeAndAttr"]),
+    setSelectedEventTrigger() {
+      let nodeAttr = this.currentNodeAndAttr;
+      setSelectedEvent(this, nodeAttr)
+      return 0;
+    },
     filterEvents() {
       if (this.searchText == "") return this.eventData;
 
@@ -125,6 +146,7 @@ export default {
     //this.load();
   },
   methods: {
+    ...mapGetters(["getNearestNodeAndAttribute"]),
     searchTextChanged(value) {
       let _this = this;
       if (this.searchTimer) clearTimeout(this.searchTimer);

@@ -72,17 +72,28 @@ export default class outlineHandler {
         }
     }
 
-    setSelectNode(position) {
-        let _this = this
-        if (!this.setSelectNodeDebounceWrapper) {
-            this.setSelectNodeDebounceWrapper = debounceWrapper(args => {
-                let p = args[0]
-                let node = getNearestNode(_this.cacheNodes, p)
-                if (node)
-                    _this.parentVue.selectedNodeKey = node.nodeKey;
-            }, 500)
+    // setSelectNode(position) {
+    //     let _this = this
+    //     if (!this.setSelectNodeDebounceWrapper) {
+    //         this.setSelectNodeDebounceWrapper = debounceWrapper(args => {
+    //             let p = args[0]
+    //             let node = getNearestNode(_this.cacheNodes, p)
+    //             if (node)
+    //                 _this.parentVue.selectedNodeKey = node.nodeKey;
+    //         }, 500)
+    //     }
+    //     this.setSelectNodeDebounceWrapper(position)
+    // }
+
+    setSelectNode(node) {
+        if (this.cacheNodes.length > 0) {
+            this.cacheNodes.forEach(element => {
+                if (element.element == node) {
+                    this.parentVue.selectedNodeKey = element.nodeKey
+                    return
+                }
+            })
         }
-        this.setSelectNodeDebounceWrapper(position)
     }
 
     onOuntlineItemChanged(item) {

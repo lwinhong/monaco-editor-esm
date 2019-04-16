@@ -8,10 +8,14 @@
 <script>
 import MasterPage from "../../view/view-master-page.vue";
 import outlineHandler from "./outlineHandler";
-import { mapActions, createNamespacedHelpers } from "vuex";
+import { createNamespacedHelpers } from "vuex";
 import commandObj from "../../../app/command";
+const editors = [
+  commandObj.devEditorKeys().template,
+  commandObj.defaultEditorKeys().html
+];
 const {
-  mapState: mapEditorState,
+  mapState: mapEditorState
   //mapGetters: mapEditorGetters
 } = createNamespacedHelpers("codeEditorStore");
 
@@ -35,32 +39,27 @@ export default {
     ...mapEditorState([
       "htmlEditorNodes",
       "currentEditorKey",
-      "cursorPositionOffset"
+      // "cursorPositionOffset",
+      "currentNode"
     ]),
     htmlEditorOutline() {
       let data = [];
-      //this.selectedNodeKey = 0;
       outlineHandlerObj.buildOutline(data, this.htmlEditorNodes);
-      outlineHandlerObj.setSelectNode(this.cursorPositionOffset);
+      //outlineHandlerObj.setSelectNode(this.cursorPositionOffset);
       return data;
     },
     setSelecedNodeTrigger() {
-      let position = this.cursorPositionOffset;
       if (!this.isSetPointByCurrent) {
-        outlineHandlerObj.setSelectNode(position);
+        outlineHandlerObj.setSelectNode(this.currentNode);
       }
       this.isSetPointByCurrent = false;
-      return this.cursorPositionOffset;
+      return this.currentNode;
     },
     visibleTrigger() {
-      return (
-        this.currentEditorKey == commandObj.devEditorKeys().template ||
-        this.currentEditorKey == commandObj.defaultEditorKeys().html
-      );
+      return $.inArray(this.currentEditorKey, editors) != -1;
     }
   },
   methods: {
-    //...mapEditorGetters(["getNearestNode"]),
     renderContent(h, { root, node, data }) {
       return h(
         "span",

@@ -1,7 +1,11 @@
+import { debounceWrapper } from '../../app/util'
+
 const state = {
     currentEditorKey: "template",
     cursorPosition: { lineNumber: 0, column: 0 },
     cursorPositionOffset: 0,
+    currentNodeAndAttr: null,
+    currentNode: null,
     errorMessage: { errorMsgCount: 0, suggestMsgCount: 0 },
     htmlEditorNodes: null,
     widgetCodes: [],
@@ -24,27 +28,11 @@ const getters = {
     },
     getNearestNode: (state, getters, rootState) => (offset) => {
         let nodes = getters.getHtmlEditorNodesSameLevel
-        let nearestNode = getters.getNearestNodeWidthNodes(nodes, offset)
+        let nearestNode = getNearestNodeWidthNodes(nodes, offset)
         return nearestNode
     },
     getNearestNodeWidthNodes: () => (nodes, offset) => {
-        if (!nodes || !offset || nodes.length == 0)
-            return null
-
-        let nearestNode
-        let os = 0
-        for (let index = 0; index < nodes.length; index++) {
-            const node = nodes[index];
-            if (node.start <= offset && node.end >= offset) {
-                let tmp = node.end - node.start;
-                if (index == 0)
-                    os = tmp
-                if (os >= tmp) {
-                    os = tmp
-                    nearestNode = node
-                }
-            }
-        }
+        let nearestNode = getNearestNodeWidthNodes(nodes, offset)
         return nearestNode
     },
     getNearestNodeAndAttribute: (state, getters) => (offset) => {
@@ -53,15 +41,7 @@ const getters = {
         return { node, attr }
     },
     getNearestAttribute: () => (node, offset) => {
-        let attr
-        if (node && node.tag) {
-            for (const _attr of node.attrsList) {
-                if (_attr.start <= offset && _attr.end >= offset) {
-                    attr = _attr
-                    break
-                }
-            }
-        }
+        let attr = getNearestAttribute()
         return attr
     },
     getWidgetCodes(state) {
@@ -102,6 +82,12 @@ const mutations = {
     },
     setWidgetCodes(state, value) {
         state.widgetCodes = value
+    },
+    setCurrentNodeAndAttr(state, value) {
+        state.currentNodeAndAttr = value
+    },
+    setCurrentNode(state, value) {
+        state.currentNode = value
     }
 }
 
@@ -121,8 +107,17 @@ const actions = {
     setErrorMessageAction({ commit }, value) {
         commit("setErrorMessage", value)
     },
-    setCursorPositionOffsetAction({ commit }, value) {
+    setCursorPositionOffsetAction({ commit, getters }, value) {
         commit("setCursorPositionOffset", value)
+        if (!getNearestNodeAndAttributeDebouncer) {
+            getNearestNodeAndAttributeDebouncer = debounceWrapper(args => {
+                let nodeAttr = getters.getNearestNodeAndAttribute(args[0])
+                console.log("getNearestNodeAndAttributeDebouncer:" + args[0])
+                commit('setCurrentNodeAndAttr', nodeAttr)
+                commit('setCurrentNode', nodeAttr.node)
+            }, 667);
+        }
+        getNearestNodeAndAttributeDebouncer(value)
     },
     setWidgetCodesAction({ commit }, value) {
         commit("setWidgetCodes", value)
@@ -132,7 +127,9 @@ const actions = {
     }
 }
 
-const setToSameLevelRecursion = (elements, list) => {
+let getNearestNodeAndAttributeDebouncer
+
+function setToSameLevelRecursion(elements, list) {
     if (!elements)
         return
     for (const element of elements) {
@@ -140,6 +137,40 @@ const setToSameLevelRecursion = (elements, list) => {
         if (element.hasOwnProperty('children'))
             setToSameLevelRecursion(element['children'], list)
     }
+}
+
+function getNearestNodeWidthNodes(nodes, offset) {
+    if (!nodes || !offset || nodes.length == 0)
+        return null
+
+    let nearestNode
+    let os = 0
+    for (let index = 0; index < nodes.length; index++) {
+        const node = nodes[index];
+        if (node.start <= offset && node.end >= offset) {
+            let tmp = node.end - node.start;
+            if (index == 0)
+                os = tmp
+            if (os >= tmp) {
+                os = tmp
+                nearestNode = node
+            }
+        }
+    }
+    return nearestNode
+}
+
+function getNearestAttribute(node, offset) {
+    let attr
+    if (node && node.tag) {
+        for (const _attr of node.attrsList) {
+            if (_attr.start <= offset && _attr.end >= offset) {
+                attr = _attr
+                break
+            }
+        }
+    }
+    return attr
 }
 
 const codeEditorStore = {

@@ -191,3 +191,8 @@ const eventIsExist = (eventDataSource, eventCode) => {
 export const updateEventOld = (eventDataSource, value) => {
     debugger
 }
+
+export const setSelectedEvent = (vue, nodeAttr) => {
+
+
+}
