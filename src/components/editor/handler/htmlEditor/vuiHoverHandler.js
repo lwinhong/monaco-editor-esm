@@ -56,42 +56,55 @@ function getVuiPropHoverData(tag, prop) {
     return null
 }
 
-
-function hoverHandler(model, position, parentValue) {
-    const word = model.getWordAtPosition(position)
-    if (!word)
-        return null
-
-    const tokensAtLine = editorUtil.getTokensAtLine(position.lineNumber, model).tokens1
-    if (!tokensAtLine)
-        return null
-
-    var result = null
-    for (var i = tokensAtLine.length - 1; i >= 0; i--) {
-        var token = tokensAtLine[i]
-        if (position.column - 1 >= token.offset) {
-            //属性
-            if (token.type === "attribute.name.html") {
-                const substringText = editorUtil.getLastHtml(position, model, word)
-                const startTag = editorUtil.matchTagStart(substringText)
-                if (startTag) {
-                    const prop = editorUtil.getLastProp(substringText + '=""')
-                    result = getVuiPropHoverData(startTag[1], prop || word.word)
-                }
-            } else if (token.type === "tag.html") {//标签
-                result = getVuiHoverData(word.word)
-            }
-            break
-        }
-    }
-
-    return result
-}
-
 export default class vuiHoverHandler {
     constructor(vue) {
         monaco.languages.registerHoverProvider("html", {
-            provideHover: (model, position) => hoverHandler(model, position, vue)
+            provideHover: (model, position) => {
+                let offset = model.getOffsetAt(position)
+                let nodeAndAttr = vue.getNearestNodeAndAttribute()(offset)
+
+                var result = null
+                if (nodeAndAttr && nodeAndAttr.node && nodeAndAttr.node.tag) {
+                    //没找到属性
+                    if (nodeAndAttr.attr) {
+                        result = getVuiPropHoverData(nodeAndAttr.node.tag, nodeAndAttr.attr.name)
+                    } else {
+                        result = getVuiHoverData(nodeAndAttr.node.tag)
+                    }
+                }
+
+                return result
+            }
         })
     }
 }
+
+// function hoverHandler_old(model, position, parentValue) {
+//     const word = model.getWordAtPosition(position)
+//     if (!word)
+//         return null
+
+//     const tokensAtLine = editorUtil.getTokensAtLine(position.lineNumber, model).tokens1
+//     if (!tokensAtLine)
+//         return null
+
+//     var result = null
+//     for (var i = tokensAtLine.length - 1; i >= 0; i--) {
+//         var token = tokensAtLine[i]
+//         if (position.column - 1 >= token.offset) {
+//             //属性
+//             if (token.type === "attribute.name.html") {
+//                 const substringText = editorUtil.getLastHtml(position, model, word)
+//                 const startTag = editorUtil.matchTagStart(substringText)
+//                 if (startTag) {
+//                     const prop = editorUtil.getLastProp(substringText + '=""')
+//                     result = getVuiPropHoverData(startTag[1], prop || word.word)
+//                 }
+//             } else if (token.type === "tag.html") {//标签
+//                 result = getVuiHoverData(word.word)
+//             }
+//             break
+//         }
+//     }
+//     return result
+// }

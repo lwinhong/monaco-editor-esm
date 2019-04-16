@@ -53,27 +53,6 @@ function selectOldValue(oldValue, position) {
     return monaco.Range.fromPositions(position)
 }
 
-function getNearestNode(nodes, offset) {
-    if (!nodes || !offset)
-        return null
-
-    let nearestNode
-    let os = 0
-    for (let index = 0; index < nodes.length; index++) {
-        const node = nodes[index];
-        if (node.start <= offset && node.end >= offset) {
-            let tmp = node.end - node.start;
-            if (index == 0)
-                os = tmp
-            if (os >= tmp) {
-                os = tmp
-                nearestNode = node
-            }
-        }
-    }
-    return nearestNode
-}
-
 class ChartHandler {
 
     constructor(editor, model, vue) {
@@ -194,7 +173,7 @@ class ChartHandler {
     isNeedShowCharttingWidget(position) {
         if (!position)
             return false
-            
+
         let selection = this.editor.getSelection()
         if (selection && selection.startLineNumber && selection.endLineNumber) {
             if (selection.startLineNumber != selection.endLineNumber) {
@@ -204,23 +183,16 @@ class ChartHandler {
         }
 
         this.chartSettingsValue = ""
-        let nodes = this.parentVue.getHtmlEditorNodesSameLevel();
-        if (!nodes)
-            return false
 
         let offset = this.model.getOffsetAt(position)
-        let itemLast = getNearestNode(nodes, offset)
+        let itemLast = this.parentVue.getNearestNode()(offset)
 
         if (itemLast && itemLast.tag && itemLast.tag == "vui-chart") {
-            if (itemLast.attrsList) {
-                for (const attr of itemLast.attrsList) {
-                    if (attr.name == "chartSettings") {
-                        if (attr.start <= offset && attr.end >= offset) {
-                            this.chartSettingsValue = attr.value
-                            return true
-                        }
-                        break;
-                    }
+            let attr = this.parentVue.getNearestAttribute()(itemLast, offset)
+            if (attr && attr.name == "chartSettings") {
+                if (attr.start <= offset && attr.end >= offset) {
+                    this.chartSettingsValue = attr.value
+                    return true
                 }
             }
         }

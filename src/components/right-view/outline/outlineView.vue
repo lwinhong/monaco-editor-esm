@@ -12,7 +12,7 @@ import { mapActions, createNamespacedHelpers } from "vuex";
 import commandObj from "../../../app/command";
 const {
   mapState: mapEditorState,
-  mapGetters: mapEditorGetters
+  //mapGetters: mapEditorGetters
 } = createNamespacedHelpers("codeEditorStore");
 
 let outlineHandlerObj;
@@ -37,7 +37,6 @@ export default {
       "currentEditorKey",
       "cursorPositionOffset"
     ]),
-    ...mapEditorGetters(["getNearestNode"]),
     htmlEditorOutline() {
       let data = [];
       //this.selectedNodeKey = 0;
@@ -61,6 +60,7 @@ export default {
     }
   },
   methods: {
+    //...mapEditorGetters(["getNearestNode"]),
     renderContent(h, { root, node, data }) {
       return h(
         "span",

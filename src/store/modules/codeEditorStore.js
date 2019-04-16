@@ -22,7 +22,12 @@ const getters = {
             setToSameLevelRecursion([nodes], sameLevel)
         return sameLevel
     },
-    getNearestNode: (state) => (nodes, offset) => {
+    getNearestNode: (state, getters, rootState) => (offset) => {
+        let nodes = getters.getHtmlEditorNodesSameLevel
+        let nearestNode = getters.getNearestNodeWidthNodes(nodes, offset)
+        return nearestNode
+    },
+    getNearestNodeWidthNodes: () => (nodes, offset) => {
         if (!nodes || !offset || nodes.length == 0)
             return null
 
@@ -41,6 +46,23 @@ const getters = {
             }
         }
         return nearestNode
+    },
+    getNearestNodeAndAttribute: (state, getters) => (offset) => {
+        let node = getters.getNearestNode(offset)
+        let attr = getters.getNearestAttribute(node, offset)
+        return { node, attr }
+    },
+    getNearestAttribute: () => (node, offset) => {
+        let attr
+        if (node && node.tag) {
+            for (const _attr of node.attrsList) {
+                if (_attr.start <= offset && _attr.end >= offset) {
+                    attr = _attr
+                    break
+                }
+            }
+        }
+        return attr
     },
     getWidgetCodes(state) {
         return state.widgetCodes
@@ -105,7 +127,7 @@ const actions = {
     setWidgetCodesAction({ commit }, value) {
         commit("setWidgetCodes", value)
     },
-    setChangeWordWrapAction({ commit, state, rootState }, value){
+    setChangeWordWrapAction({ commit, state, rootState }, value) {
         commit("setChangeWordWrap", !state.wordWrap)
     }
 }

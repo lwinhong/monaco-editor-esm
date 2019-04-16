@@ -118,7 +118,13 @@ export default {
     };
   },
   methods: {
-    ...mapGetters(["getHtmlEditorNodesSameLevel", "getWidgetCodes"]),
+    ...mapGetters([
+      "getHtmlEditorNodesSameLevel",
+      "getWidgetCodes",
+      "getNearestNode",
+      "getNearestAttribute",
+      "getNearestNodeAndAttribute"
+    ]),
     ...mapActions([
       "setHtmlEditorNodesAction",
       "setEditorKeyAction",
