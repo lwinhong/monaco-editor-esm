@@ -1,6 +1,6 @@
-import editorUtil from './editorUtil'
-import { debounceWrapper } from '../../../../app/util'
-import { cmdData } from '../../../../app/command'
+import editorUtil from '../handler/htmlEditor/editorUtil'
+import { debounceWrapper } from '../../../app/util'
+import { cmdData } from '../../../app/command'
 
 const canShowOpenChartWidgetKey = "canShowOpenChartWidget"
 
@@ -162,8 +162,8 @@ class ChartHandler {
         this.canShowOpenChartWidget.set(show)
         let ocs = $("#openChartSettings")
         if (show) {
-            ocs.css("top", mouseEvent.event.posy + 10)
-            ocs.css("left", mouseEvent.event.posx)
+            ocs.css("top", mouseEvent.event.browserEvent.screenY + 10)
+            ocs.css("left", mouseEvent.event.browserEvent.screenX)
             ocs.show()
         } else {
             ocs.hide()

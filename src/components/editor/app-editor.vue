@@ -1,11 +1,6 @@
 <template>
   <div class="m-codeView" id="code-editor-root">
-    <!-- <button @click="$refs.componentWizard.showWizard()">点击</button> -->
-    <app-chart-widget
-      :visible="appChartWidgetVisible"
-      :top="chartWidgetTop"
-      :left="chartWidgetLeft"
-    ></app-chart-widget>
+    <app-chart-widget ref="appChartWidgetRef" v-if="appChartWidgetVisible"></app-chart-widget>
     <div class="code-editor">
       <tabs v-model="tabSelectedIndex" animated>
         <tab-pane v-for="tab in tabs" :key="tab.key" :label="tab.text" :name="tab.key">
@@ -16,7 +11,7 @@
             :minimap="minimap"
             :tag="tab"
             :theme="theme"
-            @mounted="onMonacoMounted"
+            @monacoMounted="onMonacoMounted"
             @dropDone="dropDone"
           ></monaco>
         </tab-pane>
@@ -35,15 +30,15 @@
   </div>
 </template>
 <script>
-import AppChartWidget from "../editor/app-chart-widget.vue";
-import editorHandler from "../editor/handler/editorHandler";
+import AppChartWidget from "../editor/chart/app-chart-widget.vue";
 import AppMessageFlow from "./message/app-message-flow.vue";
 import SaveButton from "./save-button.vue";
 import Monaco from "./monaco-editor/monaco.vue";
-import { eventBus } from "../../app/event-bus";
 import ComponentWizard from "./wizard/componentWizard.vue";
 import AppFooter from "./foot/app-footer.vue";
 
+import editorHandler from "../editor/handler/editorHandler";
+import { eventBus } from "../../app/event-bus";
 import { createNamespacedHelpers } from "vuex";
 const {
   mapState,
@@ -97,6 +92,8 @@ export default {
     }
     this.saveButtonVisible = editorShowType !== "FormDesigner";
     this.setEditorKeyAction(this.getDefaultTabIndex());
+
+    this.appChartWidgetVisible = isDevEditorMode();
   },
   computed: {
     flowMessageWidthTrigger() {
@@ -106,15 +103,10 @@ export default {
   },
   data() {
     return {
-      appChartWidgetVisible: false,
       tabSelectedIndex: this.getDefaultTabIndex(),
       tabs: tabs,
       saveButtonVisible: true,
-      editor: null,
-      chartWidgetTop: 24,
-      chartWidgetLeft: 24
-      // wordWrap: true,
-      // minimap: false
+      appChartWidgetVisible: true
     };
   },
   methods: {
@@ -131,7 +123,8 @@ export default {
       "setCursorPositionAction",
       "setErrorMessageAction",
       "setCursorPositionOffsetAction",
-      "setWidgetCodesAction"
+      "setWidgetCodesAction",
+      "setEditorDataAction"
     ]),
     ...mapMutations(["setMinimap"]),
     getDefaultTabIndex() {
@@ -145,6 +138,11 @@ export default {
         tab,
         tabs[0].key === tab.key
       );
+
+      //如果是dev 的template 需要注册 图标相关
+      if (tab.key == editorHandler.devEditorKeys.template) {
+        this.$refs.appChartWidgetRef.initWidget(editor);
+      }
     },
     save() {
       return editorHandler.save();
@@ -154,11 +152,6 @@ export default {
     },
     saveViewState() {
       return editorHandler.saveViewState();
-    },
-    openChartWidget(point) {
-      this.chartWidgetTop = point.y;
-      this.chartWidgetLeft = point.x;
-      this.appChartWidgetVisible = true;
     },
     footItemClick(item) {
       editorHandler.executeCommand(item.key, item);
@@ -186,6 +179,16 @@ export default {
     },
     dropDone(editor, value, range) {
       editorHandler.insertValueAsSnippet(editor, value, true);
+    },
+    getOpenChartCmdId() {
+      if (this.$refs.chartWidget)
+        return this.$refs.chartWidget.getOpenChartCmdId();
+      return null;
+    },
+    getChartCompletion() {
+      if (this.$refs.chartWidget)
+        return this.$refs.chartWidget.getChartCompletion();
+      return null;
     }
   },
   watch: {

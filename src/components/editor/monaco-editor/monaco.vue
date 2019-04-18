@@ -1,5 +1,10 @@
 <template>
-  <div :style="style" @dragover.prevent="dragover" @drop.prevent="drop" @dragenter.prevent="dragenter"></div>
+  <div
+    :style="style"
+    @dragover.prevent="dragover"
+    @drop.prevent="drop"
+    @dragenter.prevent="dragenter"
+  ></div>
 </template>
 <script>
 import debounce from "lodash/debounce";
@@ -13,7 +18,7 @@ export default {
     code: { type: String, default: "" },
     srcPath: { type: String, default: "resource/monaco-editor" },
     language: { type: String, default: "javascript" },
-    theme: { type: String, default: 'vs' }, // vs-dark, hc-black
+    theme: { type: String, default: "vs" }, // vs-dark, hc-black
     options: { type: Object, default: () => {} },
     changeThrottle: { type: Number, default: 0 },
     wordWrap: { type: Boolean, default: true },
@@ -53,7 +58,7 @@ export default {
         readOnly: false,
         cursorStyle: "line",
         automaticLayout: false,
-
+        editor: null,
         formatOnPaste: true,
         mouseWheelZoom: true,
         renderLineHighlight: "none",
@@ -64,10 +69,7 @@ export default {
   },
   watch: {
     language(newValue, oldValue) {
-      window.monaco.editor.setModelLanguage(
-        this.editor.getModel(),
-        newValue
-      );
+      window.monaco.editor.setModelLanguage(this.editor.getModel(), newValue);
     },
     minimap(newValue, oldValue) {
       this.editor.updateOptions({ minimap: { enabled: newValue } });
@@ -81,9 +83,8 @@ export default {
   },
   methods: {
     editorHasLoaded(editor, monaco) {
-      this.editor = editor;
       this.monaco = monaco;
-      this.$emit("mounted", editor, this.tag);
+      this.$emit("monacoMounted", editor, this.tag);
     },
     fetchEditor() {
       monacoLoader.load(this.srcPath, this.createMonaco);

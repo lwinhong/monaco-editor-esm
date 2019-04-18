@@ -4,12 +4,21 @@
     class="chartSetting"
     id="openChartSettings"
     v-show="visible"
-    @click="chartWidgetClick"
   >
     <span>打开图表设计器</span>
   </div>
 </template>
 <script>
+import chartHandler from "./vuiChartHandler";
+import { createNamespacedHelpers } from "vuex";
+const {
+  //mapState,
+  //mapActions,
+  mapGetters
+  // mapMutations
+} = createNamespacedHelpers("codeEditorStore");
+let chartHandlerObj;
+
 export default {
   name: "AppChartWidget",
   props: {
@@ -24,11 +33,23 @@ export default {
     left: {
       type: Number,
       default: 24
+    },
+    editor: {
+      type: Object,
+      default: null
     }
   },
   methods: {
-    chartWidgetClick() {
-      this.$emit("chart-widget-click");
+    ...mapGetters(["getNearestNode", "getNearestAttribute"]),
+    initWidget(editor) {
+      chartHandlerObj = new chartHandler(editor, editor.getModel(), this);
+      chartHandlerObj.initOpenChartCommand();
+    },
+    getOpenChartCmdId() {
+      return chartHandlerObj.getOpenChartCmdId();
+    },
+    getChartCompletion() {
+      return chartHandlerObj.getChartCompletion();
     }
   }
 };
@@ -54,8 +75,8 @@ export default {
   top: 24px;
   left: 24px;
   width: 300px;
-  background: url(../../resource/images/icon-prop-light.png) #e4e5e9 8px center
-    no-repeat;
+  background: url(../../../resource/images/icon-prop-light.png) #e4e5e9 8px
+    center no-repeat;
 
   color: #2196f3;
   font-size: 12px;
@@ -69,7 +90,7 @@ export default {
 .chartSetting span {
   display: block;
   text-indent: 20px;
-  background: url(../../resource/images/icon-enter-light.png) right center
+  background: url(../../../resource/images/icon-enter-light.png) right center
     no-repeat;
 }
 
@@ -79,8 +100,8 @@ export default {
   top: 150px;
   left: 150px;
   width: 300px;
-  background: url(../../resource/images/icon-prop-dark.png) #343537 8px center
-    no-repeat;
+  background: url(../../../resource/images/icon-prop-dark.png) #343537 8px
+    center no-repeat;
   color: #2196f3;
   font-size: 12px;
   line-height: 30px;
@@ -94,6 +115,7 @@ export default {
 .monaco-editor.vs-dark .chartSetting span {
   display: block;
   text-indent: 20px;
-  background: url(../../resource/images/icon-enter-dark.png) right center no-repeat;
+  background: url(../../../resource/images/icon-enter-dark.png) right center
+    no-repeat;
 }
 </style>

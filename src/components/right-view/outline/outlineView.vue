@@ -39,13 +39,11 @@ export default {
     ...mapEditorState([
       "htmlEditorNodes",
       "currentEditorKey",
-      // "cursorPositionOffset",
       "currentNode"
     ]),
     htmlEditorOutline() {
       let data = [];
       outlineHandlerObj.buildOutline(data, this.htmlEditorNodes);
-      //outlineHandlerObj.setSelectNode(this.cursorPositionOffset);
       return data;
     },
     setSelecedNodeTrigger() {

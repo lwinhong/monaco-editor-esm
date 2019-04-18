@@ -26,44 +26,36 @@
 </template>
 <script>
 import MasterPage from "../../view/view-master-page.vue";
-import { mapState } from "vuex";
 import commandObj from "../../../app/command";
+import { cmdData } from "../../../app/command";
+import { eventBus } from "../../../app/event-bus";
+import { createNamespacedHelpers } from "vuex";
+const {
+  mapState
+  // mapActions,
+  // mapGetters,
+  // mapMutations
+} = createNamespacedHelpers("codeEditorStore");
 
 export default {
   name: "ToolboxView",
   components: { MasterPage },
+  created() {
+    eventBus.$on("executeCmd", (cmd, value) => {
+      if (cmd == cmdData.dataLoaded) {
+        let data = this.v3global.dataSourceHandler.getDataSource().getVuiTag();
+        this.loadToolboxItems(data);
+      }
+    });
+  },
   data() {
     return {
-      search: "panelTools"
+      search: "panelTools",
+      toolboxItems:[]
     };
   },
   computed: {
-    ...mapState("codeEditorStore", ["vuiData", "currentEditorKey"]),
-    toolboxItems() {
-      let toolboxItems = [];
-      let i = 0;
-      let groupItems;
-      let groupTitle = "分组";
-      let group;
-      let vuis = this.vuiData;
-      for (const vui in vuis) {
-        if (vuis.hasOwnProperty(vui)) {
-          const vuiObj = vuis[vui];
-          if (i % 10 == 0) {
-            groupItems = [];
-            group = { groupTitle, groupItems };
-            toolboxItems.push(group);
-          }
-          groupItems.push({
-            code: vui,
-            name: vuiObj.label,
-            vuiObj
-          });
-        }
-        i++;
-      }
-      return toolboxItems;
-    },
+    ...mapState(["vuiData", "currentEditorKey"]),
     visibleTrigger() {
       return (
         this.currentEditorKey == commandObj.devEditorKeys().template ||
@@ -74,6 +66,29 @@ export default {
   methods: {
     searching() {
       this.search = "panelTools s-searching";
+    },
+    loadToolboxItems(vuis) {
+      this.toolboxItems = [];
+      let i = 0;
+      let groupItems;
+      let groupTitle = "分组";
+      let group;
+      for (const vui in vuis) {
+        if (vuis.hasOwnProperty(vui)) {
+          const vuiObj = vuis[vui];
+          if (i % 10 == 0) {
+            groupItems = [];
+            group = { groupTitle, groupItems };
+            this.toolboxItems.push(group);
+          }
+          groupItems.push({
+            code: vui,
+            name: vuiObj.label,
+            vuiObj
+          });
+        }
+        i++;
+      }
     },
     drag(ev, vui) {
       ev.effectAllowed = "move";

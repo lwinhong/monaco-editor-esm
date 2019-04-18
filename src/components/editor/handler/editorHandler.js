@@ -36,6 +36,7 @@ const addEditorTabPage = (tabs, editorValueJosn) => {
     else {
         addDefaultTab(tabs, editorValueJosn)
     }
+    //parentVue.setEditorDataAction(editorData)
     return tabs
 }
 
@@ -200,7 +201,8 @@ const onDidChangeModelContent = (args) => {
     let editorKey = args[1]
     let template = model.getValue()
 
-    templateParser(template)
+    if (editorKey === devEditorKeys.template || editorKey === defaultEditorKeys.html)
+        templateParser(template)
 
     //验证输入
     validateHandler.doValidate(editorKey)

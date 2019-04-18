@@ -26,8 +26,8 @@ const init = async (vueObj) => {
     appVue = vueObj
 
     await ds.initDs(divFlag, appVue)
-    executeCmdFromWinform("dataLoaded")
-    appVue.$store.dispatch('codeEditorStore/setVuiDataAction', ds.getDataSource().getVuiTag())
+    executeCmdFromWinform(cmdData.dataLoaded)
+    //appVue.$store.dispatch('codeEditorStore/setVuiDataAction', ds.getDataSource().getVuiTag())
 }
 
 /**
@@ -40,7 +40,7 @@ function executeCmdToWinform(cmdId, value) {
 }
 
 async function executeCmdToWinformReturn(cmdId, value) {
-    var result = await executeCmdToWinformAsync(cmdId, value, true)
+    let result = await executeCmdToWinformAsync(cmdId, value, true)
     return result
 }
 

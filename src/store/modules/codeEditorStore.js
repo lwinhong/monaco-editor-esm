@@ -1,6 +1,7 @@
 import { debounceWrapper } from '../../app/util'
 
 const state = {
+    editorData: {},
     currentEditorKey: "template",
     cursorPosition: { lineNumber: 0, column: 0 },
     cursorPositionOffset: 0,
@@ -12,12 +13,15 @@ const state = {
     theme: "default",
     vuiData: null,
     wordWrap: true,
-    minimap: false
+    minimap: false,
 }
 
 const getters = {
     getTheme(state, rootState) {
         return state.theme
+    },
+    getEditorData(state) {
+        return state.editorData
     },
     getHtmlEditorNodesSameLevel(state) {
         let nodes = state.htmlEditorNodes;
@@ -37,11 +41,11 @@ const getters = {
     },
     getNearestNodeAndAttribute: (state, getters) => (offset) => {
         let node = getters.getNearestNode(offset)
-        let attr = getters.getNearestAttribute(node, offset)
+        let attr = getNearestAttribute(node, offset)
         return { node, attr }
     },
     getNearestAttribute: () => (node, offset) => {
-        let attr = getNearestAttribute()
+        let attr = getNearestAttribute(node, offset)
         return attr
     },
     getWidgetCodes(state) {
@@ -50,6 +54,9 @@ const getters = {
 }
 
 const mutations = {
+    setEditorData(state, value) {
+        state.editorData = value
+    },
     setWordWrap(state, value) {
         state.wordWrap = value;
     },
@@ -59,8 +66,8 @@ const mutations = {
     setMinimap(state, value) {
         state.minimap = value;
     },
-    setHtmlEditorNodes(state, outlineObj) {
-        state.htmlEditorNodes = outlineObj
+    setHtmlEditorNodes(state, value) {
+        state.htmlEditorNodes = value
     },
     setTheme(state, value) {
         state.theme = value == "default" ? "vs" : "vs-dark"
@@ -92,6 +99,9 @@ const mutations = {
 }
 
 const actions = {
+    setEditorDataAction({ commit }, value) {
+        commit('setEditorData', value)
+    },
     setHtmlEditorNodesAction({ commit, state, rootState }, value) {
         commit('setHtmlEditorNodes', value)
     },
