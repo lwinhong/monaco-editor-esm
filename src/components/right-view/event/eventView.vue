@@ -95,7 +95,8 @@ import {
   initEventBus,
   refresh,
   updateEventDev,
-  updateEventOld,setSelectedEvent
+  updateEventOld,
+  setSelectedEvent
 } from "./eventHandler";
 
 import MasterPage from "../../view/view-master-page.vue";
@@ -127,7 +128,7 @@ export default {
     ...mapState(["currentNodeAndAttr"]),
     setSelectedEventTrigger() {
       let nodeAttr = this.currentNodeAndAttr;
-      setSelectedEvent(this, nodeAttr)
+      setSelectedEvent(this, nodeAttr);
       return 0;
     },
     filterEvents() {
@@ -146,7 +147,10 @@ export default {
     //this.load();
   },
   methods: {
-    ...mapGetters(["getNearestNodeAndAttribute"]),
+    ...mapGetters([
+      "getNearestNodeAndAttribute",
+      "getHtmlEditorNodesSameLevel"
+    ]),
     searchTextChanged(value) {
       let _this = this;
       if (this.searchTimer) clearTimeout(this.searchTimer);

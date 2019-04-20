@@ -1,11 +1,12 @@
 import editorUtil from './editorUtil'
 import hoverHandler from './vuiHoverHandler'
-//import chartHandler from '../../chart/vuiChartHandler'
+import chartHandler from './vuiChartHandler'
 
 const tagEnd = /<\/([\w-\s]+)>/
 const widgetCodeReg = /widget-code\s{0,}=\s{0,}["']\s{0,}([\w\S-\.]+)\s{0,}["']/i
 const triggerSuggestCommand = { id: 'editor.action.triggerSuggest', title: 123 }
 
+var chartHandlerObj
 var editorObj
 var isTriggerByBrackets = false
 
@@ -32,11 +33,10 @@ export const vuiIntelliSense = (editor, editorsObj) => {
     })
 
     //如果是template编辑器的话，图表初始化
-    // if (editorsObj.editorKey === editorsObj.devEditorKeys.template) {
-    //     //chartHandler.initOpenChartCommand(editor, editorsObj.model, editorsObj.parentVue)
-    //     var chartObj = new chartHandler(editor, editorObj.model, editorObj.parentVue)
-    //     chartObj.initOpenChartCommand()
-    // }
+    if (editorsObj.editorKey === editorsObj.devEditorKeys.template) {
+        chartHandlerObj = new chartHandler(editor, editorObj.model, editorObj.parentVue)
+        chartHandlerObj.initOpenChartCommand()
+    }
 }
 
 /*********** vui ******** */
@@ -248,7 +248,7 @@ function createVuiPropCompletions(tag, widgetCode, props) {
 
         if ("vui-chart".equalIgnoreCase(tag) && "chartSettings".equalIgnoreCase(attr)) {
             prop.command = {
-                id:  editorObj.parentVue.getOpenChartCmdId(),
+                id: chartHandlerObj.getOpenChartCmdId(),
                 title: "打开图表设计"
             }
         } else if ("true".equalIgnoreCase(propData.triggerSuggest)) {
@@ -351,7 +351,7 @@ function createPropValueCompletions(tagName, htmlText, insertSupplement, widgetC
 
     var props = []
     if ("vui-chart".equalIgnoreCase(tagName) && "chartSettings".equalIgnoreCase(propName)) {
-        props.push(editorObj.parentVue.getChartCompletion())
+        props.push(chartHandlerObj.getChartCompletion())
     }
 
     if (options && options.length > 0) {

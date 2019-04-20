@@ -30,7 +30,7 @@
   </div>
 </template>
 <script>
-import AppChartWidget from "../editor/chart/app-chart-widget.vue";
+// import AppChartWidget from "../editor/chart/app-chart-widget.vue";
 import AppMessageFlow from "./message/app-message-flow.vue";
 import SaveButton from "./save-button.vue";
 import Monaco from "./monaco-editor/monaco.vue";
@@ -53,7 +53,7 @@ var currentEditor = null;
 export default {
   name: "AppEditor",
   components: {
-    AppChartWidget,
+    //AppChartWidget,
     AppMessageFlow,
     SaveButton,
     Monaco,
@@ -179,16 +179,6 @@ export default {
     },
     dropDone(editor, value, range) {
       editorHandler.insertValueAsSnippet(editor, value, true);
-    },
-    getOpenChartCmdId() {
-      if (this.$refs.chartWidget)
-        return this.$refs.chartWidget.getOpenChartCmdId();
-      return null;
-    },
-    getChartCompletion() {
-      if (this.$refs.chartWidget)
-        return this.$refs.chartWidget.getChartCompletion();
-      return null;
     }
   },
   watch: {

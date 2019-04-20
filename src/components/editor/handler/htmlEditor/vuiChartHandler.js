@@ -1,6 +1,6 @@
-import editorUtil from '../handler/htmlEditor/editorUtil'
-import { debounceWrapper } from '../../../app/util'
-import { cmdData } from '../../../app/command'
+import editorUtil from './editorUtil'
+import { debounceWrapper } from '../../../../app/util'
+import { cmdData } from '../../../../app/command'
 
 const canShowOpenChartWidgetKey = "canShowOpenChartWidget"
 
@@ -53,13 +53,39 @@ function selectOldValue(oldValue, position) {
     return monaco.Range.fromPositions(position)
 }
 
-class ChartHandler {
+let position = {
+    lineNumber: 0,
+    column: 0
+}
 
+let contentWidget = {
+    domNode: null,
+    getId() {
+        return 'v3.div.chart.content.widget';
+    },
+    getDomNode() {
+        if (!this.domNode) {
+            this.domNode = document.createElement('div');
+            this.domNode.className = 'chartSetting';
+            let span = document.createElement('span');
+            span.innerText ="打开图表设计器"
+            this.domNode.appendChild(span)
+        }
+        return this.domNode;
+    },
+    getPosition() {
+        return {
+            position: position,
+            preference: [monaco.editor.ContentWidgetPositionPreference.BELOW]
+        };
+    }
+};
+
+class ChartHandler {
     constructor(editor, model, vue) {
         this.editor = editor
         this.model = model
         this.parentVue = vue
-        // this.initOpenChartCommand()
     }
 
     initOpenChartCommand() {
@@ -80,6 +106,7 @@ class ChartHandler {
             let e = args[0]
             try {
                 _this.lastPosition = e.selection.getPosition()
+                position = _this.lastPosition
                 _this.isNeedShowCharttingWidget(_this.lastPosition)
             }
             catch (error) {
@@ -89,12 +116,15 @@ class ChartHandler {
 
         let onMouseDown = debounceWrapper(args => {
             let e = args[0]
-            if (e.target.detail != "editor.contrib.quickOpenEditorWidget" && e.event.leftButton)
+            if (e.target.detail != "editor.contrib.quickOpenEditorWidget" && e.event.leftButton) {
+                position = e.target.position
                 _this.showChartSettingButton(_this.model, e.target.position, e)
+            }
         }, 150)
 
         this.editor.onDidChangeCursorSelection(onDidChangeCursorSelection)
         this.editor.onMouseDown(onMouseDown)
+        this.editor.addContentWidget(contentWidget);
     }
 
     /**
@@ -160,14 +190,17 @@ class ChartHandler {
      */
     showChartSettingwidget(show, mouseEvent) {
         this.canShowOpenChartWidget.set(show)
-        let ocs = $("#openChartSettings")
-        if (show) {
-            ocs.css("top", mouseEvent.event.browserEvent.screenY + 10)
-            ocs.css("left", mouseEvent.event.browserEvent.screenX)
-            ocs.show()
-        } else {
-            ocs.hide()
-        }
+        // let ocs = $("#openChartSettings")
+        // if (show) {
+        //     ocs.css("top", mouseEvent.event.browserEvent.screenY + 10)
+        //     ocs.css("left", mouseEvent.event.browserEvent.screenX)
+        //     ocs.show()
+        // } else {
+        //     ocs.hide()
+        // }
+        if (!show)
+            position = null
+        this.editor.layoutContentWidget(contentWidget)
     }
 
     isNeedShowCharttingWidget(position) {

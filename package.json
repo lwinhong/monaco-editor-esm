@@ -9,12 +9,12 @@
     "dist"
   ],
   "dependencies": {
-    "@angular/compiler": "^7.2.11",
-    "clipboard-polyfill": "^2.7.0",
+    "@angular/compiler": "^7.2.13",
+    "clipboard-polyfill": "^2.8.0",
     "fast-xml-parser": "^3.12.16",
     "htmlparser2": "^3.10.1",
-    "iview": "^3.3.3",
-    "jquery": "^3.3.1",
+    "iview": "^3.4.0",
+    "jquery": "^3.4.0",
     "recast": "^0.17.5",
     "vue-smooth-dnd": "^0.4.2",
     "vuex": "^3.1.0"
@@ -55,11 +55,11 @@
     "vue": "^2.6.10",
     "vue-eslint-editor": "^0.1.2",
     "vue-eslint-parser": "^6.0.2",
-    "vue-loader": "^15.4.2",
+    "vue-loader": "^15.7.0",
     "vue-template-compiler": "^2.6.10",
-    "webpack": "^4.29.5",
-    "webpack-cli": "^3.2.3",
-    "webpack-dev-server": "^3.2.1"
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.0",
+    "webpack-dev-server": "^3.3.1"
   },
   "scripts": {
     "build": "run-s -s clean build:*",
