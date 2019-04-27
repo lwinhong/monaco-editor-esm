@@ -8,4 +8,9 @@ export default class eventGenerator {
     analyzeNormal(template){
 
     }
+
+    getEventCode(arrtValue){
+
+        return {isEvent:true, eventCode: "ik"}
+    }
 }

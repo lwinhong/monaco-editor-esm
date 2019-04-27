@@ -5,6 +5,7 @@
         <h3>
           <slot name="header-title"></slot>
         </h3>
+        
         <span>
           <slot name="header-trigger"></slot>
           <icon type="ios-close" size="25" @click="$emit('closeClick')"></icon>

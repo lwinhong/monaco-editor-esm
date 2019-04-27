@@ -1,5 +1,8 @@
 import { eventBus } from "../../../app/event-bus";
 import { cmdData } from "../../../app/command";
+import eventGenerator from "./eventGenerator";
+
+const generator = new eventGenerator()
 
 const xmlParser = require("fast-xml-parser")
 const Parser = xmlParser.j2xParser
@@ -192,7 +195,26 @@ export const updateEventOld = (eventDataSource, value) => {
     debugger
 }
 
-export const setSelectedEvent = (vue, nodeAttr) => {
+export const setSelectedEvent = (vue, node) => {
+    if (node && node.attrsMap) {
+        // Object.keys(node.attrsMap).forEach(element => {
+        //     let attrValue = node.attrsMap[element]
+     
+        //     let { isEvent, eventCode } = generator.getEventCode(attrValue)
+        //     if (isEvent)
+        //         return eventCode
+        // });
 
+        for (const key in node.attrsMap) {
+            if (node.attrsMap.hasOwnProperty(key)) {
+                const attrValue = node.attrsMap[key];
+                let { isEvent, eventCode } = generator.getEventCode(attrValue)
+                if (isEvent)
+                    return eventCode
+            }
+        }
+    }
+
+    return ""
 
 }

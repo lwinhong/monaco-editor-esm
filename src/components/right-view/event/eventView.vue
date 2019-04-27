@@ -1,6 +1,7 @@
 <template>
   <master-page class="p-event" @closeClick="$emit('closeClick')">
     <template slot="header-title">事件</template>
+    <Icon slot="header-trigger" type="iso-refresh"></Icon>
     <section :class="search" slot="header-content">
       <i-button
         size="small"
@@ -23,7 +24,12 @@
       ></i-input>
     </section>
 
-    <div class="cardView" v-for="(data, index) in filterEvents" :key="data.EventCode+index">
+    <div
+      class="cardView"
+      v-for="(data, index) in filterEvents"
+      :key="data.EventCode+index"
+      :class="{actived:selectedEventCode==data.EventCode}"
+    >
       <div class="cardView-hd">
         <h6 class="title">
           <span v-text="data.EventName"></span>
@@ -121,14 +127,16 @@ export default {
       eventName: "",
       search: "panelTools",
       searchText: "",
-      searchBind: ""
+      searchBind: "",
+      selectedEventCode: ""
     };
   },
   computed: {
-    ...mapState(["currentNodeAndAttr"]),
+    ...mapState(["currentNode"]),
     setSelectedEventTrigger() {
-      let nodeAttr = this.currentNodeAndAttr;
-      setSelectedEvent(this, nodeAttr);
+      let node = this.currentNode;
+      this.selectedEventCode= setSelectedEvent(this, node);
+      console.log(this.selectedEventCode)
       return 0;
     },
     filterEvents() {
@@ -194,3 +202,8 @@ export default {
   }
 };
 </script>
+<style>
+.p-event .actived {
+  background: var(--cardView-hover-bg);
+}
+</style>
