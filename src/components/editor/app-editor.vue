@@ -1,6 +1,5 @@
 <template>
   <div class="m-codeView" id="code-editor-root">
-    <app-chart-widget ref="appChartWidgetRef" v-if="appChartWidgetVisible"></app-chart-widget>
     <div class="code-editor">
       <tabs v-model="tabSelectedIndex" animated>
         <tab-pane v-for="tab in tabs" :key="tab.key" :label="tab.text" :name="tab.key">
@@ -30,7 +29,6 @@
   </div>
 </template>
 <script>
-// import AppChartWidget from "../editor/chart/app-chart-widget.vue";
 import AppMessageFlow from "./message/app-message-flow.vue";
 import SaveButton from "./save-button.vue";
 import Monaco from "./monaco-editor/monaco.vue";
@@ -53,7 +51,6 @@ var currentEditor = null;
 export default {
   name: "AppEditor",
   components: {
-    //AppChartWidget,
     AppMessageFlow,
     SaveButton,
     Monaco,
@@ -138,11 +135,6 @@ export default {
         tab,
         tabs[0].key === tab.key
       );
-
-      //如果是dev 的template 需要注册 图标相关
-      if (tab.key == editorHandler.devEditorKeys.template) {
-        this.$refs.appChartWidgetRef.initWidget(editor);
-      }
     },
     save() {
       return editorHandler.save();
@@ -205,9 +197,6 @@ export default {
 .code-editor .ivu-tabs-nav-wrap {
   margin-bottom: 0px;
 }
-.code-editor .editor_container {
-  height: 100%;
-}
 
 .code-editor .ivu-tabs {
   height: 100%;
@@ -222,10 +211,6 @@ export default {
 }
 
 .code-editor .ivu-tabs-tabpane {
-  height: 100%;
-}
-
-.code-editor .editor_container {
   height: 100%;
 }
 

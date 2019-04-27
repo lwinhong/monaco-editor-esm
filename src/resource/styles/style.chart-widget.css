@@ -3,7 +3,7 @@
     top: 24px;
     left: 24px;
     width: 300px;
-    background: url(../resource/images/icon-prop-light.png) #e4e5e9 8px center no-repeat;
+    background: url(../images/icon-prop-light.png) #e4e5e9 8px center no-repeat;
     color: #2196f3;
     font-size: 12px;
     line-height: 30px;
@@ -21,7 +21,7 @@
 
 /*theme-dark*/
 
-.monaco-editor.vs-dark .chartSetting {
+/* .monaco-editor.vs-dark .chartSetting {
     position: absolute;
     top: 150px;
     left: 150px;
@@ -41,4 +41,4 @@
     display: block;
     text-indent: 20px;
     background: url(../images/icon-enter-dark.png) right center no-repeat;
-}
+} */

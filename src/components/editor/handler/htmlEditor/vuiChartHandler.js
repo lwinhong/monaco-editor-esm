@@ -53,10 +53,7 @@ function selectOldValue(oldValue, position) {
     return monaco.Range.fromPositions(position)
 }
 
-let position = {
-    lineNumber: 0,
-    column: 0
-}
+let charWidgetPosition
 
 let contentWidget = {
     domNode: null,
@@ -75,7 +72,7 @@ let contentWidget = {
     },
     getPosition() {
         return {
-            position: position,
+            position: charWidgetPosition,
             preference: [monaco.editor.ContentWidgetPositionPreference.BELOW]
         };
     }
@@ -106,7 +103,7 @@ class ChartHandler {
             let e = args[0]
             try {
                 _this.lastPosition = e.selection.getPosition()
-                position = _this.lastPosition
+                charWidgetPosition = _this.lastPosition
                 _this.isNeedShowCharttingWidget(_this.lastPosition)
             }
             catch (error) {
@@ -117,7 +114,7 @@ class ChartHandler {
         let onMouseDown = debounceWrapper(args => {
             let e = args[0]
             if (e.target.detail != "editor.contrib.quickOpenEditorWidget" && e.event.leftButton) {
-                position = e.target.position
+                charWidgetPosition = e.target.position
                 _this.showChartSettingButton(_this.model, e.target.position, e)
             }
         }, 150)
@@ -199,7 +196,7 @@ class ChartHandler {
         //     ocs.hide()
         // }
         if (!show)
-            position = null
+            charWidgetPosition = null
         this.editor.layoutContentWidget(contentWidget)
     }
 
