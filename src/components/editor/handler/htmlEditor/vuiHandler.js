@@ -89,7 +89,6 @@ function autoCompleteHandler(model, position) {
     if ($.trim(substringText).endsWith(">") && token1.type === "delimiter.html") {
         return createVuiCompletions(isTriggerByBrackets, model)
     }
-
     var tagMatch = editorUtil.matchTagStart(substringText)
     var tagName = ""
     if (tagMatch)
@@ -380,8 +379,8 @@ function createPropValueCompletions(tagName, htmlText, insertSupplement, widgetC
         })
     }
 
-    if (props.length > 0)
-        return props
+    // if (props.length > 0)
+    //     return props
 
     if ("widget-code".equalIgnoreCase(propName)) {
         props.push(editorUtil.getWidgetCodePropertyValue(tagName))
