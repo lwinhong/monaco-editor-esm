@@ -102,7 +102,7 @@ const newEventCode = (eventDataSource) => {
 export const loadEvent = (eventDataSource, value) => {
 
     //debugger
-    //value = JSON.parse(`{"Events":"<ArrayOfEventEntity><EventEntity><EventCode>OnClick</EventCode><EventName>OnClick</EventName><MethodCode>GetUseManualData</MethodCode><EventType>Auto</EventType><ParamMapping><MappingInfo><Key>key1</Key><Input>TypeId</Input></MappingInfo></ParamMapping><KeyValueString>{'key1': 'TypeId'}</KeyValueString></EventEntity><EventEntity><EventCode>OnClick</EventCode><EventName>OnClick</EventName><MethodCode>GetUseManualData</MethodCode><EventType>Auto</EventType><ParamMapping><MappingInfo><Key>key1</Key><Input>TypeId</Input></MappingInfo></ParamMapping><KeyValueString>{'key1': 'TypeId'}</KeyValueString></EventEntity></ArrayOfEventEntity>"}`)
+    value = JSON.parse(`{"Events":"<ArrayOfEventEntity><EventEntity><EventCode>ik</EventCode><EventName>OnClick</EventName><MethodCode>GetUseManualData</MethodCode><EventType>Auto</EventType><ParamMapping><MappingInfo><Key>key1</Key><Input>TypeId</Input></MappingInfo></ParamMapping><KeyValueString>{'key1': 'TypeId'}</KeyValueString></EventEntity><EventEntity><EventCode>OnClick</EventCode><EventName>OnClick</EventName><MethodCode>GetUseManualData</MethodCode><EventType>Auto</EventType><ParamMapping><MappingInfo><Key>key1</Key><Input>TypeId</Input></MappingInfo></ParamMapping><KeyValueString>{'key1': 'TypeId'}</KeyValueString></EventEntity></ArrayOfEventEntity>"}`)
 
     eventDataSource.splice(0, eventDataSource.length)
     if (!value || !value.Events)
@@ -195,26 +195,24 @@ export const updateEventOld = (eventDataSource, value) => {
     debugger
 }
 
-export const setSelectedEvent = (vue, node) => {
-    if (node && node.attrsMap) {
-        // Object.keys(node.attrsMap).forEach(element => {
-        //     let attrValue = node.attrsMap[element]
-     
-        //     let { isEvent, eventCode } = generator.getEventCode(attrValue)
-        //     if (isEvent)
-        //         return eventCode
-        // });
+export const setSelectedEvent = async (vue, node) => {
 
-        for (const key in node.attrsMap) {
-            if (node.attrsMap.hasOwnProperty(key)) {
-                const attrValue = node.attrsMap[key];
-                let { isEvent, eventCode } = generator.getEventCode(attrValue)
-                if (isEvent)
-                    return eventCode
-            }
-        }
+    if (node && node.attr) {
+        let eventCode = await generator.getEventCode(node.attr.name, node.attr.value)
+        if (eventCode)
+            return eventCode
     }
 
-    return ""
+    // if (node && node.attrsMap) {
+    //     let attrsMap = node.attrsMap
+    //     for (const key in attrsMap) {
+    //         if (attrsMap.hasOwnProperty(key)) {
+    //             let eventCode = await generator.getEventCode(key, attrsMap[key])
+    //             if (eventCode)
+    //                 return eventCode
+    //         }
+    //     }
+    // }
 
+    return ""
 }

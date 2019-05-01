@@ -71,8 +71,8 @@
               size="small"
               v-model="data.EventCode"
               icon="md-copy"
-              :readonly="data.EventType === 'Auto'"
               class="vInputs"
+              :readonly="data.EventType === 'Auto'"
               :ref="data.EventCode+(data.EventFlag||'')"
               @on-click="codeCopied(data.EventCode)"
             ></i-input>
@@ -132,11 +132,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(["currentNode"]),
+    ...mapState(["currentNodeAndAttr"]),
     setSelectedEventTrigger() {
-      let node = this.currentNode;
-      this.selectedEventCode= setSelectedEvent(this, node);
-      console.log(this.selectedEventCode)
+      let node = this.currentNodeAndAttr;
+      this.setSelectedEvent(node);
       return 0;
     },
     filterEvents() {
@@ -159,6 +158,10 @@ export default {
       "getNearestNodeAndAttribute",
       "getHtmlEditorNodesSameLevel"
     ]),
+    async setSelectedEvent(nodeAndAttr) {
+      this.selectedEventCode = await setSelectedEvent(this, nodeAndAttr);
+      console.log(this.selectedEventCode);
+    },
     searchTextChanged(value) {
       let _this = this;
       if (this.searchTimer) clearTimeout(this.searchTimer);
