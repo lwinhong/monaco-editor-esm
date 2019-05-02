@@ -4,8 +4,9 @@ import { vuiIntelliSense, vuiHelp, emmetHTML, themeVarHandler, scriptHandler, cs
 import vueParser from "../handler/codeParser/vueParser"
 
 const editorData = {}
-var parentVue
-var isAnyValueChanged = false
+let parentVue
+let isAnyValueChanged = false
+let lastEditorKey
 
 /**
  * 初始化
@@ -27,14 +28,14 @@ const doLoad = (value) => {
  * 添加编辑器页签页
  * @param {页签集合} tabs 
  */
-const addEditorTabPage = (tabs, editorValueJosn) => {
+const addEditorTabPage = (tabs, editorValueJson) => {
     console.log("loadTabs&MonacoEditor")
     if (isDevEditorMode()) {
-        vueParser.parseComponentWithData(editorValueJosn)
-        addDevTab(tabs, editorValueJosn)
+        vueParser.parseComponentWithData(editorValueJson)
+        addDevTab(tabs, editorValueJson)
     }
     else {
-        addDefaultTab(tabs, editorValueJosn)
+        addDefaultTab(tabs, editorValueJson)
     }
     //parentVue.setEditorDataAction(editorData)
     return tabs
@@ -79,10 +80,11 @@ const addDefaultTab = (tabs, editorValueJosn) => {
 const addDevTab = (tabs, editorValueJosn) => {
     addTab(tabs, devEditorKeys.template, "template", "html", editorValueJosn.Template || "")
     addTab(tabs, devEditorKeys.script, "script", "javascript", editorValueJosn.Script || "")
-    //if (editorValueJosn.Style)
-    addTab(tabs, devEditorKeys.style, "style", "css", editorValueJosn.Style || "")
+    if (editorValueJosn.Style)
+        addTab(tabs, devEditorKeys.style, "style", "css", editorValueJosn.Style || "")
     addTab(tabs, devEditorKeys.themeLess, "theme.less", "less", editorValueJosn.ThemeLess || "")
     addTab(tabs, devEditorKeys.varLess, "var.less", "less", editorValueJosn.VarLess || "")
+    lastEditorKey = devEditorKeys.varLess
 }
 
 /**
@@ -115,7 +117,6 @@ const afterMonacoEditorCreated = (editor, tab, isSetFocus) => {
     const model = editor.getModel()
     const editorObj = { editor, model, text: getTabText(editorKey) }
     editorData[editorKey] = editorObj
-
     if (tab.editorValue) {
         model.setValue(tab.editorValue)
         if (editorKey == devEditorKeys.template || editorKey == defaultEditorKeys.html) {
@@ -127,6 +128,10 @@ const afterMonacoEditorCreated = (editor, tab, isSetFocus) => {
     initEditor(editorObj, tab)
     if (isSetFocus)
         setMonacoEditorFocusDelay(editorKey, 100)
+
+    if (lastEditorKey == editorKey) {
+        validateHandler.doValidate()
+    }
 }
 
 /**

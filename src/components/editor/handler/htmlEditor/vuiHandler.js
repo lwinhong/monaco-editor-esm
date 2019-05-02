@@ -149,11 +149,11 @@ function createVuiCompletions(isFromBrackets, model) {
     if (!vuis)
         return comletions
 
-    const existCodes = editorUtil.getExistWidgetCodes(false, true)
+    const existCodes = editorObj.parentVue.widgetCodes
 
     $.each(vuis, function (vui, vuiData) {
         var insertText;
-        var code = editorUtil.newWidgetCode(vui, existCodes);
+        var code = editorUtil.newWidgetCode1(vui, existCodes);
         var soruce = vuiData.autoCompleteSource
         if (soruce) {
             soruce = String.format(soruce, code)
@@ -222,7 +222,7 @@ function createVuiPropCompletions(tag, widgetCode, props) {
         if (attr === "widget-code")
             return
 
-        var insertText
+        let insertText
         if (propData.insertText !== "") {
             insertText = propData.insertText
         } else {

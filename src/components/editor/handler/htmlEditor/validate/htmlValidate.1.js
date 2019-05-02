@@ -69,8 +69,11 @@ const checkWidgetCode = (model, editor, editorKey, editorObj) => {
 
         //验证重复
         let existWidgetCodes = checkAndGetRepeatWidgetCode(currentWidgetCodeAttrs, editorKey, editorObj.vuiHandler.editorUtil, model)
+
         //将当前存在的widgetcode放到vux中
-        editorObj.parentVue.setWidgetCodesAction(existWidgetCodes)
+        let concated = [...(existWidgetCodes.currentExist || []), ...(existWidgetCodes.existControlCodes || [])]
+        editorObj.parentVue.setWidgetCodesAction(concated)
+
         monaco.editor.setModelMarkers(model, editor.getId(), errorData)
     } catch (error) {
         console.error(error)
@@ -113,26 +116,26 @@ const checkWidgetCodePrivate = (widgetCodeAttrObj, editorKey, model) => {
 
 const checkAndGetRepeatWidgetCode = (widgetCodeAttrs, editorKey, editorUtil, model) => {
     let currentExist = Object.keys(widgetCodeAttrs)
-    if (currentExist.length == 0)
-        return null
-
     let existControlCodes = editorUtil.getExistWindowControlCodes()
-    for (let index = 0; index < currentExist.length; index++) {
-        const existCode = currentExist[index]
-        const existNodes = widgetCodeAttrs[existCode]
 
-        if (existNodes.length > 1) {
-            existNodes.forEach(node => {
-                addErrorInfo(`widget-code [${existCode}] 重复`, editorKey, node.start, node.end, model)
-            })
-        }
-        else if ($.inArray(existCode, existControlCodes) !== -1) {
-            let node = existNodes[0]
-            addErrorInfo(`widget-code [${existCode}] 在窗体中已被占用`, editorKey, node.start, node.end, model)
+    if (currentExist.length > 0) {
+        for (let index = 0; index < currentExist.length; index++) {
+            const existCode = currentExist[index]
+            const existNodes = widgetCodeAttrs[existCode]
+
+            if (existNodes.length > 1) {
+                existNodes.forEach(node => {
+                    addErrorInfo(`widget-code [${existCode}] 重复`, editorKey, node.start, node.end, model)
+                })
+            }
+            else if ($.inArray(existCode, existControlCodes) !== -1) {
+                let node = existNodes[0]
+                addErrorInfo(`widget-code [${existCode}] 在窗体中已被占用`, editorKey, node.start, node.end, model)
+            }
         }
     }
 
-    return currentExist
+    return { currentExist, existControlCodes }
 }
 
 /**

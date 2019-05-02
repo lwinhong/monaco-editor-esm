@@ -160,7 +160,6 @@ export default {
     ]),
     async setSelectedEvent(nodeAndAttr) {
       this.selectedEventCode = await setSelectedEvent(this, nodeAndAttr);
-      console.log(this.selectedEventCode);
     },
     searchTextChanged(value) {
       let _this = this;

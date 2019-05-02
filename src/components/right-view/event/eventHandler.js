@@ -113,9 +113,7 @@ export const loadEvent = (eventDataSource, value) => {
         return
 
     var entities = result.ArrayOfEventEntity.EventEntity
-    console.log("event load:" + entities)
     if (entities instanceof Array) {
-        console.log("laodeEvent: array")
         for (const entity of entities) {
             if (!entity || entity === "")
                 continue
@@ -123,7 +121,6 @@ export const loadEvent = (eventDataSource, value) => {
         }
     }
     else if (entities instanceof Object) {
-        console.log("laodeEvent: object")
         pushEventData(eventDataSource, entities)
     }
 

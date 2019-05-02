@@ -122,7 +122,6 @@ const actions = {
         if (!getNearestNodeAndAttributeDebouncer) {
             getNearestNodeAndAttributeDebouncer = debounceWrapper(args => {
                 let nodeAttr = getters.getNearestNodeAndAttribute(args[0])
-                console.log("getNearestNodeAndAttributeDebouncer:" + args[0])
                 commit('setCurrentNodeAndAttr', nodeAttr)
                 commit('setCurrentNode', nodeAttr.node)
             }, 667);

@@ -13,7 +13,7 @@ function getDataSource() {
 * @param {} existCodes 
 * @returns {} 
 */
-function newUniqueCode(baseName, existCodes) {
+function newUniqueCode(baseName, existCodes = []) {
     var index = 1
     while (true) {
         if ($.inArray(baseName + index, existCodes) !== -1) {
@@ -173,7 +173,7 @@ function getAllJsFunctions(editorData, editorKey) {
     $.each(editors, function (i, editor) {
         if (editor && editor.editor) {
             const functions = getJsFunctionName(editor.editor.getValue())
-            if (functions) 
+            if (functions)
                 result = result.concat(functions)
         }
     })
@@ -209,6 +209,16 @@ function newWidgetCode(tag, existCodes) {
         existCodes = existCodes.concat(existControlCodes)
     }
 
+    return newWidgetCode1(tag, existCodes)
+}
+
+/**
+* 获取新的widgetCode
+* @param {标签} tag 
+* @param {已存在的编码} existCodes 
+* @returns {新编码} 
+*/
+export function newWidgetCode1(tag, existCodes) {
     return newUniqueCode(divCode + "_" + tag.split("-").join(""), existCodes)
 }
 
@@ -527,7 +537,7 @@ const updateDecorations = (newDecorations, oldDecorations, editor) => {
 }
 
 export default {
-    getVuiData, getVuiPropData, getValueOptions, newWidgetCode,
+    getVuiData, getVuiPropData, getValueOptions, newWidgetCode, newWidgetCode1,
     getExistWidgetCodes, getExistEventCodes, getDataSource, newEventName,
     getWidgetCodeProperty, getLastProp, getAllJsFunctions, getWidgetCodePropertyValue,
     getEditorValueAtPoint, getTokensAtLine, getLastHtml, matchTagStart,

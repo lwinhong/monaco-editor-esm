@@ -96,7 +96,7 @@ export default {
     flowMessageWidthTrigger() {
       return flowMessageWidth;
     },
-    ...mapState(["theme", "wordWrap", "minimap"])
+    ...mapState(["theme", "wordWrap", "minimap","widgetCodes"])
   },
   data() {
     return {

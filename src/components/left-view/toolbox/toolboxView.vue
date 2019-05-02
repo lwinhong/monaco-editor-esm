@@ -29,6 +29,7 @@ import MasterPage from "../../view/view-master-page.vue";
 import commandObj from "../../../app/command";
 import { cmdData } from "../../../app/command";
 import { eventBus } from "../../../app/event-bus";
+import { newWidgetCode1 } from "../../editor/handler/htmlEditor/editorUtil";
 import { createNamespacedHelpers } from "vuex";
 const {
   mapState
@@ -51,11 +52,11 @@ export default {
   data() {
     return {
       search: "panelTools",
-      toolboxItems:[]
+      toolboxItems: []
     };
   },
   computed: {
-    ...mapState(["vuiData", "currentEditorKey"]),
+    ...mapState(["vuiData", "currentEditorKey", "widgetCodes"]),
     visibleTrigger() {
       return (
         this.currentEditorKey == commandObj.devEditorKeys().template ||
@@ -92,13 +93,17 @@ export default {
     },
     drag(ev, vui) {
       ev.effectAllowed = "move";
-      ev.dataTransfer.setData("Text", vui.vuiObj.autoCompleteSource);
+      ev.dataTransfer.setData("Text", this.wrapperAutoCompleteSource(vui));
       ev.dataTransfer.setDragImage(ev.target, 0, 0);
+    },
+    wrapperAutoCompleteSource(vui) {
+      let code = newWidgetCode1(vui.code, this.widgetCodes);
+      return String.format(vui.vuiObj.autoCompleteSource, code);
     },
     insert(vui) {
       this.v3global.executeCmd(
         "insertValueAsSnippet",
-        vui.vuiObj.autoCompleteSource
+        this.wrapperAutoCompleteSource(vui)
       );
     }
   }
