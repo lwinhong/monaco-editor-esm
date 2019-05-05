@@ -1,7 +1,7 @@
 <template>
   <master-page class="p-event" @closeClick="$emit('closeClick')">
     <template slot="header-title">事件</template>
-    <Icon slot="header-trigger" type="iso-refresh"></Icon>
+    <Icon slot="header-trigger" type="md-refresh" @click="refresh"></Icon>
     <section :class="search" slot="header-content">
       <i-button
         size="small"
@@ -102,7 +102,8 @@ import {
   refresh,
   updateEventDev,
   updateEventOld,
-  setSelectedEvent
+  setSelectedEvent,
+  getEvents
 } from "./eventHandler";
 
 import MasterPage from "../../view/view-master-page.vue";
@@ -181,7 +182,10 @@ export default {
       //this.$refs[item.EventCode + "123"].focus();
     },
     refresh() {
-      refresh();
+      //refresh();
+        getEvents(this.getHtmlEditorNodesSameLevel())
+        .then(val => {})
+        .catch(err => {});
     },
     save() {
       return saveEvent(this.eventData);

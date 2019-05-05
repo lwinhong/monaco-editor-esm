@@ -127,6 +127,10 @@ export const loadEvent = (eventDataSource, value) => {
     updateEmptyEventName(eventDataSource)
 }
 
+export const loadEventInternal = () => {
+
+}
+
 const pushEventData = (eventDataSource, entity) => {
     eventDataSource.push({
         EventName: entity.EventName,
@@ -193,23 +197,13 @@ export const updateEventOld = (eventDataSource, value) => {
 }
 
 export const setSelectedEvent = async (vue, node) => {
-
     if (node && node.attr) {
-        let eventCode = await generator.getEventCode(node.attr.name, node.attr.value)
-        if (eventCode)
-            return eventCode
+        let { eventCode } = await generator.getEventCode(node.attr.name, node.attr.value)
+        return eventCode
     }
-
-    // if (node && node.attrsMap) {
-    //     let attrsMap = node.attrsMap
-    //     for (const key in attrsMap) {
-    //         if (attrsMap.hasOwnProperty(key)) {
-    //             let eventCode = await generator.getEventCode(key, attrsMap[key])
-    //             if (eventCode)
-    //                 return eventCode
-    //         }
-    //     }
-    // }
-
     return ""
+}
+
+export const getEvents = async (nodes) => {
+    return await generator.analyzeDev(nodes);
 }

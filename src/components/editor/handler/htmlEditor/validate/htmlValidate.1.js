@@ -171,19 +171,19 @@ function addErrorInfo(message, module, startOffset, endOffset, model) {
 }
 
 export const htmlValidate = (model, editor, editorKey, editorObj) => {
-    var msgs = []
+    let msgs = []
 
     //dev模式，验证eslint
     if (isDevEditorMode()) {
         const eslintMsgs = eslintValidate(model, editor, editorKey, editorObj.devEditorKeys)
         if (eslintMsgs && eslintMsgs.length > 0)
-            msgs = msgs.concat(eslintMsgs)
+            msgs = eslintMsgs
     }
 
     // 验证wigetcode
-    var widgetCodeMsgs = checkWidgetCode(model, editor, editorKey, editorObj)
+    const widgetCodeMsgs = checkWidgetCode(model, editor, editorKey, editorObj)
     if (widgetCodeMsgs && widgetCodeMsgs.length > 0)
-        msgs = msgs.concat(widgetCodeMsgs)
+        msgs = [...msgs, ...widgetCodeMsgs]
 
     return msgs
 }
