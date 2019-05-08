@@ -1,6 +1,6 @@
 /*!-----------------------------------------------------------
  * Copyright (c) Microsoft Corporation. All rights reserved.
- * Version: 0.16.1(3b771857b1c577594758bc2191049001394a1fda)
+ * Version: 0.17.0(63d87164d0bc8c6206d9339c195289c93665028e)
  * Released under the MIT license
  * https://github.com/Microsoft/vscode/blob/master/LICENSE.txt
  *-----------------------------------------------------------*/
@@ -993,7 +993,7 @@
 
 .monaco-sash {
 	position: absolute;
-	z-index: 90;
+	z-index: 35;
 	touch-action: none;
 }
 
@@ -1072,6 +1072,7 @@
 
 .monaco-sash.disabled {
 	cursor: default !important;
+	pointer-events: none !important;
 }
 
 /** Touch **/
@@ -1086,8 +1087,12 @@
 
 /** Debug **/
 
-.monaco-sash.debug:not(.disabled) {
+.monaco-sash.debug {
 	background: cyan;
+}
+
+.monaco-sash.debug.disabled {
+	background: rgba(0, 255, 255, 0.2);
 }
 
 .monaco-sash.debug:not(.disabled).orthogonal-start::before,
@@ -1233,6 +1238,77 @@
 
 .hc-black .monaco-scrollable-element .shadow.top.left {
 	box-shadow: none;
+}
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.monaco-split-view2 {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.monaco-split-view2 > .sash-container {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+}
+
+.monaco-split-view2 > .sash-container > .monaco-sash {
+	pointer-events: initial;
+}
+
+.monaco-split-view2 > .split-view-container {
+	display: flex;
+	width: 100%;
+	height: 100%;
+	white-space: nowrap;
+}
+
+.monaco-split-view2.vertical > .split-view-container {
+	flex-direction: column;
+}
+
+.monaco-split-view2.horizontal > .split-view-container {
+	flex-direction: row;
+}
+
+.monaco-split-view2 > .split-view-container > .split-view-view {
+	white-space: initial;
+	flex: none;
+	position: relative;
+}
+
+.monaco-split-view2.vertical > .split-view-container > .split-view-view {
+	width: 100%;
+}
+
+.monaco-split-view2.horizontal > .split-view-container > .split-view-view {
+	height: 100%;
+	display: inline-block;
+}
+
+.monaco-split-view2.separator-border > .split-view-container > .split-view-view:not(:first-child)::before {
+	content: ' ';
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 5;
+	pointer-events: none;
+	background-color: var(--separator-border);
+}
+
+.monaco-split-view2.separator-border.horizontal > .split-view-container > .split-view-view:not(:first-child)::before {
+	height: 100%;
+	width: 1px;
+}
+
+.monaco-split-view2.separator-border.vertical > .split-view-container > .split-view-view:not(:first-child)::before {
+	height: 1px;
+	width: 100%;
 }
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
@@ -2293,16 +2369,13 @@
 	opacity: 0;
 }
 
-@keyframes fadein { 0% { opacity:0; visibility:visible;} 100% { opacity:1; } }
-@-moz-keyframes fadein { 0% { opacity:0; visibility:visible;} 100% { opacity:1; } }
-@-o-keyframes fadein { 0% { opacity:0; visibility:visible;} 100% { opacity:1; } }
-@-webkit-keyframes fadein { 0% { opacity:0; visibility:visible;} 100% { opacity:1; } }
+@keyframes fadein {
+	0% { opacity: 0; visibility: visible;}
+	100% { opacity: 1; }
+}
 
 .monaco-editor .codelens-decoration.fadein {
-	-webkit-animation: fadein 0.5s linear;
-	-moz-animation: fadein 0.5s linear;
-	-o-animation: fadein 0.5s linear;
-	animation: fadein 0.5s linear;
+	animation: fadein 0.1s linear;
 }
 
 /*---------------------------------------------------------------------------------------------
@@ -2883,18 +2956,13 @@
 	font-style: italic;
 }
 
-.monaco-editor .marker-widget div.block {
-	display: inline-block;
-	vertical-align: top;
-}
-
 .monaco-editor .marker-widget .title {
 	display: inline-block;
 	padding-right: 5px;
 }
 
 .monaco-editor .marker-widget .descriptioncontainer {
-	position: relative;
+	position: absolute;
 	white-space: pre;
 	-webkit-user-select: text;
 	user-select: text;

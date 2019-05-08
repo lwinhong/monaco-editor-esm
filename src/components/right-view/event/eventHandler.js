@@ -198,8 +198,9 @@ export const updateEventOld = (eventDataSource, value) => {
 
 export const setSelectedEvent = async (vue, node) => {
     if (node && node.attr) {
-        let { eventCode } = await generator.getEventCode(node.attr.name, node.attr.value)
-        return eventCode
+        let event = await generator.getEventCode(node.attr.name, node.attr.value)
+        if (event)
+            return event.eventCode
     }
     return ""
 }
