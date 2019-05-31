@@ -43,6 +43,11 @@ export const scriptHandler = editor => {
         console.log("scriptHandler: 找不到monaco示例")
         return
     }
+    
+    monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
+        target: monaco.languages.typescript.ScriptTarget.ES6,
+        allowNonTsExtensions: true
+    });
 
     monaco.languages.registerCompletionItemProvider("javascript", {
         provideCompletionItems: autoCompleteHandler

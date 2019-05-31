@@ -7,9 +7,9 @@ Vue.use(iView)
 
 import store from './store'
 
-// Vue.config.errorHandler = function (err, vm, info) {
-//     console.error(arguments)
-// }
+Vue.config.errorHandler = function (err, vm, info) {
+    console.error(arguments)
+}
 
 Vue.prototype.v3global = global
 window.v3global = global
