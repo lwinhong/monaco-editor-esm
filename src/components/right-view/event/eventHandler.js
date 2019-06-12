@@ -1,13 +1,12 @@
 import { eventBus } from "../../../app/event-bus";
 import { cmdData } from "../../../app/command";
 import eventGenerator from "./eventGenerator";
-
-const generator = new eventGenerator()
-
+const uuidv1 = require('uuid/v1');
 const xmlParser = require("fast-xml-parser")
 const Parser = xmlParser.j2xParser
 
 const eventType = { Auto: "Auto", User: "User" }
+const generator = new eventGenerator()
 
 /**
  * 初始化事件总线
@@ -46,7 +45,8 @@ export const addEvent = (eventDataSource, flag) => {
         ParamMapping: "",
         ParamCount: 0,
         MethodCode: "",
-        EventFlag: flag
+        EventFlag: flag,
+        id: uuidv1()
     }
     eventDataSource.push(item)
     return item
@@ -199,8 +199,14 @@ export const updateEventOld = (eventDataSource, value) => {
 export const setSelectedEvent = async (vue, node) => {
     if (node && node.attr) {
         let event = await generator.getEventCode(node.attr.name, node.attr.value)
-        if (event)
-            return event.eventCode
+        if (event) {
+            vue.eventData
+            for (const e of vue.eventData) {
+                if (e.eventCode == event.eventCode)
+                    return e.id;
+            }
+
+        }
     }
     return ""
 }

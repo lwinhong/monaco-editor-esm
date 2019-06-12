@@ -58,6 +58,8 @@ function getVuiPropHoverData(tag, prop) {
 
 export default class vuiHoverHandler {
     constructor(vue) {
+        return;
+        
         monaco.languages.registerHoverProvider("html", {
             provideHover: (model, position) => {
                 let offset = model.getOffsetAt(position)

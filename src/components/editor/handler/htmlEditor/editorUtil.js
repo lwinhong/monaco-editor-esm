@@ -4,7 +4,7 @@ const propReg = /([\w-:\.]+)(\s*=\s*)("[^"]*"|'[^']*')/g
 const tagStart = /<([\w-]+)/
 
 function getDataSource() {
-    return window.v3global.dataSourceHandler.getDataSource()
+    return window.v3global.dataSourceHandler;
 }
 
 /**

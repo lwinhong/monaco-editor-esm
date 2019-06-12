@@ -28,7 +28,9 @@
       class="cardView"
       v-for="(data, index) in filterEvents"
       :key="data.EventCode+index"
-      :class="{actived:selectedEventCode==data.EventCode}"
+      :class="{actived:selectedEventId==data.id}"
+      :id="data.id"
+      @click="selectedEventId=data.id"
     >
       <div class="cardView-hd">
         <h6 class="title">
@@ -73,7 +75,7 @@
               icon="md-copy"
               class="vInputs"
               :readonly="data.EventType === 'Auto'"
-              :ref="data.EventCode+(data.EventFlag||'')"
+              :ref="data.id"
               @on-click="codeCopied(data.EventCode)"
             ></i-input>
           </form-item>
@@ -108,7 +110,7 @@ import {
 
 import MasterPage from "../../view/view-master-page.vue";
 import * as clipboard from "clipboard-polyfill";
-import dsNew from "../../../components/dataSource/dataSource"
+import dsNew from "../../../components/dataSource/dataSource";
 import { createNamespacedHelpers } from "vuex";
 const {
   mapState,
@@ -130,7 +132,7 @@ export default {
       search: "panelTools",
       searchText: "",
       searchBind: "",
-      selectedEventCode: ""
+      selectedEventId: ""
     };
   },
   computed: {
@@ -161,7 +163,13 @@ export default {
       "getHtmlEditorNodesSameLevel"
     ]),
     async setSelectedEvent(nodeAndAttr) {
-      this.selectedEventCode = await setSelectedEvent(this, nodeAndAttr);
+      this.selectedEventId = await setSelectedEvent(this, nodeAndAttr);
+      this.scrollIntoViewByCode();
+    },
+    scrollIntoViewByCode(code) {
+      let id = "editor_event_" + (code || this.selectedEventId);
+      let doc = document.getElementById(id);
+      if (doc) doc.scrollIntoView();
     },
     searchTextChanged(value) {
       let _this = this;
@@ -179,12 +187,19 @@ export default {
     add() {
       this.searchText = "";
       this.search = "panelTools";
-      var item = addEvent(this.eventData, "123");
-      //this.$refs[item.EventCode + "123"].focus();
+      this.$nextTick(() => {
+        setTimeout(() => {
+          this.$refs[item.id][0].focus();
+          this.scrollIntoViewByCode();
+        }, 100);
+      });
+      var item = addEvent(this.eventData, "user");
+      //
+      this.selectedEventId = item.id;
     },
     refresh() {
       //refresh();
-        getEvents(this.getHtmlEditorNodesSameLevel())
+      getEvents(this.getHtmlEditorNodesSameLevel())
         .then(val => {})
         .catch(err => {});
     },

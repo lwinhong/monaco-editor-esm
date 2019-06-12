@@ -1,5 +1,5 @@
 const DATASOURCE_KEY = Symbol.for('datasource');
-const uuidv1 = require('uuid/v1');
+//const uuidv1 = require('uuid/v1');
 
 /************************************** 数据文件路径定义 ************************************/
 
@@ -40,9 +40,9 @@ function loadJsonDataAsync(path) {
 class dataSource {
 
     constructor(appVue) {
-        this.uuid1 = uuidv1();
+        //this.uuid1 = uuidv1();
         this.appVue = appVue;
-        console.log("ds:" + this.uuid1)
+        //console.log("ds:" + this.uuid1)
     }
 
     /**
@@ -105,7 +105,7 @@ class dataSource {
     }
 
     getScriptResource() {
-        return sthis.criptResourceData;
+        return this.criptResourceData;
     }
 
     getExistWindowControlCodes() {

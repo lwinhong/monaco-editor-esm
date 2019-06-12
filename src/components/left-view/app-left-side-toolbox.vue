@@ -44,7 +44,7 @@ export default {
   created() {
     eventBus.$on("executeCmd", (cmd, value) => {
       if (cmd == cmdData.dataLoaded) {
-        let data = this.v3global.dataSourceHandler.getDataSource().getVuiTag();
+        let data = this.v3global.dataSourceHandler.getVuiTag();
         this.loadToolboxItems(data);
       }
     });

@@ -17,7 +17,7 @@ export default class componentWizard {
     getEntities(entities) {
         entities.splice(0, entities.length)
 
-        let ds = window.v3global.dataSourceHandler.getDataSource()
+        let ds = window.v3global.dataSourceHandler
         var dsData = ds.getEntities()
         if (!dsData) return;
         debugger

@@ -55,7 +55,6 @@ export default {
       tree.splice(0, tree.length);
       try {
         const datas = window.v3global.dataSourceHandler
-          .getDataSource()
           .getVlanguage();
         if (!datas) return;
         $.each(datas, function(i, data) {

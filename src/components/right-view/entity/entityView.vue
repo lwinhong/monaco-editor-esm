@@ -129,7 +129,7 @@ export default {
       tree.splice(0, tree.length);
 
       try {
-        const ds = window.v3global.dataSourceHandler.getDataSource();
+        const ds = window.v3global.dataSourceHandler;
         var data = ds.getEntities();
         if (!data) return;
         $.each(data, function(i, data) {

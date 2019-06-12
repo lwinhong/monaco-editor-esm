@@ -27,7 +27,8 @@ const init = async (vueObj) => {
     appVue = vueObj
 
     await dsNew.initDs(divFlag);
-    await ds.initDs(divFlag, appVue);
+    //await ds.initDs(divFlag, appVue);
+    
     executeCmdFromWinform(cmdData.dataLoaded)
     //appVue.$store.dispatch('codeEditorStore/setVuiDataAction', ds.getDataSource().getVuiTag())
 }
@@ -96,6 +97,6 @@ export default {
     executeCmd,
     init,
     appVue: () => appVue,
-    dataSourceHandler: ds,
+    dataSourceHandler: dsNew,
     eventBus
 }
