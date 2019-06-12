@@ -1,6 +1,7 @@
 import util from "./util"
 import { eventBus } from "./event-bus"
 import ds from "../components/dataSource/dataSourceHandler"
+import dsNew from "../components/dataSource/dataSource"
 import { cmdData } from "./command";
 
 const getQuery = () => {
@@ -25,7 +26,8 @@ var appVue
 const init = async (vueObj) => {
     appVue = vueObj
 
-    await ds.initDs(divFlag, appVue)
+    await dsNew.initDs(divFlag);
+    await ds.initDs(divFlag, appVue);
     executeCmdFromWinform(cmdData.dataLoaded)
     //appVue.$store.dispatch('codeEditorStore/setVuiDataAction', ds.getDataSource().getVuiTag())
 }

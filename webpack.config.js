@@ -24,6 +24,14 @@ module.exports = env => {
         module: {
             rules: [
                 {
+                    test: /\.tsx?$/,
+                    loader: 'ts-loader',
+                    exclude: /node_modules/,
+                    options: {
+                        appendTsSuffixTo: [/\.vue$/],
+                    }
+                },
+                {
                     test: /\.vue$/,
                     use: [
                         {
@@ -163,7 +171,7 @@ module.exports = env => {
             alias: {
                 vue$: "vue/dist/vue.esm.js",
             },
-            extensions: [".mjs", ".js", ".vue", ".json"],
+            extensions: ['.ts', ".mjs", ".js", ".vue", ".json"],
         },
         plugins: [
             //, new MonacoWebpackPlugin()
@@ -180,10 +188,10 @@ module.exports = env => {
             //     to: 'resource/monaco-editor/vs',
             // },
             {
-                from:'./node_modules/iview/dist/styles',
+                from: './node_modules/iview/dist/styles',
                 to: 'resource/styles'
-            },{
-                from:'./node_modules/jquery/dist/jquery.min.js',
+            }, {
+                from: './node_modules/jquery/dist/jquery.min.js',
                 to: 'resource'
             }]),
             new VueLoaderPlugin(),

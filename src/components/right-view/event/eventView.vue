@@ -108,6 +108,7 @@ import {
 
 import MasterPage from "../../view/view-master-page.vue";
 import * as clipboard from "clipboard-polyfill";
+import dsNew from "../../../components/dataSource/dataSource"
 import { createNamespacedHelpers } from "vuex";
 const {
   mapState,

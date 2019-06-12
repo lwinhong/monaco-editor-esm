@@ -25,11 +25,11 @@
   </master-page>
 </template>
 <script>
-import MasterPage from "../../view/view-master-page.vue";
-import commandObj from "../../../app/command";
-import { cmdData } from "../../../app/command";
-import { eventBus } from "../../../app/event-bus";
-import { newWidgetCode1 } from "../../editor/handler/htmlEditor/editorUtil";
+import MasterPage from "../view/view-master-page.vue";
+import commandObj from "../../app/command";
+import { cmdData } from "../../app/command";
+import { eventBus } from "../../app/event-bus";
+import { newWidgetCode1 } from "../editor/handler/htmlEditor/editorUtil";
 import { createNamespacedHelpers } from "vuex";
 const {
   mapState

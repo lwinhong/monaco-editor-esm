@@ -7,6 +7,9 @@ Vue.use(iView)
 
 import store from './store'
 
+import ts1 from './ts1'
+let tsss = new ts1();
+console.log(tsss.test("ss","22"))
 Vue.config.errorHandler = function (err, vm, info) {
     console.error(arguments)
 }

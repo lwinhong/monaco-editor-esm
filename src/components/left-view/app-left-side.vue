@@ -15,7 +15,7 @@
   </sideBarMasterPage>
 </template>
 <script>
-import ToolboxView from "./toolbox/toolboxView.vue";
+import ToolboxView from "./app-left-side-toolbox.vue";
 import sideBarMasterPage from "../view/side-bar-master-page.vue";
 
 export default {
