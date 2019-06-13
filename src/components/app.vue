@@ -24,9 +24,9 @@
 <script>
 import AppEditor from "./editor/app-editor.vue";
 // import AppFooter from "./editor/foot/app-footer.vue";
-import AppRightSide from "./right-view/app-right-side.vue";
+import AppRightSide from "./view/right-view/app-right-side.vue";
 import AppPreview from "./preview/app-preview.vue";
-import AppLeftSide from "./left-view/app-left-side.vue";
+import AppLeftSide from "./view/left-view/app-left-side.vue";
 // import { Container, Draggable } from "vue-smooth-dnd";
 
 export default {

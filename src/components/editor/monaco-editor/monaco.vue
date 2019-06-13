@@ -16,7 +16,7 @@ export default {
     width: { type: [String, Number], default: "100%" },
     height: { type: [String, Number], default: "100%" },
     code: { type: String, default: "" },
-    srcPath: { type: String, default: "resource/monaco-editor" },
+    srcPath: { type: String, default: "lib/monaco-editor" },
     language: { type: String, default: "javascript" },
     theme: { type: String, default: "vs" }, // vs-dark, hc-black
     options: { type: Object, default: () => {} },

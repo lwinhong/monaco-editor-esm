@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import iView from 'iview'
 import App from "./components/app.vue"
-import global from './app/global'
+import global from './app/GlobalHandler'
 
 Vue.use(iView)
 
