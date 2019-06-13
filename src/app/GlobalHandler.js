@@ -1,6 +1,6 @@
 import util from "./util"
 import { eventBus } from "./event-bus"
-import ds from "../components/dataSource/dataSource"
+import ds from "../dataSource/dataSource"
 import { cmdData } from "./command";
 
 const getQuery = () => {
