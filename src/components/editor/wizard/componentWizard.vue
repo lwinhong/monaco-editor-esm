@@ -1,11 +1,10 @@
 <template>
-  <Modal v-model="visible" mask :mask-closable="false" title="Vui 向导" :width="700" @on-ok="ok">
+  <Modal v-model="visible" mask :mask-closable="false" title="Vui 向导" :width="800" @on-ok="ok">
     <div class="wz-content">
       <Steps :current="step">
         <Step title="选择数据源" content="请选择数据源"></Step>
         <Step title="选择字段" content="请选择用于生成字段标签的字段"></Step>
       </Steps>
-      <br>
       <br>
       <div v-show="step==0">
         <Table
@@ -13,20 +12,12 @@
           :columns="dsTableColumns"
           :data="entities"
           width="100%"
-          height="200"
+          height="300"
           @on-current-change="entitySelectedChange"
-        >
-          <template slot-scope="{ row }" slot="code">
-            <span>{{`${row.code}(${row.name})`}}</span>
-          </template>
-        </Table>
+        ></Table>
       </div>
       <div v-show="step==1">
-        <Table highlight-row :columns="filedsColumns" :data="fileds" width="100%" height="200">
-          <template slot-scope="{ row }" slot="code">
-            <span>{{`${row.code}(${row.name})`}}</span>
-          </template>
-        </Table>
+        <Table highlight-row :columns="filedsColumns" :data="fileds" width="100%" height="300"></Table>
       </div>
     </div>
     <div slot="footer">
@@ -39,11 +30,13 @@
 </template>
 <script>
 import { mapState, mapActions, mapGetters } from "vuex";
-import wizard from "./componentWizard";
+import wizardHandler from "./componentWizard";
 
 export default {
   name: "componentWizard",
-  created() {},
+  created() {
+    wizardHandler.init(this);
+  },
   data() {
     return {
       step: 0,
@@ -57,6 +50,10 @@ export default {
         {
           title: "实体",
           key: "code"
+        },
+        {
+          title: "名称",
+          key: "name"
         }
       ],
       filedsColumns: [
@@ -73,6 +70,14 @@ export default {
         {
           title: "字段",
           key: "code"
+        },
+        {
+          title: "名称",
+          key: "name"
+        },
+        {
+          title: "类型",
+          key: "dataType"
         }
       ],
       entities: [],
@@ -80,20 +85,26 @@ export default {
     };
   },
   methods: {
-    ...mapGetters("codeEditorStore", ["getHtmlEditorNodesSameLevel"]),
-    ok() {
-      debugger;
-    },
+    ...mapGetters("codeEditorStore", [
+      "getHtmlEditorNodesSameLevel",
+      "getNearestNode",
+      "getHtmlEditorNodesSameLevelByNode"
+    ]),
+    ok() {},
     entitySelectedChange(currentRow) {
       this.currentRow = currentRow;
     },
     next() {
-      this.step = 1;
-      this.fileds = this.currentRow.columns;
+      if (this.currentRow) {
+        this.step = 1;
+        this.fileds = [...this.currentRow.columns];
+      } else {
+      }
     },
     showWizard() {
-      if (!this.wizardHandler) this.wizardHandler = new wizard(this);
-      this.wizardHandler.getEntities(this.entities);
+      this.currentRow = null;
+      this.step = 0;
+      wizardHandler.getEntities(this.entities);
       this.visible = true;
     }
   },
@@ -109,7 +120,7 @@ export default {
 </script>
 <style scoped>
 .wz-content {
-  height: 300px;
+  height: 360px;
 }
 /* .wz-step-btn {
   border-top: 1px solid #e8eaec;

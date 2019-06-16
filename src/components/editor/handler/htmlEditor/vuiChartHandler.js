@@ -128,6 +128,7 @@ class ChartHandler {
      * 打开图标设计器的命令
      */
     openChartCmd() {
+        debugger
         let position = this.lastPosition
         this.openChartSetting(position)
     }

@@ -59,7 +59,6 @@ function getVuiPropHoverData(tag, prop) {
 export default class vuiHoverHandler {
     constructor(vue) {
         return;
-        
         monaco.languages.registerHoverProvider("html", {
             provideHover: (model, position) => {
                 let offset = model.getOffsetAt(position)
@@ -78,6 +77,19 @@ export default class vuiHoverHandler {
                 return result
             }
         })
+
+        // monaco.languages.registerHoverProvider("html", {
+        //     provideHover: this.hoverProvider
+        // });
+    }
+
+    hoverProvider(model, position) {
+        // parentVue.$refs.componentWizard.showWizard();
+        let offset = model.getOffsetAt(position)
+        let nodeAndAttr = vue.getNearestNodeAndAttribute()(offset)
+        if (nodeAndAttr && nodeAndAttr.node && nodeAndAttr.node.tag) {
+
+        }
     }
 }
 

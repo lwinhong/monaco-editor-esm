@@ -30,6 +30,11 @@ const getters = {
             setToSameLevelRecursion([nodes], sameLevel)
         return sameLevel
     },
+    getHtmlEditorNodesSameLevelByNode: () => (node) => {
+        if (node)
+            setToSameLevelRecursion([node], sameLevel)
+        return sameLevel
+    },
     getNearestNode: (state, getters, rootState) => (offset) => {
         let nodes = getters.getHtmlEditorNodesSameLevel
         let nearestNode = getNearestNodeWidthNodes(nodes, offset)

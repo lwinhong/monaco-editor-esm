@@ -1,6 +1,10 @@
 import vuiHandler from './htmlEditor/vuiHandler'
 import validateHandler from './htmlEditor/validate/validateHandler'
-import { vuiIntelliSense, vuiHelp, emmetHTML, themeVarHandler, scriptHandler, cssHandler, cmdData, debounceWrapper, devEditorKeys, defaultEditorKeys } from './htmlEditor'
+import {
+    vuiIntelliSense, vuiHelp, emmetHTML, themeVarHandler, scriptHandler, cssHandler, cmdData, debounceWrapper,
+    devEditorKeys, defaultEditorKeys, initOpenWizard
+} from './htmlEditor'
+import vuiWizard from '../../editor/wizard/componentWizard';
 import vueParser from "../handler/codeParser/vueParser"
 
 const editorData = {}
@@ -131,7 +135,7 @@ const afterMonacoEditorCreated = (editor, tab, isSetFocus) => {
 
     if (lastEditorKey == editorKey) {
         validateHandler.doValidate();
-        parentVue.$refs.componentWizard.showWizard();
+
     }
 }
 
@@ -150,9 +154,10 @@ const initEditor = (editorObj, tabData) => {
 
     //template 或者 html编辑器：注册Emmet，vui智能提示相关
     if (editorKey === devEditorKeys.template || editorKey === defaultEditorKeys.html) {
-        emmetHTML(editor)
-        vuiIntelliSense(editor, { editorData, devEditorKeys, defaultEditorKeys, editorKey, model, parentVue })
-        vuiHelp(editor, model)
+        emmetHTML(editor);
+        vuiIntelliSense(editor, { editorData, devEditorKeys, defaultEditorKeys, editorKey, model, parentVue });
+        vuiHelp(editor, model);
+        vuiWizard.initOpenWizard(editor, model);
     }
     //注册theme页签相关
     if (editorKey === devEditorKeys.themeLess) {

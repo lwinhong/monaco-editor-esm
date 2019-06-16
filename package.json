@@ -14,7 +14,7 @@
     "clipboard-polyfill": "^2.8.0",
     "fast-xml-parser": "^3.12.16",
     "htmlparser2": "^3.10.1",
-    "iview": "^3.4.0",
+    "iview": "^3.4.2",
     "jquery": "^3.4.0",
     "recast": "^0.17.5",
     "ts-loader": "^6.0.2",
