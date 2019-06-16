@@ -3,6 +3,19 @@
     <template slot="header-title">层级树</template>
     <Tree :data="htmlEditorOutline" :render="renderContent" v-show="visibleTrigger"></Tree>
     <input type="hidden" v-model="setSelecedNodeTrigger">
+    <!-- <Dropdown
+      transfer
+      placement="right-start"
+      trigger="custom"
+      ref="contextMenu"
+      :visible="currentVisible"
+      @on-clickoutside="handleCancel"
+    >
+      <DropdownMenu slot="list">
+        <DropdownItem>删除</DropdownItem>
+        <DropdownItem>控件向导</DropdownItem>
+      </DropdownMenu>
+    </Dropdown> -->
   </master-page>
 </template>
 <script>
@@ -27,20 +40,20 @@ export default {
   created() {
     outlineHandlerObj = new outlineHandler(this);
   },
-  mounted() {},
+  mounted() {
+    //document.addEventListener("contextmenu", this.handleContextmenu, true);
+    // document.addEventListener("mousedown", this.handleCancel, true);
+  },
   data() {
     return {
       outlineData: [],
       selectedNodeKey: 0,
-      isSetPointByCurrent: false
+      isSetPointByCurrent: false,
+      // currentVisible: false
     };
   },
   computed: {
-    ...mapEditorState([
-      "htmlEditorNodes",
-      "currentEditorKey",
-      "currentNode"
-    ]),
+    ...mapEditorState(["htmlEditorNodes", "currentEditorKey", "currentNode"]),
     htmlEditorOutline() {
       let data = [];
       outlineHandlerObj.buildOutline(data, this.htmlEditorNodes);
@@ -121,7 +134,20 @@ export default {
       this.isSetPointByCurrent = true;
       this.selectedNodeKey = selectedNode.nodeKey;
       outlineHandlerObj.onOuntlineItemChanged(selectedNode);
-    }
+    },
+    // handleContextmenu(e) {
+    //   e.preventDefault();
+
+    //   this.$refs.contextMenu.$refs.reference = e.target;
+    //   this.currentVisible = !this.currentVisible;
+    // },
+    // handleCancel() {
+    //   this.currentVisible = false;
+    // }
+  },
+  destroyed() {
+    //document.removeEventListener("contextmenu", this.handleContextmenu, true);
+    // document.removeEventListener("mousedown", this.handleCancel, true);
   }
 };
 </script>

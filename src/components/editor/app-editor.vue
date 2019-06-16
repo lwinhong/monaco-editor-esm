@@ -86,6 +86,7 @@ export default {
         Template: aa,
         VueComponent: `<template>${aa}</template>`
       });
+      
     }
     this.saveButtonVisible = editorShowType !== "FormDesigner";
     this.setEditorKeyAction(this.getDefaultTabIndex());

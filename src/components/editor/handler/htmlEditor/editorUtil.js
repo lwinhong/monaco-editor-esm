@@ -226,9 +226,9 @@ export function newWidgetCode1(tag, existCodes) {
  * 获取在窗体中已存在的控件编码
  */
 function getExistWindowControlCodes() {
-    const ds = getDataSource()
-    const existCodesDs = ds.getExistWindowControlCodes()
-    return existCodesDs.existControlCodes
+    const ds = getDataSource();
+    const existCodesDs = ds.getExistWindowControlCodes();
+    return existCodesDs ? existCodesDs.existControlCodes : null;
 }
 
 /**

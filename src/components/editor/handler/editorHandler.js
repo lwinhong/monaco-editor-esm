@@ -130,7 +130,8 @@ const afterMonacoEditorCreated = (editor, tab, isSetFocus) => {
         setMonacoEditorFocusDelay(editorKey, 100)
 
     if (lastEditorKey == editorKey) {
-        validateHandler.doValidate()
+        validateHandler.doValidate();
+        parentVue.$refs.componentWizard.showWizard();
     }
 }
 

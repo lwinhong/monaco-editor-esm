@@ -128,7 +128,7 @@ const checkAndGetRepeatWidgetCode = (widgetCodeAttrs, editorKey, editorUtil, mod
                     addErrorInfo(`widget-code [${existCode}] 重复`, editorKey, node.start, node.end, model)
                 })
             }
-            else if ($.inArray(existCode, existControlCodes) !== -1) {
+            else if (existControlCodes && $.inArray(existCode, existControlCodes) !== -1) {
                 let node = existNodes[0]
                 addErrorInfo(`widget-code [${existCode}] 在窗体中已被占用`, editorKey, node.start, node.end, model)
             }

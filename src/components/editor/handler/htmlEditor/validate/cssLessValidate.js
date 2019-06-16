@@ -18,7 +18,10 @@ export const validateCssHandler = (editorKey, editorData, editorUtil, creatError
     }
 
     try {
-        const devResource = editorUtil.getDataSource().getVuiPropValueOptions().devResources
+        let options = editorUtil.getDataSource().getVuiPropValueOptions();
+        if (!options)
+            return
+        const devResource = options.devResources;
         if (!devResource || devResource.length === 0)
             return
         const model = editorData[editorKey].model

@@ -1,68 +1,82 @@
 <template>
-  <Modal v-model="visible" mask :mask-closable="false" title="Vui 向导" :width="1000" @on-ok="ok">
+  <Modal v-model="visible" mask :mask-closable="false" title="Vui 向导" :width="700" @on-ok="ok">
     <div class="wz-content">
-      <Form>
-        <Row :gutter="16">
-          <i-col span="10">
-            <FormItem label="目标容器">
-              <Select v-model="formTmpData.container">
-                <Option value="root">root</Option>
-                <Option v-for="e in containers" :key="e.tag" :value="e.tag">{{e.tag}}</Option>
-              </Select>
-            </FormItem>
-          </i-col>
-          <i-col span="10">
-            <FormItem label="数据源">
-              <Select v-model="formTmpData.dataSource">
-                <Option
-                  v-for="e in entities"
-                  :key="e.code"
-                  :value="e.code"
-                >{{`${e.code}(${e.name})`}}</Option>
-              </Select>
-            </FormItem>
-          </i-col>
-          <i-col span="2">
-              <FormItem label="确定">
-              <Button type="primary" @click="add()">添加</Button>
-            </FormItem>
-          </i-col>
-        </Row>
-      
-      </Form>
-      <Table :columns="dsTableColumns" :data="dsTableData" width="100%" height="200"></Table>
+      <Steps :current="step">
+        <Step title="选择数据源" content="请选择数据源"></Step>
+        <Step title="选择字段" content="请选择用于生成字段标签的字段"></Step>
+      </Steps>
+      <br>
+      <br>
+      <div v-show="step==0">
+        <Table
+          highlight-row
+          :columns="dsTableColumns"
+          :data="entities"
+          width="100%"
+          height="200"
+          @on-current-change="entitySelectedChange"
+        >
+          <template slot-scope="{ row }" slot="code">
+            <span>{{`${row.code}(${row.name})`}}</span>
+          </template>
+        </Table>
+      </div>
+      <div v-show="step==1">
+        <Table highlight-row :columns="filedsColumns" :data="fileds" width="100%" height="200">
+          <template slot-scope="{ row }" slot="code">
+            <span>{{`${row.code}(${row.name})`}}</span>
+          </template>
+        </Table>
+      </div>
+    </div>
+    <div slot="footer">
+      <Button @click="visible=false" type="text">取消</Button>
+      <Button @click="step=0" v-show="step==1" type="primary">上一步</Button>
+      <Button @click="next" v-show="step==0" type="primary">下一步</Button>
+      <Button @click="ok" v-show="step==1" type="primary">确定</Button>
     </div>
   </Modal>
 </template>
 <script>
 import { mapState, mapActions, mapGetters } from "vuex";
 import wizard from "./componentWizard";
-var wizardHandler;
+
 export default {
   name: "componentWizard",
-  created() {
-    wizardHandler = new wizard(this);
-  },
+  created() {},
   data() {
     return {
+      step: 0,
       visible: false,
       dsTableColumns: [
         {
-          title: "数据源",
-          key: "dataSource"
+          type: "index",
+          width: 50,
+          align: "center"
         },
         {
-          title: "容器",
-          key: "container"
+          title: "实体",
+          key: "code"
         }
       ],
-      dsTableData: [],
-      formTmpData: {
-        dataSource: "",
-        container: ""
-      },
+      filedsColumns: [
+        {
+          type: "index",
+          width: 50,
+          align: "center"
+        },
+        {
+          type: "selection",
+          width: 50,
+          align: "center"
+        },
+        {
+          title: "字段",
+          key: "code"
+        }
+      ],
       entities: [],
-      containers: []
+      fileds: []
     };
   },
   methods: {
@@ -70,20 +84,16 @@ export default {
     ok() {
       debugger;
     },
-    add() {
-      this.dsTableData.push({
-        dataSource: this.formTmpData.dataSource,
-        container: this.formTmpData.container
-      });
+    entitySelectedChange(currentRow) {
+      this.currentRow = currentRow;
+    },
+    next() {
+      this.step = 1;
+      this.fileds = this.currentRow.columns;
     },
     showWizard() {
-      let wizardHandler = new wizard(this);
-      wizardHandler.getContainer(
-        this.getHtmlEditorNodesSameLevel(),
-        this.containers
-      );
-
-      wizardHandler.getEntities(this.entities);
+      if (!this.wizardHandler) this.wizardHandler = new wizard(this);
+      this.wizardHandler.getEntities(this.entities);
       this.visible = true;
     }
   },
@@ -99,7 +109,12 @@ export default {
 </script>
 <style scoped>
 .wz-content {
-  height: 500px;
+  height: 300px;
 }
+/* .wz-step-btn {
+  border-top: 1px solid #e8eaec;
+  padding: 12px 0px;
+  text-align: right;
+} */
 </style>
 
