@@ -47,7 +47,7 @@
     "ignore-loader": "^0.1.2",
     "iview-loader": "^1.2.2",
     "material-design-icons": "^3.0.1",
-    "monaco-editor": "^0.17.0",
+    "monaco-editor": "^0.17.1",
     "monaco-editor-webpack-plugin": "^1.7.0",
     "npm-run-all": "^4.1.2",
     "pako": "^1.0.6",
