@@ -212,8 +212,12 @@ const onDidChangeModelContent = (args) => {
     let editorKey = args[1]
     let template = model.getValue()
 
-    if (editorKey === devEditorKeys.template || editorKey === defaultEditorKeys.html)
-        templateParser(template)
+    if (editorKey === devEditorKeys.template || editorKey === defaultEditorKeys.html) {
+        setTimeout(() => {
+            templateParser(template)
+        }, 0);
+
+    }
 
     //验证输入
     validateHandler.doValidate(editorKey)

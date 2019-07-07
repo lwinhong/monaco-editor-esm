@@ -90,7 +90,9 @@ export default {
       "getNearestNode",
       "getHtmlEditorNodesSameLevelByNode"
     ]),
-    ok() {},
+    ok() {
+      this.visible =false;
+    },
     entitySelectedChange(currentRow) {
       this.currentRow = currentRow;
     },

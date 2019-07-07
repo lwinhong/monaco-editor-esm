@@ -62,7 +62,7 @@ function messageToMarker(message) {
     var msg = message.message
     if (suggestRules && $.inArray(message.ruleId, suggestRules) >= 0) {
         severity = monaco.MarkerSeverity.Hint
-        source = null
+        //source = null
         msg += ` (${message.ruleId || "FATAL"})`;
     }
 
@@ -92,11 +92,12 @@ function messageToMarker(message) {
  * @returns {void}
  */
 function updateMarkers(editor, messages) {
-    const model = editor.getModel()
-    const id = editor.getId()
-    const markers = buildMarkers(messages)
+    let model = editor.getModel()
+    let id = editor.getId()
+    let markers = buildMarkers(messages)
 
     monaco.editor.setModelMarkers(model, id, markers)
+
     return markers
 }
 

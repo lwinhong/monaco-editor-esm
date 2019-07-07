@@ -17,9 +17,9 @@ const getLintValue = (model, devEditorKeys, editorKey) => {
 
 const eslintValidatePrivate = (model, editor, devEditorKeys, editorKey) => {
     try {
-        var lintValue = getLintValue(model, devEditorKeys, editorKey)
-        const eslintMsg = eslintHandler.invalidateEslint(lintValue)
-        const afterMarker = eslintHandler.updateMarkers(editor, eslintMsg)
+        let lintValue = getLintValue(model, devEditorKeys, editorKey)
+        let eslintMsg = eslintHandler.invalidateEslint(lintValue)
+        let afterMarker = eslintHandler.updateMarkers(editor, eslintMsg)
         return afterMarker
     } catch (error) {
         console.error('eslintValidate:' + error)
