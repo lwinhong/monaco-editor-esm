@@ -159,7 +159,6 @@ export default {
     },
     localMessage(row, index, type) {
       if (row) {
-        debugger;
         var editorData = editorHandler.editorData[row.moduleKey];
         var editor = editorData.editor;
         if (editor) {

@@ -23,14 +23,14 @@ module.exports = env => {
         },
         module: {
             rules: [
-                {
-                    test: /\.tsx?$/,
-                    loader: 'ts-loader',
-                    exclude: /node_modules/,
-                    options: {
-                        appendTsSuffixTo: [/\.vue$/],
-                    }
-                },
+                // {
+                //     test: /\.tsx?$/,
+                //     loader: 'ts-loader',
+                //     exclude: /node_modules/,
+                //     options: {
+                //         appendTsSuffixTo: [/\.vue$/],
+                //     }
+                // },
                 {
                     test: /\.vue$/,
                     use: [
@@ -188,7 +188,7 @@ module.exports = env => {
                 to: 'lib/monaco-editor/vs',
             },
             {
-                from: './node_modules/iview/dist/styles',
+                from: './node_modules/view-design/dist/styles',
                 to: 'resource/styles'
             }, {
                 from: './node_modules/jquery/dist/jquery.min.js',

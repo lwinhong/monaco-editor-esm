@@ -75,6 +75,7 @@ const addDefaultTab = (tabs, editorValueJosn) => {
         addTab(tabs, defaultEditorKeys.css, "全局Css", "css", editorValueJosn.Css || "")
     if (editorValueJosn.JavaScript)
         addTab(tabs, defaultEditorKeys.javascript, "全局JavaScript", "javascript", editorValueJosn.JavaScript || "")
+    lastEditorKey = tabs[tabs.length - 1].key;
 }
 
 /**
@@ -88,7 +89,7 @@ const addDevTab = (tabs, editorValueJosn) => {
         addTab(tabs, devEditorKeys.style, "style", "css", editorValueJosn.Style || "")
     addTab(tabs, devEditorKeys.themeLess, "theme.less", "less", editorValueJosn.ThemeLess || "")
     addTab(tabs, devEditorKeys.varLess, "var.less", "less", editorValueJosn.VarLess || "")
-    lastEditorKey = devEditorKeys.varLess
+    lastEditorKey = devEditorKeys.template
 }
 
 /**
@@ -117,25 +118,24 @@ const getTabText = tabKey => {
  * @param {是否设置焦点} isSetFocus 
  */
 const afterMonacoEditorCreated = (editor, tab, isSetFocus) => {
-    const editorKey = tab.key
-    const model = editor.getModel()
-    const editorObj = { editor, model, text: getTabText(editorKey) }
-    editorData[editorKey] = editorObj
+    let editorKey = tab.key;
+    let model = editor.getModel();
+    let editorObj = { editor, model, text: getTabText(editorKey) }
+    editorData[editorKey] = editorObj;
     if (tab.editorValue) {
-        model.setValue(tab.editorValue)
+        model.setValue(tab.editorValue);
         if (editorKey == devEditorKeys.template || editorKey == defaultEditorKeys.html) {
-            templateParser(tab.editorValue)
+            templateParser(tab.editorValue);
         }
-        tab.editorValue = null
+        tab.editorValue = null;
     }
 
-    initEditor(editorObj, tab)
+    initEditor(editorObj, tab);
     if (isSetFocus)
         setMonacoEditorFocusDelay(editorKey, 100)
 
     if (lastEditorKey == editorKey) {
         validateHandler.doValidate();
-
     }
 }
 
@@ -146,11 +146,11 @@ const afterMonacoEditorCreated = (editor, tab, isSetFocus) => {
  */
 const initEditor = (editorObj, tabData) => {
     if (!editorObj || !editorObj.editor)
-        return
+        return;
 
-    const editor = editorObj.editor
-    const model = editorObj.model
-    const editorKey = tabData.key
+    let editor = editorObj.editor;
+    let model = editorObj.model;
+    let editorKey = tabData.key;
 
     //template 或者 html编辑器：注册Emmet，vui智能提示相关
     if (editorKey === devEditorKeys.template || editorKey === defaultEditorKeys.html) {
@@ -161,15 +161,15 @@ const initEditor = (editorObj, tabData) => {
     }
     //注册theme页签相关
     if (editorKey === devEditorKeys.themeLess) {
-        themeVarHandler(editor, editorData, devEditorKeys)
+        themeVarHandler(editor, editorData, devEditorKeys);
     }
     //注册script页签提示
     if (editorKey === devEditorKeys.script) {
-        scriptHandler(editor)
+        scriptHandler(editor);
     }
     //注册css提示
     if (editorKey === defaultEditorKeys.css || editorKey === defaultEditorKeys.moduleCss || editorKey === devEditorKeys.style) {
-        cssHandler()
+        cssHandler();
     }
     //鼠标按下
     editor.onMouseDown(e => {
@@ -189,10 +189,6 @@ const initEditor = (editorObj, tabData) => {
         parentVue.setCursorPositionOffsetAction(model.getOffsetAt(e.position))
     })
 
-    //内容改变,触发弹出智能提示建议
-    const doTriggerSuggest = debounceWrapper(triggerSuggest, 300)
-    //内容改变,触发语法校验
-    const triggerValidate = debounceWrapper(onDidChangeModelContent, 667)
     editor.onDidChangeModelContent(function (e) {
         isAnyValueChanged = true
         doTriggerSuggest(e)
@@ -202,10 +198,11 @@ const initEditor = (editorObj, tabData) => {
     addMenuAction(editor, tabData)
 }
 
-const triggerSuggest = args => {
+//内容改变,触发弹出智能提示建议
+const doTriggerSuggest = debounceWrapper(args => {
     if (args[0].changes[0].text == ' ')
         executeCommand('triggerSuggest')//弹出建议提示
-}
+}, 300)
 
 const onDidChangeModelContent = (args) => {
     let model = args[0]
@@ -226,6 +223,10 @@ const onDidChangeModelContent = (args) => {
         window.v3global.executeCmd(cmdData.editorChanged, { code: template, editorKey })
     }, 0);
 }
+
+//内容改变,触发语法校验
+const triggerValidate = debounceWrapper(onDidChangeModelContent, 667)
+
 
 const templateParser = (template) => {
     if (template) {

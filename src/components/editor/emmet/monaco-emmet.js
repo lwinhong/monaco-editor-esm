@@ -103,7 +103,7 @@ const emmetHTML = editor => {
 
     // inspired by `monaco.editor.tokenize`.
     // see source map from `https://microsoft.github.io/monaco-editor/`
-    const tokenizationSupport = model._tokens.tokenizationSupport
+    const tokenizationSupport = model._tokenization._tokenizationSupport
     let state = tokenizationSupport.getInitialState()
     let tokenizationResult
 

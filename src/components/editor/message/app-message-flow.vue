@@ -187,7 +187,7 @@ export default {
 <style>
 .message-titleBar {
   background-color: rgb(238, 238, 240);
-  height: 18px;
+  height: 22px;
   padding-left: 5px;
   border-right: 1px solid #dcdee2;
 }

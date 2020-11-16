@@ -221,7 +221,8 @@ const checkAndAddErrorInfo = (editorKeys) => {
         if (editor && editor.model && editor.model._decorations) {
             $.each(editor.model._decorations, function (index, d) {
                 if (d.options.className === "squiggly-error") {
-                    error.push(creatErrorInfo(d.options.hoverMessage.value, d.range, editorName))
+                    //error.push(creatErrorInfo(d.options.hoverMessage.value, d.range, editorName))
+                    error.push(creatErrorInfo("错误", d.range, editorName))
                 }
             })
         }
